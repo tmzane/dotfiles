@@ -1,0 +1,26 @@
+[user]
+	name = Tom
+	email = github@junk1tm.me
+	signingkey = ~/.ssh/id_ed25519.pub
+[core]
+	excludesfile = ~/.gitignore
+	hooksPath = .githooks
+[init]
+	defaultBranch = main
+[pull]
+	ff = only
+	rebase = true
+[push]
+	autoSetupRemote = true
+[merge]
+	ff = only
+[fetch]
+	prune = true
+[gpg]
+	format = ssh
+[commit]
+	gpgsign = true
+[url "git@github.com:"]
+	insteadOf = https://github.com/
+[alias]
+	pushf = push --force-with-lease

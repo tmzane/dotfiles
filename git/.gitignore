@@ -1,0 +1,19 @@
+# macOS
+.DS_STORE
+
+# editors
+.idea
+.fleet
+*.sublime-project
+*.sublime-workspace
+
+# secrets
+.env
+
+# golang
+go.work
+
+# python
+.venv
+__pycache__
+pyrightconfig.json
