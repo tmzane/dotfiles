@@ -1,15 +1,15 @@
 # macOS
 .DS_STORE
 
+# secrets
+.env
+
 # editors
 .idea
 .fleet
 .obsidian
 *.sublime-project
 *.sublime-workspace
-
-# secrets
-.env
 
 # golang
 go.work
@@ -18,3 +18,6 @@ go.work
 .venv
 __pycache__
 pyrightconfig.json
+
+# syncthing
+.stfolder
