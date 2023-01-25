@@ -4,6 +4,7 @@
 # editors
 .idea
 .fleet
+.obsidian
 *.sublime-project
 *.sublime-workspace
 
