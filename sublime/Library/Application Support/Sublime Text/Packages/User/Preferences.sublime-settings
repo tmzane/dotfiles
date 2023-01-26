@@ -1,0 +1,21 @@
+{
+	"font_size": 13,
+	"font_face": "Fira Code Retina",
+	"font_options": [
+		"gray_antialias"
+	],
+	"theme": "Adaptive.sublime-theme",
+	"color_scheme": "Monokai.sublime-color-scheme",
+	"rulers": [
+		80
+	],
+	"mini_diff": "auto", // git only
+	"highlight_line": true,
+	"caret_style": "blink",
+	"trim_trailing_white_space_on_save": "all",
+	"ensure_newline_at_eof_on_save": true,
+	"save_on_focus_lost": true,
+	"auto_find_in_selection": true,
+	"show_encoding": true,
+	"show_line_endings": true,
+}

@@ -1,0 +1,20 @@
+[
+    {
+        "keys": [
+            "command+d"
+        ],
+        "command": "duplicate_line"
+    },
+    {
+        "keys": [
+            "command+shift+up"
+        ],
+        "command": "swap_line_up"
+    },
+    {
+        "keys": [
+            "command+shift+down"
+        ],
+        "command": "swap_line_down"
+    },
+]
