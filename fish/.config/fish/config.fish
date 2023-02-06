@@ -14,5 +14,14 @@ set --global fzf_fd_opts --hidden --exclude=.git
 fzf_configure_bindings --history=\e\b --variables=\e\cv
 
 if status is-interactive
-    # commands to run in interactive sessions
+    # add git abbreviations
+    abbr --add gs git status --short
+    abbr --add gl git log --oneline
+    abbr --add ga git add
+    abbr --add gc git commit --message
+    abbr --add gw git switch
+
+    # add misc abbreviations
+    abbr --add p3 python3
+    abbr --add \? tldr
 end
