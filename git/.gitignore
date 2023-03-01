@@ -1,23 +1,26 @@
+# git (for other tools that read .gitignore)
+.git/
+
 # macOS
-.DS_STORE
+.DS_Store
 
 # secrets
 .env
 
 # editors
-.idea
-.fleet
-.obsidian
+.idea/
+.fleet/
+.obsidian/
 *.sublime-project
 *.sublime-workspace
 
 # golang
+vendor/
 go.work
 
 # python
-.venv
-__pycache__
-pyrightconfig.json
+.venv/
+__pycache__/
 
 # syncthing
-.stfolder
+.stfolder/
