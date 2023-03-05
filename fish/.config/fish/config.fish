@@ -33,4 +33,7 @@ if status is-interactive
     # add command aliases
     alias cat=bat
     alias top=htop
+
+    # add QuickLook alias (as a function because we need $argv in the middle)
+    function ql; qlmanage -p $argv > /dev/null; end
 end
