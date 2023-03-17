@@ -1,5 +1,5 @@
-# set default editor to micro
-set --global --export EDITOR micro
+# set default editor
+set --global --export EDITOR "subl --wait"
 
 # disable homebrew analytics
 set --global --export HOMEBREW_NO_ANALYTICS 1
