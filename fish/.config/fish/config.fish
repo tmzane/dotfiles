@@ -20,14 +20,16 @@ fzf_configure_bindings --history=\e\b --variables=\e\cv
 
 if status is-interactive
     # add git abbreviations
-    abbr --add gs git status --short
+    abbr --add gw git switch
     abbr --add gl git log --oneline
+    abbr --add gs git status --short
     abbr --add ga git add
     abbr --add gcm git commit --message
-    abbr --add gw git switch
+    abbr --add gp git push
+    abbr --add gpf git push --force-with-lease
 
     # add misc abbreviations
-    abbr --add p3 python3
+    abbr --add py python3
     abbr --add \? tldr
 
     # add command aliases
