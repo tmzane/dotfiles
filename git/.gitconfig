@@ -1,6 +1,6 @@
 [user]
 	name = Tom
-	email = github@junk1tm.me
+	email = 73077675+tmzane@users.noreply.github.com
 	signingkey = ~/.ssh/id_ed25519.pub
 [core]
 	excludesfile = ~/.gitignore
