@@ -1,0 +1,19 @@
+{
+    "theme": "sync-with-os",
+    "editor.guides": [120],
+    "editor.fontFamily": "Fira Code",
+    "editor.formatOnSave": true,
+    "files.toggleFolderMode": "singleClick",
+    "terminal.enableFocusEditorOnEsc": true,
+
+    "git.autoFetch": false,
+    "git.revert.confirm": false,
+    "ff.expandGitDiffByDefault": true,
+
+    "fus.sendAllowed": false,
+    "java.terminal.addJavaToolchain": false,
+    "nodejs.terminal.addNodeModules": false,
+    "python.interpreters": [
+        {"path": "/opt/homebrew/bin/python3"}
+    ],
+}
