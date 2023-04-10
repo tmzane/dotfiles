@@ -7,6 +7,8 @@ set --global --export HOMEBREW_NO_ANALYTICS 1
 set --global --export HOMEBREW_NO_AUTO_UPDATE 1
 # disable homebrew install from API
 set --global --export HOMEBREW_NO_INSTALL_FROM_API 1
+# tell homebrew to automatically remove unused formula dependents
+set --global --export HOMEBREW_AUTOREMOVE 1
 
 # set fzf default command and options
 set --global --export FZF_DEFAULT_COMMAND "fd --hidden"
