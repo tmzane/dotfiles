@@ -31,13 +31,17 @@ if status is-interactive
     abbr --add gpf git push --force-with-lease
 
     # add misc abbreviations
-    abbr --add py python3
     abbr --add \? tldr
+    abbr --add py python3
 
-    # add command aliases
-    alias cat=bat
-    alias top=htop
+    # replace builtin tools
+    alias cat bat
+    alias top htop
+    alias mkdir "mkdir -p"
 
-    # add QuickLook alias (as a function because we need $argv in the middle)
+    # add "Move to Trash" command
+    function trash; mv $argv ~/.Trash; end
+
+    # add "Open with QuickLook" command
     function ql; qlmanage -p $argv > /dev/null; end
 end
