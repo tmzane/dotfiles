@@ -43,5 +43,5 @@ if status is-interactive
     function trash; mv $argv ~/.Trash; end
 
     # add "Open with QuickLook" command
-    function ql; qlmanage -p $argv > /dev/null; end
+    function ql; qlmanage -p $argv &> /dev/null; end
 end
