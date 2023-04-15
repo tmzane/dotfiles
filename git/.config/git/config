@@ -3,7 +3,6 @@
 	email = 73077675+tmzane@users.noreply.github.com
 	signingkey = ~/.ssh/id_ed25519.pub
 [core]
-	excludesfile = ~/.gitignore
 	hooksPath = .githooks
 [init]
 	defaultBranch = main
