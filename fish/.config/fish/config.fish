@@ -37,7 +37,9 @@ if status is-interactive
     # replace builtin tools
     alias cat bat
     alias top htop
-    alias mkdir "mkdir -p"
+
+    # add "Make a dir and cd into it" command
+    function md; set dir $argv[1]; mkdir -p $dir && cd $dir; end
 
     # add "Move to Trash" command
     function trash; mv $argv ~/.Trash; end
