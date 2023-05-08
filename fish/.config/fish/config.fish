@@ -25,10 +25,13 @@ if status is-interactive
     abbr --add gw git switch
     abbr --add gl git log --oneline
     abbr --add gs git status --short
+    abbr --add gd git diff
     abbr --add ga git add
+    abbr --add gc git commit
     abbr --add gcm git commit --message
     abbr --add gp git push
     abbr --add gpf git push --force-with-lease
+    abbr --add gpl git pull --rebase
 
     # add misc abbreviations
     abbr --add \? tldr
