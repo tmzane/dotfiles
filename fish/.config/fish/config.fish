@@ -35,6 +35,7 @@ if status is-interactive
 
     # add misc abbreviations
     abbr --add \? tldr
+    abbr --add \?\? man
     abbr --add py python3
 
     # replace builtin tools
