@@ -3,13 +3,13 @@
 <plist version="1.0">
     <dict>
         <key>Label</key>
-        <string>local.protonmail.bridge</string>
+        <string>local.homebrew.update</string>
         <key>ProgramArguments</key>
         <array>
-            <string>/Applications/Proton Mail Bridge.app/Contents/MacOS/bridge</string>
-            <string>--noninteractive</string>
+            <string>/opt/homebrew/bin/brew</string>
+            <string>update</string>
         </array>
-        <key>RunAtLoad</key>
-        <true/>
+        <key>StartInterval</key>
+        <integer>86400</integer>
     </dict>
 </plist>
