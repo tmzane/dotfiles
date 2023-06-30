@@ -11,7 +11,9 @@ import subprocess
 def main() -> None:
     dump = subprocess.run(
         ["brew", "bundle", "dump", "--file=-"],
-        check=True, text=True, capture_output=True,
+        check=True,
+        text=True,
+        capture_output=True,
     )
 
     for line in dump.stdout.splitlines():
@@ -28,7 +30,9 @@ def main() -> None:
 
         info = subprocess.run(
             ["brew", "info", "--json=v2", "--" + group, name.strip('"')],
-            check=True, text=True, capture_output=True,
+            check=True,
+            text=True,
+            capture_output=True,
         )
 
         obj = json.loads(info.stdout)[group][0]
