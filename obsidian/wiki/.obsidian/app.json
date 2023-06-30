@@ -6,5 +6,6 @@
   "autoConvertHtml": false,
   "promptDelete": false,
   "alwaysUpdateLinks": true,
-  "showInlineTitle": false
+  "showInlineTitle": false,
+  "showUnsupportedFiles": true
 }
