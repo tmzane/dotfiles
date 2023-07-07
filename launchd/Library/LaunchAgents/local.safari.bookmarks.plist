@@ -4,15 +4,18 @@
     <dict>
         <key>Label</key>
         <string>local.safari.bookmarks</string>
+        <!-- TODO: set WorkingDirectory via `defaults` instead of hardcoding -->
+        <key>WorkingDirectory</key>
+        <string>/Users/tmz</string>
         <key>ProgramArguments</key>
         <array>
             <string>/usr/bin/python3</string>
-            <string>/Users/tmz/.dotfiles/scripts/import_safari_bookmarks.py</string>
-            <string>/Users/tmz/backup/bookmarks.html</string>
+            <string>.dotfiles/scripts/import_safari_bookmarks.py</string>
+            <string>.backup/bookmarks.html</string>
         </array>
         <key>WatchPaths</key>
         <array>
-            <string>/Users/tmz/backup/bookmarks.html</string>
+            <string>.backup/bookmarks.html</string>
         </array>
     </dict>
 </plist>
