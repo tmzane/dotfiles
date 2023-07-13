@@ -21,7 +21,6 @@
 
 	"save_on_focus_lost": true,
 	"auto_find_in_selection": true,
-	"close_windows_when_empty": false,
 	"default_line_ending": "unix",
 	"ensure_newline_at_eof_on_save": true,
 	"trim_trailing_white_space_on_save": "not_on_caret",
