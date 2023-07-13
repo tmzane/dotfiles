@@ -2,6 +2,13 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
     <dict>
+        <!--
+        This launch agent remaps rarely used feature keys (e.g. Dictation) on M-series MacBooks to F13+ function keys,
+        which are supported by macOS but are not present on the laptop keyboard.
+        They can then be mapped to perform any custom action, e.g. quickly opening Terminal.app.
+        The builtin /usr/bin/hidutil tool is used for remapping.
+        To create your own key mapping, use the https://hidutil-generator.netlify.app generator.
+        -->
         <key>Label</key>
         <string>local.hidutil.keymapping</string>
         <key>ProgramArguments</key>
