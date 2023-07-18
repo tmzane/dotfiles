@@ -1,8 +1,10 @@
 #!/usr/bin/env python3
 
 """
-Import bookmarks to Safari from a Netscape Bookmark file.
+This script imports bookmarks to Safari from a Netscape Bookmark file.
 Currently, does not support folders.
+
+Usage: import_safari_bookmarks.py <path/to/bookmarks.html>
 """
 
 import plistlib
@@ -17,7 +19,7 @@ SAFARI_BOOKMARKS_LOCATION = "Library/Safari/Bookmarks.plist"
 
 def main() -> None:
     if len(sys.argv) < 2:
-        print("usage: import_safari_bookmarks.py <path/to/bookmarks.html>")
+        print(__doc__)
         sys.exit(1)
 
     input_file = sys.argv[1]

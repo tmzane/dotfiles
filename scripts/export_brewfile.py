@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 
 """
-Write a Brewfile with descriptions.
+This script exports a Brewfile with formula/cask descriptions.
+
+Usage: export_brewfile.py > Brewfile
 """
 
 import json
