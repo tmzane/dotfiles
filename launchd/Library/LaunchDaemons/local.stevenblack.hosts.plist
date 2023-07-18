@@ -1,17 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
-	<dict>
-		<key>Label</key>
-		<string>local.stevenblack.hosts</string>
-		<key>ProgramArguments</key>
-		<array>
-			<string>/usr/bin/curl</string>
-			<string>https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts</string>
-			<string>--output</string>
-			<string>/etc/hosts</string>
-		</array>
-		<key>RunAtLoad</key>
-		<true/>
-	</dict>
+    <dict>
+        <!--
+        This launch daemon pulls the /etc/hosts file from https://github.com/StevenBlack/hosts on system boot.
+        -->
+        <key>Label</key>
+        <string>local.stevenblack.hosts</string>
+        <key>ProgramArguments</key>
+        <array>
+            <string>/usr/bin/curl</string>
+            <string>https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts</string>
+            <string>--output</string>
+            <string>/etc/hosts</string>
+        </array>
+        <key>RunAtLoad</key>
+        <true/>
+    </dict>
 </plist>
