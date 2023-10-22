@@ -32,6 +32,7 @@ if status is-interactive
     abbr --add gp git push
     abbr --add gpf git push --force-with-lease
     abbr --add gpl git pull --rebase
+    abbr --add gst git stash
 
     # add misc abbreviations
     abbr --add \? tldr
