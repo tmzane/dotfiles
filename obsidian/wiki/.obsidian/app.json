@@ -7,5 +7,9 @@
   "promptDelete": false,
   "alwaysUpdateLinks": true,
   "showInlineTitle": false,
-  "showUnsupportedFiles": true
+  "showUnsupportedFiles": true,
+  "autoPairBrackets": false,
+  "autoPairMarkdown": false,
+  "vimMode": true,
+  "showLineNumber": true
 }
