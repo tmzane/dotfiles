@@ -1,5 +1,5 @@
 # set default editor
-set --global --export EDITOR "subl --wait"
+set --global --export EDITOR "nvim"
 
 # disable homebrew analytics
 set --global --export HOMEBREW_NO_ANALYTICS 1
@@ -21,6 +21,11 @@ set --global fzf_fd_opts --hidden
 fzf_configure_bindings --history=\e\b --variables=\e\cv
 
 if status is-interactive
+    # enable vim mode
+    fish_vi_key_bindings
+    set fish_cursor_default block
+    set fish_cursor_insert line
+
     # add git abbreviations
     abbr --add gw git switch
     abbr --add gl git log --oneline
@@ -38,10 +43,13 @@ if status is-interactive
     abbr --add \? tldr
     abbr --add \?\? man
     abbr --add py python3
+    abbr --add vpnon "sudo wg-quick up wg0"
+    abbr --add vpnoff "sudo wg-quick down wg0"
 
     # replace builtin tools
     alias cat bat
     alias top htop
+    alias vim nvim
 
     # add "Make a dir and cd into it" command
     function md; set dir $argv[1]; mkdir -p $dir && cd $dir; end
