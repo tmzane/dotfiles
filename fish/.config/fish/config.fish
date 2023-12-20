@@ -1,48 +1,47 @@
 # set default editor
-set --global --export EDITOR "nvim"
+set --export EDITOR "nvim"
 
-# disable homebrew analytics
-set --global --export HOMEBREW_NO_ANALYTICS 1
-# disable homebrew autoupdate
-set --global --export HOMEBREW_NO_AUTO_UPDATE 1
-# disable homebrew install from API
-set --global --export HOMEBREW_NO_INSTALL_FROM_API 1
-# tell homebrew to automatically remove unused formula dependents
-set --global --export HOMEBREW_AUTOREMOVE 1
+# brew: disable analytics
+set --export HOMEBREW_NO_ANALYTICS 1
+# brew: disable autoupdate
+set --export HOMEBREW_NO_AUTO_UPDATE 1
+# brew: disable install from API
+set --export HOMEBREW_NO_INSTALL_FROM_API 1
+# brew: automatically remove unused formula dependents
+set --export HOMEBREW_AUTOREMOVE 1
 
-# set fzf default command and options
-set --global --export FZF_DEFAULT_COMMAND "fd --hidden"
-set --global --export FZF_DEFAULT_OPTS "--reverse --border --multi --marker=+"
-
-# tell fzf.fish to include hidden files when searching
-set --global fzf_fd_opts --hidden
-# rebind fzf.fish default key bindings
-# history: ctrl+opt+h; variables: ctrl+opt+v (use fish_key_reader)
-fzf_configure_bindings --history=\e\b --variables=\e\cv
+# fzf: set default command and options
+set --export FZF_DEFAULT_COMMAND "fd --hidden"
+set --export FZF_DEFAULT_OPTS "--reverse --border"
 
 if status is-interactive
+    # fzf.fish: include hidden files when searching
+    set fzf_fd_opts --hidden
+    # fzf.fish: set custom key bindings (history: ctrl+opt+h; variables: ctrl+opt+v)
+    fzf_configure_bindings --history=\e\b --variables=\e\cv
+
     # enable vim mode
     fish_vi_key_bindings
     set fish_cursor_default block
     set fish_cursor_insert line
 
     # add git abbreviations
-    abbr --add gw git switch
-    abbr --add gl git log --oneline
-    abbr --add gs git status --short
-    abbr --add gd git diff
-    abbr --add ga git add
-    abbr --add gc git commit
-    abbr --add gcm git commit --message
-    abbr --add gp git push
-    abbr --add gpf git push --force-with-lease
-    abbr --add gpl git pull --rebase
-    abbr --add gst git stash
+    abbr --add gw "git switch"
+    abbr --add gl "git log --oneline"
+    abbr --add gs "git status --short"
+    abbr --add gd "git diff"
+    abbr --add ga "git add"
+    abbr --add gc "git commit"
+    abbr --add gcm "git commit --message"
+    abbr --add gp "git push"
+    abbr --add gpf "git push --force-with-lease"
+    abbr --add gpl "git pull --rebase"
+    abbr --add gst "git stash"
 
     # add misc abbreviations
-    abbr --add \? tldr
-    abbr --add \?\? man
-    abbr --add py python3
+    abbr --add \? "tldr"
+    abbr --add \?\? "man"
+    abbr --add py "python3"
     abbr --add vpnon "sudo wg-quick up wg0"
     abbr --add vpnoff "sudo wg-quick down wg0"
 
