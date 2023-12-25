@@ -1,6 +1,3 @@
-# git (for other tools that read .gitignore)
-.git/
-
 # macOS
 .DS_Store
 
@@ -8,13 +5,11 @@
 .env
 
 # editors
-.idea/
-.fleet/
 .obsidian/
 *.sublime-project
 *.sublime-workspace
 
-# golang
+# go
 vendor/
 go.work
 
