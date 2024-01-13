@@ -3,22 +3,19 @@
 <plist version="1.0">
     <dict>
         <!--
-        This launch agent imports new bookmarks into Safari when the bookmarks backup is updated.
+        This launch agent imports bookmarks into Safari when the bookmarks backup is updated.
         -->
         <key>Label</key>
         <string>local.safari.bookmarks</string>
-        <!-- TODO: set WorkingDirectory via `defaults` instead of hardcoding -->
-        <key>WorkingDirectory</key>
-        <string>/Users/tmz</string>
         <key>ProgramArguments</key>
         <array>
             <string>/usr/bin/python3</string>
-            <string>.dotfiles/scripts/import_safari_bookmarks.py</string>
-            <string>.backup/bookmarks.html</string>
+            <string>/Users/tmz/.dotfiles/scripts/import_safari_bookmarks.py</string>
+            <string>/Users/tmz/.backup/bookmarks.html</string>
         </array>
         <key>WatchPaths</key>
         <array>
-            <string>.backup/bookmarks.html</string>
+            <string>/Users/tmz/.backup/bookmarks.html</string>
         </array>
     </dict>
 </plist>

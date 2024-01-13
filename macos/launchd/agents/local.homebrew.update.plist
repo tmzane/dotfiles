@@ -3,8 +3,8 @@
 <plist version="1.0">
     <dict>
         <!--
-        This launch agent simply runs `brew update` in the background once per day.
-        Do not forget to set the HOMEBREW_NO_AUTO_UPDATE environment variable first.
+        This launch agent runs `brew update` in the background once per day.
+        The HOMEBREW_NO_AUTO_UPDATE environment variable should be set to 1.
         -->
         <key>Label</key>
         <string>local.homebrew.update</string>
