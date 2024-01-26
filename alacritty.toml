@@ -1,0 +1,12 @@
+import = [ "~/.config/alacritty/theme.toml" ]
+
+[window]
+padding = { x = 10, y = 10 }
+dynamic_padding = true
+decorations = "None"
+startup_mode = "Maximized"
+option_as_alt = "Both" # macOS only
+
+[font]
+size = 15
+normal = { family = "Fira Code", style = "Regular" }
