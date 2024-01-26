@@ -199,7 +199,7 @@
                     },
                     "to": [
                         {
-                            "shell_command": "/usr/local/bin/toggle_dark_mode"
+                            "shell_command": "PATH=/opt/homebrew/opt/gnu-sed/libexec/gnubin:$PATH /usr/local/bin/toggle_dark_mode"
                         }
                     ],
                     "type": "basic"
