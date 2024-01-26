@@ -20,7 +20,7 @@ install "$HOME/.config/alacritty/$dark_theme.toml" https://raw.githubusercontent
 install "$HOME/.config/bat/themes/$light_theme.tmTheme" https://raw.githubusercontent.com/catppuccin/bat/main/Catppuccin-latte.tmTheme
 install "$HOME/.config/bat/themes/$dark_theme.tmTheme" https://raw.githubusercontent.com/catppuccin/bat/main/Catppuccin-frappe.tmTheme
 
-alacritty_config="$HOME/.config/alacritty/alacritty.toml"
+alacritty_config="$HOME/.config/alacritty/theme.toml"
 bat_config="$HOME/.config/bat/config"
 
 if [ ! -f "$bat_config" ]; then
@@ -31,8 +31,8 @@ fi
 
 if [ "$(defaults read -g AppleInterfaceStyle 2> /dev/null)" = "Dark" ]; then
     osascript -e 'tell application "System Events" to tell appearance preferences to set dark mode to false'
-    sed -i "" "s/$dark_theme/$light_theme/" "$alacritty_config" "$bat_config"
+    sed --in-place --follow-symlinks "s/$dark_theme/$light_theme/" "$alacritty_config" "$bat_config"
 else
     osascript -e 'tell application "System Events" to tell appearance preferences to set dark mode to true'
-    sed -i "" "s/$light_theme/$dark_theme/" "$alacritty_config" "$bat_config"
+    sed --in-place --follow-symlinks "s/$light_theme/$dark_theme/" "$alacritty_config" "$bat_config"
 fi
