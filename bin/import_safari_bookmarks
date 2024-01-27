@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 
 """
-This script imports bookmarks to Safari from a Netscape Bookmark file.
-Currently, does not support folders.
+Import bookmarks to Safari from a Netscape Bookmark file.
+Bookmark folders are ignored.
 
-Usage: import_safari_bookmarks.py <path/to/bookmarks.html>
+Usage: import_safari_bookmarks <path/to/bookmarks.html>
 """
 
 import plistlib
@@ -13,17 +13,14 @@ import sys
 import uuid
 from pathlib import Path
 
-USER_BOOKMARKS_INDEX = 3
-SAFARI_BOOKMARKS_LOCATION = "Library/Safari/Bookmarks.plist"
-
 
 def main() -> None:
     if len(sys.argv) < 2:
         print(__doc__)
         sys.exit(1)
 
-    input_file = sys.argv[1]
-    text = Path(input_file).read_text()
+    input_path = Path(sys.argv[1])
+    text = input_path.read_text()
 
     bookmarks: list[object] = []
     for match in re.finditer(r'<DT><A HREF="(.*?)".*>(.*)</A>', text):
@@ -38,16 +35,16 @@ def main() -> None:
         )
 
     if len(bookmarks) == 0:
-        print(f"no bookmarks found in {input_file}")
+        print(f"no bookmarks found in {input_path}")
         sys.exit(0)
 
-    output_file = Path.home().joinpath(SAFARI_BOOKMARKS_LOCATION)
-    with open(output_file, mode="r+b") as f:
+    output_path = Path("~/Library/Safari/Bookmarks.plist").expanduser()
+    with open(output_path, mode="r+b") as f:
         data = plistlib.load(f, fmt=plistlib.FMT_BINARY)
         f.seek(0)
 
         data["WebBookmarkUUID"] = random_uuid()
-        data["Children"][USER_BOOKMARKS_INDEX:] = bookmarks
+        data["Children"][3:] = bookmarks
 
         plistlib.dump(data, f, fmt=plistlib.FMT_BINARY, sort_keys=False)
         f.truncate()
