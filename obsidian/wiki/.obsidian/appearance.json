@@ -1,9 +1,8 @@
 {
   "accentColor": "",
-  "theme": "system",
-  "baseFontSizeAction": false,
-  "showViewHeader": false,
   "enabledCssSnippets": [
     "styles"
-  ]
+  ],
+  "showViewHeader": false,
+  "theme": "system"
 }

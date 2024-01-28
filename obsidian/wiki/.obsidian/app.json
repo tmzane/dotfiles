@@ -1,15 +1,10 @@
 {
   "defaultViewMode": "preview",
   "livePreview": false,
-  "strictLineBreaks": true,
-  "spellcheck": true,
-  "autoConvertHtml": false,
-  "promptDelete": false,
-  "alwaysUpdateLinks": true,
   "showInlineTitle": false,
+  "showLineNumber": true,
   "showUnsupportedFiles": true,
-  "autoPairBrackets": false,
-  "autoPairMarkdown": false,
-  "vimMode": true,
-  "showLineNumber": true
+  "spellcheck": true,
+  "strictLineBreaks": true,
+  "vimMode": true
 }
