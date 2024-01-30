@@ -1,0 +1,77 @@
+#!/bin/sh
+
+set -eu
+
+# editorconfig
+ln -sf "$PWD/.editorconfig" "$HOME"
+
+# git
+dir="$HOME/.config/git"
+mkdir -p "$dir"
+ln -sf "$PWD/gitconfig" "$dir/config"
+ln -sf "$PWD/gitignore" "$dir/ignore"
+
+# alacritty
+dir="$HOME/.config/alacritty"
+mkdir -p "$dir"
+ln -sf "$PWD/alacritty.toml" "$dir"
+
+# fish
+dir="$HOME/.config/fish"
+mkdir -p "$dir"
+ln -sf "$PWD/config.fish" "$dir"
+ln -sf "$PWD/fish_plugins" "$dir"
+
+# tmux
+dir="$HOME/.config/tmux"
+mkdir -p "$dir"
+ln -sf "$PWD/tmux.conf" "$dir"
+
+# nvim
+dir="$HOME/.config/nvim"
+mkdir -p "$dir"
+ln -sf "$PWD/init.lua" "$dir"
+
+# htop
+dir="$HOME/.config/htop"
+mkdir -p "$dir"
+ln -sf "$PWD/htoprc" "$dir"
+
+# /usr/local/bin
+for file in bin/*; do
+    sudo ln -sf "$PWD/$file" /usr/local/bin
+done
+
+# LibreWolf
+dir="$HOME/.librewolf"
+mkdir -p "$dir"
+ln -sf "$PWD/librewolf.overrides.cfg" "$dir"
+
+# Sublime Text
+dir="$HOME/Library/Application Support/Sublime Text/Packages/User"
+mkdir -p "$dir"
+ln -sf "$PWD/Preferences.sublime-settings" "$dir"
+
+# Obsidian
+dir="$HOME/wiki/.obsidian"
+mkdir -p "$dir/snippets"
+for file in obsidian/*.json; do
+    ln -sf "$PWD/$file" "$dir"
+done
+ln -sf "$PWD/obsidian/styles.css" "$dir/snippets"
+
+# macOS
+if [ "$(uname)" = "Darwin" ]; then
+    # TODO: brew
+    # TODO: launchd
+    # TODO: defaults
+
+    if [ "$SHELL" != "/opt/homebrew/bin/fish" ]; then
+        chsh --shell /opt/homebrew/bin/fish
+    fi
+
+    # Karabiner Elements
+    dir="$HOME/.config/karabiner/assets/complex_modifications"
+    mkdir -p "$dir"
+    ln -sf "$PWD/macos/karabiner.json" "$dir"
+fi
