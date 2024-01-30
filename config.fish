@@ -22,8 +22,8 @@ if status is-interactive
 
     # enable vim mode
     fish_vi_key_bindings
-    set fish_cursor_default block
-    set fish_cursor_insert line
+    set fish_cursor_default block blink
+    set fish_cursor_insert  line  blink
 
     # add git abbreviations
     abbr --add gw  "git switch"
