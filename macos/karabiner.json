@@ -191,8 +191,19 @@
             ]
         },
         {
-            "description": "Function keys: F6 -> Toggle dark mode",
+            "description": "Function keys: F5 -> Spotify; F6 -> Dark mode",
             "manipulators": [
+                {
+                    "from": {
+                        "key_code": "f5"
+                    },
+                    "to": [
+                        {
+                            "shell_command": "/usr/local/bin/toggle_app_visibility Spotify"
+                        }
+                    ],
+                    "type": "basic"
+                },
                 {
                     "from": {
                         "key_code": "f6"
