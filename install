@@ -2,19 +2,11 @@
 
 set -eu
 
-# editorconfig
-ln -sf "$PWD/.editorconfig" "$HOME"
-
 # git
 dir="$HOME/.config/git"
 mkdir -p "$dir"
 ln -sf "$PWD/gitconfig" "$dir/config"
 ln -sf "$PWD/gitignore" "$dir/ignore"
-
-# alacritty
-dir="$HOME/.config/alacritty"
-mkdir -p "$dir"
-ln -sf "$PWD/alacritty.toml" "$dir"
 
 # fish
 dir="$HOME/.config/fish"
@@ -22,25 +14,33 @@ mkdir -p "$dir"
 ln -sf "$PWD/config.fish" "$dir"
 ln -sf "$PWD/fish_plugins" "$dir"
 
-# tmux
-dir="$HOME/.config/tmux"
-mkdir -p "$dir"
-ln -sf "$PWD/tmux.conf" "$dir"
-
 # nvim
 dir="$HOME/.config/nvim"
 mkdir -p "$dir"
 ln -sf "$PWD/init.lua" "$dir"
+
+# tmux
+dir="$HOME/.config/tmux"
+mkdir -p "$dir"
+ln -sf "$PWD/tmux.conf" "$dir"
 
 # htop
 dir="$HOME/.config/htop"
 mkdir -p "$dir"
 ln -sf "$PWD/htoprc" "$dir"
 
+# editorconfig
+ln -sf "$PWD/.editorconfig" "$HOME"
+
 # /usr/local/bin
 for file in bin/*; do
     sudo ln -sf "$PWD/$file" /usr/local/bin
 done
+
+# Alacritty
+dir="$HOME/.config/alacritty"
+mkdir -p "$dir"
+ln -sf "$PWD/alacritty.toml" "$dir"
 
 # LibreWolf
 dir="$HOME/.librewolf"
@@ -70,7 +70,7 @@ if [ "$(uname)" = "Darwin" ]; then
         chsh --shell /opt/homebrew/bin/fish
     fi
 
-    # Karabiner Elements
+    # Karabiner-Elements
     dir="$HOME/.config/karabiner/assets/complex_modifications"
     mkdir -p "$dir"
     ln -sf "$PWD/macos/karabiner.json" "$dir"
