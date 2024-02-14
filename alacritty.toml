@@ -10,3 +10,8 @@ option_as_alt = "Both" # macOS only
 [font]
 size = 15
 normal = { family = "Fira Code", style = "Regular" }
+
+[cursor]
+style = { blinking = "On" }
+blink_interval = 500
+blink_timeout = 0
