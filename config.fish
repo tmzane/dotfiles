@@ -17,8 +17,8 @@ set --export FZF_DEFAULT_OPTS "--reverse --border"
 if status is-interactive
     # fzf.fish: include hidden files when searching
     set fzf_fd_opts --hidden
-    # fzf.fish: set custom key bindings (history: ctrl+opt+h; variables: ctrl+opt+v)
-    fzf_configure_bindings --history=\e\b --variables=\e\cv
+    # fzf.fish: set custom key bindings
+    fzf_configure_bindings --directory=\ef --git_log=\el --git_status=\es --history=\eh --processes=\ep --variables=\ev
 
     # enable vim mode
     fish_vi_key_bindings
