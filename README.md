@@ -26,6 +26,9 @@ chmod +x install
 - [editorconfig](https://editorconfig.org)
     - [.editorconfig](.editorconfig)
 - [/usr/local/bin](bin)
+    - [import_safari_bookmarks](bin/import_safari_bookmarks)
+    - [toggle_app_visibility](bin/toggle_app_visibility)
+    - [toggle_dark_mode](bin/toggle_dark_mode)
 
 GUI apps:
 - [Alacritty](https://alacritty.org)
