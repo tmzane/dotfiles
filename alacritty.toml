@@ -9,7 +9,7 @@ option_as_alt = "Both" # macOS only
 
 [font]
 size = 15
-normal = { family = "Fira Code", style = "Regular" }
+normal = { family = "JetBrainsMonoNL Nerd Font Mono", style = "Light" }
 
 [cursor]
 style = { blinking = "On" }

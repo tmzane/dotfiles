@@ -1,13 +1,14 @@
 {
     "font_size": 15,
-    "font_face": "Fira Code Regular",
-    "font_options": ["gray_antialias"],
+    "font_face": "JetBrainsMonoNL Nerd Font Mono",
+    "font_options": ["no_italic", "gray_antialias"],
 
     "theme": "auto",
     "color_scheme": "auto",
 
     "rulers": [120],
     "mini_diff": "auto",
+    "caret_style": "blink",
     "highlight_line": true,
     "show_full_path": true,
     "show_encoding": true,
