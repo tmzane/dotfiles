@@ -10,12 +10,12 @@
         <key>ProgramArguments</key>
         <array>
             <string>/usr/bin/python3</string>
-            <string>/Users/tmz/.dotfiles/scripts/import_safari_bookmarks.py</string>
-            <string>/Users/tmz/.backup/bookmarks.html</string>
+            <string>$HOME/.dotfiles/bin/import_safari_bookmarks</string>
+            <string>$HOME/.backup/bookmarks.html</string>
         </array>
         <key>WatchPaths</key>
         <array>
-            <string>/Users/tmz/.backup/bookmarks.html</string>
+            <string>$HOME/.backup/bookmarks.html</string>
         </array>
     </dict>
 </plist>
