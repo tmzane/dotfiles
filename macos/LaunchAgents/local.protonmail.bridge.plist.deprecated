@@ -3,7 +3,7 @@
 <plist version="1.0">
     <dict>
         <!--
-        This launch agent starts a headless instance of ProtonMail Bridge on system boot.
+        Start a headless instance of ProtonMail Bridge on system boot.
         -->
         <key>Label</key>
         <string>local.protonmail.bridge</string>

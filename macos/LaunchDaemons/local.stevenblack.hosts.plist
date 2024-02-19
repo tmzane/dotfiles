@@ -3,7 +3,7 @@
 <plist version="1.0">
     <dict>
         <!--
-        This launch daemon pulls the /etc/hosts file from https://github.com/StevenBlack/hosts once per week.
+        Pull /etc/hosts from https://github.com/StevenBlack/hosts once per week.
         -->
         <key>Label</key>
         <string>local.stevenblack.hosts</string>

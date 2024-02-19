@@ -3,7 +3,7 @@
 <plist version="1.0">
     <dict>
         <!--
-        This launch agent imports bookmarks into Safari when the bookmarks backup is updated.
+        Import bookmarks into Safari when the bookmarks backup is updated.
         -->
         <key>Label</key>
         <string>local.safari.bookmarks</string>

@@ -3,9 +3,9 @@
 <plist version="1.0">
     <dict>
         <!--
-        This launch agent remaps some feature keys on M-series MacBooks to F13+ function keys,
+        Remap some feature keys on M-series MacBooks to F13+ function keys,
         which are supported by macOS but not present on the laptop keyboard.
-        They can then be bind to perform any custom action, e.g. to quickly open Terminal.app.
+        These keys can then be bind to perform any custom action, e.g. to quickly open Terminal.app.
         Use https://hidutil-generator.netlify.app to create your own key mapping.
         -->
         <key>Label</key>

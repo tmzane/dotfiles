@@ -3,7 +3,7 @@
 <plist version="1.0">
     <dict>
         <!--
-        This launch daemon brings up the WireGuard VPN interface on system boot.
+        Bring up the WireGuard VPN interface on system boot.
         -->
         <key>Label</key>
         <string>local.wireguard.vpn</string>
