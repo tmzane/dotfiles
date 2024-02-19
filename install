@@ -81,8 +81,8 @@ install_terminal_themes
 
 # macOS
 if [ "$(uname)" = "Darwin" ]; then
+    cd macos
     # TODO: brew
-    # TODO: launchd
     # TODO: defaults
 
     if [ "$SHELL" != "/opt/homebrew/bin/fish" ]; then
@@ -92,5 +92,15 @@ if [ "$(uname)" = "Darwin" ]; then
     # Karabiner-Elements
     dir="$HOME/.config/karabiner/assets/complex_modifications"
     mkdir -p "$dir"
-    ln -sf "$PWD/macos/karabiner.json" "$dir"
+    ln -sf "$PWD/karabiner.json" "$dir"
+
+    # launchd
+    # NOTE: symlinks do not work on Sonoma
+    for file in LaunchAgents/*.plist; do
+        sed "s|\$HOME|$HOME|" "$file" > "$HOME/Library/$file"
+    done
+
+    for file in LaunchDaemons/*.plist; do
+        sudo cp -f "$file" "/Library/LaunchDaemons"
+    done
 fi
