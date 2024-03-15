@@ -33,9 +33,6 @@ vim.opt.cmdheight = 0
 
 -- [OPTIONS.EDITOR] --
 
--- always use the system clipboard
-vim.opt.clipboard = "unnamedplus"
-
 -- expand tabs to 4 spaces
 vim.opt.expandtab = true
 vim.opt.tabstop = 4
@@ -45,9 +42,24 @@ vim.opt.shiftwidth = 4
 vim.opt.ignorecase = true
 vim.opt.smartcase = true
 
--- format on save
-vim.api.nvim_create_autocmd("BufWritePre", {
-    callback = function() vim.lsp.buf.format() end,
+-- always use the system clipboard
+vim.opt.clipboard = "unnamedplus"
+
+-- enable spell checking
+vim.opt.spell = true
+
+-- enable autosave
+vim.api.nvim_create_autocmd({ "BufLeave", "FocusLost" }, {
+    command = ":wall",
+})
+
+-- treat header files as C code
+vim.g.c_syntax_for_h = true
+
+-- use // comments in C files
+vim.api.nvim_create_autocmd("FileType", {
+    pattern = { "c" },
+    callback = function() vim.bo.commentstring = "// %s" end,
 })
 
 -- [KEYMAPS] --
