@@ -156,6 +156,37 @@ vim.cmd.colorscheme("catppuccin")
 require("auto-dark-mode").setup({ update_interval = 1000 })
 require("gitsigns").setup({})
 
+local lualine = require("lualine")
+vim.api.nvim_create_autocmd("RecordingEnter", {
+    callback = function() lualine.refresh() end,
+})
+vim.api.nvim_create_autocmd("RecordingLeave", {
+    callback = function() vim.defer_fn(lualine.refresh, 50) end,
+})
+
+local function macro_recording()
+    local reg = vim.fn.reg_recording()
+    if reg == "" then
+        return ""
+    end
+    return "recording @" .. reg
+end
+
+lualine.setup({
+    options = {
+        section_separators = "",
+        component_separators = "",
+        globalstatus = true,
+    },
+    sections = {
+        lualine_a = { "mode" },
+        lualine_b = {},
+        lualine_c = { { "buffers", symbols = { modified = "*", alternate_file = "" } } },
+        lualine_x = { "diagnostics", "searchcount", "selectioncount", macro_recording },
+        lualine_y = { "branch" },
+        lualine_z = {},
+    },
+})
 
 -- [PLUGINS.EDITOR] --
 require("mini.comment").setup({})
