@@ -76,11 +76,23 @@ vim.keymap.set("n", "[b", ":bprevious<CR>", { silent = true, desc = "Goto previo
 vim.keymap.set("n", "]d", vim.diagnostic.goto_next, { silent = true, desc = "Goto next [d]iagnostic" })
 vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, { silent = true, desc = "Goto previous [d]iagnostic" })
 
+-- https://vim.fandom.com/wiki/Deleting_a_buffer_without_closing_the_window
+vim.keymap.set("n", "<Leader>x", ":bnext<CR>:bdelete#<CR>", { silent = true, desc = "Delete current buffer" })
+
 -- https://vim.fandom.com/wiki/Moving_lines_up_or_down
 vim.keymap.set("v", "K", ":move '<-2<CR>gv=gv", { silent = true, desc = "Move selection up" })
 vim.keymap.set("v", "J", ":move '>+1<CR>gv=gv", { silent = true, desc = "Move selection down" })
 
-vim.keymap.set("v", "R", '"_dP', { silent = true, desc = "[R]eplace selection without overwriting buffer" })
+vim.keymap.set("v", "R", '"_dP', { silent = true, desc = "[R]eplace selection without overwriting register" })
+
+vim.keymap.set("n", "<Esc>", ":nohlsearch<CR><Esc>", { silent = true, desc = "Clear search highlights" })
+
+vim.keymap.set("i", "<Tab>", function()
+    if vim.fn.pumvisible() ~= 0 then
+        return "<C-n>"
+    end
+    return "<Tab>"
+end, { expr = true, silent = true, desc = "Navigate through completion list" })
 
 -- [PLUGINS] --
 
