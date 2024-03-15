@@ -285,3 +285,19 @@ require("lspconfig").lua_ls.setup({
         },
     },
 })
+
+-- [PLUGINS.TREESITTER] --
+require("nvim-treesitter.configs").setup({
+    auto_install = true,
+    highlight = {
+        enable = true,
+    },
+    incremental_selection = {
+        enable = true,
+        keymaps = {
+            init_selection = "<CR>",
+            node_incremental = "<CR>",
+            node_decremental = "<BS>",
+        },
+    },
+})
