@@ -201,7 +201,18 @@ require("mini.pairs").setup({
         ["`"] = { neigh_pattern = "[^%w\\][^%w]" },
     },
 })
-require("nvim-surround").setup({})
+require("mini.surround").setup({
+    mappings = {
+        add = "gs",
+        delete = "gsd",
+        replace = "gsr",
+        find = "",
+        find_left = "",
+        highlight = "",
+        update_n_lines = "",
+    },
+})
+
 
 -- [PLUGINS.TMUX] --
 vim.keymap.set({ "n", "v" }, "<S-Left>", ":TmuxNavigateLeft<CR>", { silent = true })
