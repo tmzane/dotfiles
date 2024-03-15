@@ -25,14 +25,11 @@ vim.api.nvim_create_autocmd("TextYankPost", {
     callback = function() vim.highlight.on_yank() end,
 })
 
--- do not highlight matching brackets
-vim.g.loaded_matchparen = false
-
 -- enable cursor blinking
 vim.opt.guicursor:append("a:blinkon500")
 
--- autohide the command line
--- vim.opt.cmdheight = 0
+-- hide the command line
+vim.opt.cmdheight = 0
 
 -- [OPTIONS.EDITOR] --
 
