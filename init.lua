@@ -233,26 +233,46 @@ vim.keymap.set("n", "<Leader>:", ":FzfLua command_history<CR>", { silent = true,
 
 -- [PLUGINS.LSP] --
 local on_attach = function(args)
+    -- format on save
+    vim.api.nvim_create_autocmd("BufWritePre", {
+        buffer = args.buf,
+        callback = function() vim.lsp.buf.format() end,
+    })
+
+    -- disable semantic highlights in favor of Treesitter
+    local client = vim.lsp.get_client_by_id(args.data.client_id)
+    client.server_capabilities.semanticTokensProvider = nil
+
     vim.keymap.set("n", "gd", vim.lsp.buf.definition, { buffer = args.buf, silent = true, desc = "[G]oto [d]efinition" })
-    vim.keymap.set("n", "gD", vim.lsp.buf.type_definition, { buffer = args.buf, silent = true, desc = "[G]oto type [d]efinition" })
+    vim.keymap.set("n", "gD", vim.lsp.buf.declaration, { buffer = args.buf, silent = true, desc = "[G]oto [d]eclaration" })
+    vim.keymap.set("n", "gt", vim.lsp.buf.type_definition, { buffer = args.buf, silent = true, desc = "[G]oto [t]ype definition" })
     vim.keymap.set("n", "gr", ":FzfLua lsp_references<CR>", { buffer = args.buf, silent = true, desc = "[G]oto [r]eference" })
     vim.keymap.set("n", "gi", ":FzfLua lsp_implementations<CR>", { buffer = args.buf, silent = true, desc = "[G]oto [i]mplementation" })
-    vim.keymap.set("n", "gs", ":FzfLua lsp_document_symbols<CR>", { buffer = args.buf, silent = true, desc = "[G]oto [s]ymbol" })
     vim.keymap.set("n", "K", vim.lsp.buf.hover, { buffer = args.buf, silent = true, desc = "Show help" })
-    vim.keymap.set("n", "<Leader>k", vim.lsp.buf.signature_help, { buffer = args.buf, silent = true, desc = "Show signature help" })
     vim.keymap.set("n", "<Leader>r", vim.lsp.buf.rename, { buffer = args.buf, silent = true, desc = "[R]ename symbol" })
     vim.keymap.set("n", "<Leader>f", vim.lsp.buf.format, { buffer = args.buf, silent = true, desc = "[F]ormat buffer" })
-    vim.keymap.set("n", "<Leader>a", ":FzfLua lsp_code_actions<CR>", { buffer = args.buf, silent = true, desc = "Code [a]ctions" })
+    vim.keymap.set("n", "<Leader>s", ":FzfLua lsp_document_symbols<CR>", { buffer = args.buf, silent = true, desc = "[L]ist [s]ymbols" })
+    vim.keymap.set("n", "<Leader>a", ":FzfLua lsp_code_actions<CR>", { buffer = args.buf, silent = true, desc = "[L]ist code [a]ctions" })
 end
 
-vim.api.nvim_create_autocmd("LspAttach", { callback = on_attach })
-
+vim.api.nvim_create_autocmd("LspAttach", {
+    callback = on_attach,
+})
 require("nvim-lightbulb").setup({
     autocmd = { enabled = true },
 })
 
-require("lspconfig").gopls.setup({})
-require("lspconfig").clangd.setup({})
+require("lspconfig").clangd.setup({
+    cmd = { "/opt/homebrew/opt/llvm/bin/clangd" },
+})
+require("lspconfig").gopls.setup({
+    settings = {
+        gopls = {
+            gofumpt = true,
+        },
+    },
+})
+require("lspconfig").zls.setup({})
 require("lspconfig").pyright.setup({})
 require("lspconfig").ruff_lsp.setup({})
 require("lspconfig").lua_ls.setup({
