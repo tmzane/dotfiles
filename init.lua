@@ -104,22 +104,19 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
-    -- UI --
-    { "catppuccin/nvim",               name = "catppuccin", priority = 1000 },
+    { "catppuccin/nvim",                 name = "catppuccin",                             priority = 1000 },
     { "f-person/auto-dark-mode.nvim" },
     { "lewis6991/gitsigns.nvim" },
-    -- EDITOR --
-    { "echasnovski/mini.comment",      version = "*" },
-    { "echasnovski/mini.completion",   version = "*" },
-    { "echasnovski/mini.pairs",        version = "*" },
-    { "kylechui/nvim-surround",        version = "*",       event = "VeryLazy" },
-    -- TMUX --
-    { "christoomey/vim-tmux-navigator" },
-    -- FZF --
-    { "ibhagwan/fzf-lua" },
-    -- LSP --
+    { "nvim-lualine/lualine.nvim",       dependencies = { "nvim-tree/nvim-web-devicons" } },
+    { "echasnovski/mini.comment",        version = "*" },
+    { "echasnovski/mini.completion",     version = "*" },
+    { "echasnovski/mini.pairs",          version = "*" },
+    { "echasnovski/mini.surround",       version = "*" },
+    { "ibhagwan/fzf-lua",                dependencies = { "nvim-tree/nvim-web-devicons" } },
     { "neovim/nvim-lspconfig" },
     { "kosayoda/nvim-lightbulb" },
+    { "nvim-treesitter/nvim-treesitter", build = ":TSUpdate" },
+    { "christoomey/vim-tmux-navigator" },
 })
 
 -- [PLUGINS.UI] --
