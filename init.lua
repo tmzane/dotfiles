@@ -222,15 +222,14 @@ vim.keymap.set({ "n", "v" }, "<S-Right>", ":TmuxNavigateRight<CR>", { silent = t
 
 -- [PLUGINS.FZF] --
 require("fzf-lua").setup({})
-vim.keymap.set("n", "<Leader><Leader>", ":FzfLua<CR>", { silent = true })
-vim.keymap.set("n", "gf", ":FzfLua files<CR>", { silent = true, desc = "[G]oto [f]ile" })
-vim.keymap.set("n", "gb", ":FzfLua buffers<CR>", { silent = true, desc = "[G]oto [b]uffer" })
-vim.keymap.set("n", "<Leader>g", ":FzfLua live_grep<CR>", { silent = true, desc = "[G]rep project" })
-vim.keymap.set("n", "<Leader>d", ":FzfLua diagnostics_document<CR>", { silent = true, desc = "Show [d]iagnostics" })
-vim.keymap.set("n", "<Leader>'", ":FzfLua marks<CR>", { silent = true, desc = "Show marks" })
-vim.keymap.set("n", '<Leader>"', ":FzfLua registers<CR>", { silent = true, desc = "Show registers" })
-vim.keymap.set("n", "<Leader>:", ":FzfLua command_history<CR>", { silent = true, desc = "Show command history" })
-vim.keymap.set("n", "<Leader>h", ":FzfLua help_tags<CR>", { silent = true, desc = "Show [h]elp tags" })
+vim.keymap.set("n", "<Leader><Leader>", ":FzfLua buffers<CR>", { silent = true, desc = "[L]ist buffers" })
+vim.keymap.set("n", "<Leader>e", ":FzfLua files<CR>", { silent = true, desc = "[E]dit file" })
+vim.keymap.set("n", "<Leader>d", ":FzfLua diagnostics_document<CR>", { silent = true, desc = "[L]ist [d]iagnostics" })
+vim.keymap.set("n", "<Leader>h", ":FzfLua help_tags<CR>", { silent = true, desc = "Search [h]elp" })
+vim.keymap.set("n", "<Leader>/", ":FzfLua live_grep<CR>", { silent = true, desc = "Search in project" })
+vim.keymap.set("n", "<Leader>'", ":FzfLua marks<CR>", { silent = true, desc = "[L]ist marks" })
+vim.keymap.set("n", '<Leader>"', ":FzfLua registers<CR>", { silent = true, desc = "[L]ist registers" })
+vim.keymap.set("n", "<Leader>:", ":FzfLua command_history<CR>", { silent = true, desc = "[L]ist command history" })
 
 -- [PLUGINS.LSP] --
 local on_attach = function(args)
