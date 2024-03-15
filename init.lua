@@ -120,11 +120,42 @@ require("lazy").setup({
 })
 
 -- [PLUGINS.UI] --
-require("catppuccin").setup({ background = { light = "latte", dark = "frappe" } })
+require("catppuccin").setup({
+    no_italic = true,
+    background = { light = "latte", dark = "frappe" },
+    custom_highlights = function(colors)
+        return {
+            -- all
+            ["@operator"] = { link = "@text" },
+            ["@property"] = { link = "@variable" },
+            ["@variable.member"] = { link = "@variable" },
+            ["@variable.parameter"] = { link = "@variable" },
+            ["@variable.builtin"] = { link = "@variable" },
+            ["@constructor"] = { link = "@function" },
+            ["@function.builtin"] = { link = "@function" },
+            ["@attribute"] = { link = "@keyword" },
+            ["@punctuation.bracket"] = { link = "@text" },
+            ["@punctuation.delimiter"] = { link = "@text" },
+            ["MatchParen"] = { fg = colors.Peach, bg = "" },
+            -- C
+            ["@keyword.directive.c"] = { link = "@keyword" },
+            ["@keyword.directive.define.c"] = { link = "@keyword" },
+            ["@keyword.conditional.ternary.c"] = { link = "@text" },
+            -- Go
+            ["@module.go"] = { link = "@text" },
+            -- Zig
+            ["@punctuation.special.zig"] = { link = "@text" },
+            -- Lua
+            ["@constructor.lua"] = { link = "@text" },
+        }
+    end,
+})
+
+vim.cmd.colorscheme("catppuccin")
+
 require("auto-dark-mode").setup({ update_interval = 1000 })
 require("gitsigns").setup({})
 
-vim.cmd.colorscheme("catppuccin")
 
 -- [PLUGINS.EDITOR] --
 require("mini.comment").setup({})
