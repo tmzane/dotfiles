@@ -48,6 +48,7 @@ local function setup_editor_options()
     vim.opt.spell = true
 
     -- enable autosave
+    vim.opt.autowrite = true
     vim.api.nvim_create_autocmd({ "BufLeave", "FocusLost" }, {
         command = ":wall",
     })
