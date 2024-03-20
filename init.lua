@@ -67,9 +67,6 @@ local function setup_keymaps()
     vim.g.mapleader = " "
     vim.keymap.set({ "n", "v" }, "<Space>", "<Nop>")
 
-    -- vim.keymap.set("n", "+", "<C-a>", { silent = true, desc = "Increment number" })
-    -- vim.keymap.set("n", "-", "<C-x>", { silent = true, desc = "Decrement number" })
-
     vim.keymap.set("n", "]b", ":bnext<CR>", { silent = true, desc = "Goto next [b]uffer" })
     vim.keymap.set("n", "[b", ":bprevious<CR>", { silent = true, desc = "Goto previous [b]uffer" })
 
@@ -82,8 +79,6 @@ local function setup_keymaps()
     -- https://vim.fandom.com/wiki/Moving_lines_up_or_down
     vim.keymap.set("v", "K", ":move '<-2<CR>gv=gv", { silent = true, desc = "Move selection up" })
     vim.keymap.set("v", "J", ":move '>+1<CR>gv=gv", { silent = true, desc = "Move selection down" })
-
-    -- vim.keymap.set("v", "R", '"_dP', { silent = true, desc = "[R]eplace selection without overwriting register" })
 
     vim.keymap.set("n", "<Esc>", ":nohlsearch<CR><Esc>", { silent = true, desc = "Clear search highlights" })
 
