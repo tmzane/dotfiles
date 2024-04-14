@@ -13,9 +13,8 @@ set --export HOMEBREW_NO_INSTALL_FROM_API 1
 # brew: automatically remove unused formula dependents
 set --export HOMEBREW_AUTOREMOVE 1
 
-# fzf: set default command and options
-set --export FZF_DEFAULT_COMMAND "fd --hidden"
-set --export FZF_DEFAULT_OPTS "--reverse --border"
+# fzf: set default options
+set --export FZF_DEFAULT_OPTS "--reverse --border --preview-window=70%"
 
 if status is-interactive
     # fzf.fish: include hidden files when searching
