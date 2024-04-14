@@ -221,8 +221,8 @@ local function setup_mini_plugins()
     require("mini.surround").setup({
         mappings = {
             add = "gs",
-            delete = "gsd",
-            replace = "gsr",
+            delete = "ds",
+            replace = "cs",
             find = "",
             find_left = "",
             highlight = "",
