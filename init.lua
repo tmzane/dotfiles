@@ -92,11 +92,14 @@ local function setup_keymaps()
     vim.keymap.set("n", "<Esc>", ":nohlsearch<CR><Esc>", { silent = true, desc = "Clear search highlights" })
 
     vim.keymap.set("i", "<Tab>", function()
-        if vim.fn.pumvisible() ~= 0 then
-            return "<C-n>"
-        end
+        if vim.fn.pumvisible() ~= 0 then return "<C-n>" end
         return "<Tab>"
-    end, { expr = true, silent = true, desc = "Navigate through completion list" })
+    end, { expr = true, silent = true, desc = "Next completion list entry" })
+
+    vim.keymap.set("i", "<S-Tab>", function()
+        if vim.fn.pumvisible() ~= 0 then return "<C-p>" end
+        return "<S-Tab>"
+    end, { expr = true, silent = true, desc = "Previous completion list entry" })
 end
 
 local function setup_plugin_manager()
