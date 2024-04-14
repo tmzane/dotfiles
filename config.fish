@@ -33,6 +33,7 @@ if status is-interactive
     abbr --add gs  "git status --short"
     abbr --add gd  "git diff"
     abbr --add ga  "git add"
+    abbr --add gap "git add --patch"
     abbr --add gc  "git commit"
     abbr --add gcm "git commit --message"
     abbr --add gp  "git push"
