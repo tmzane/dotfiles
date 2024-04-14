@@ -42,9 +42,9 @@ if status is-interactive
     abbr --add gst "git stash"
 
     # add misc abbreviations
-    abbr --add \? "tldr"
+    abbr --add \?   "tldr"
     abbr --add \?\? "man"
-    abbr --add py "python3"
+    abbr --add py   "python3"
 
     # replace builtin tools
     alias cat bat
@@ -52,15 +52,11 @@ if status is-interactive
     alias vim nvim
 
     # add vpn aliases
-    alias vpnon "sudo wg-quick up wg0"
+    alias vpnon  "sudo wg-quick up wg0"
     alias vpnoff "sudo wg-quick down wg0"
 
-    # add "Make a dir and cd into it" command
+    # md: make a directory and cd into it
     function md; set dir $argv[1]; mkdir -p $dir && cd $dir; end
-
-    # add "Move to Trash" command
-    function trash; mv $argv ~/.Trash; end
-
-    # add "Open with QuickLook" command
+    # ql: preview with Quick Look
     function ql; qlmanage -p $argv &> /dev/null; end
 end
