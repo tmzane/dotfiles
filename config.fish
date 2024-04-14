@@ -1,6 +1,9 @@
 # set default editor
 set --export EDITOR "nvim"
 
+# add $GOBIN to $PATH
+fish_add_path --path --global ~/go/bin
+
 # brew: disable analytics
 set --export HOMEBREW_NO_ANALYTICS 1
 # brew: disable autoupdate
