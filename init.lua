@@ -12,7 +12,10 @@ local function setup_ui_options()
     -- keep the cursor centered vertically
     vim.opt.scrolloff = 999
 
-    -- sane window splitting
+    -- use global status line
+    vim.opt.laststatus = 3
+
+    -- use sane window splitting
     vim.opt.splitbelow = true
     vim.opt.splitright = true
 
