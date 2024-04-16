@@ -167,6 +167,25 @@ local function setup_colorscheme()
     vim.cmd.colorscheme("catppuccin")
 end
 
+local function setup_gitsigns()
+    require("gitsigns").setup({
+        signs = {
+            add          = { text = "+" },
+            change       = { text = "~" },
+            delete       = { text = "-" },
+            topdelete    = { text = "-" },
+            changedelete = { text = "~" },
+            untracked    = { text = "+" },
+        },
+        on_attach = function()
+            require("gitsigns").change_base("HEAD~1") -- diff against previous commit by default
+            vim.keymap.set("n", "]h", ":Gitsigns next_hunk<CR><CR>", { silent = true, desc = "Goto next git [h]unk" })
+            vim.keymap.set("n", "[h", ":Gitsigns prev_hunk<CR><CR>", { silent = true, desc = "Goto previous git [h]unk" })
+            vim.keymap.set("n", "gh", ":Gitsigns preview_hunk_inline<CR>", { silent = true, desc = "Preview [g]it [h]unk" })
+        end,
+    })
+end
+
 local function setup_lualine()
     local lualine = require("lualine")
 
@@ -339,7 +358,7 @@ setup_editor_options()
 setup_keymaps()
 setup_plugin_manager()
 setup_colorscheme()
-require("gitsigns").setup({})
+setup_gitsigns()
 setup_lualine()
 setup_mini_plugins()
 setup_fzf()
