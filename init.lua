@@ -332,6 +332,21 @@ local function setup_lsp_servers()
             },
         },
     })
+
+    -- HTML
+    require("lspconfig").html.setup({
+        settings = {
+            html = {
+                format = { wrapLineLength = 999 },
+            },
+        },
+    })
+
+    -- CSS
+    require("lspconfig").cssls.setup({})
+
+    -- JSON
+    require("lspconfig").jsonls.setup({})
 end
 
 local function setup_treesitter()
