@@ -85,9 +85,6 @@ local function setup_keymaps()
     vim.keymap.set("n", "]d", vim.diagnostic.goto_next, { silent = true, desc = "Goto next [d]iagnostic" })
     vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, { silent = true, desc = "Goto previous [d]iagnostic" })
 
-    -- https://vim.fandom.com/wiki/Deleting_a_buffer_without_closing_the_window
-    vim.keymap.set("n", "<Leader>x", ":edit#<CR>:bdelete#<CR>", { silent = true, desc = "Delete current buffer" })
-
     -- https://vim.fandom.com/wiki/Moving_lines_up_or_down
     vim.keymap.set("v", "K", ":move '<-2<CR>gv=gv", { silent = true, desc = "Move selection up" })
     vim.keymap.set("v", "J", ":move '>+1<CR>gv=gv", { silent = true, desc = "Move selection down" })
@@ -117,6 +114,7 @@ local function setup_plugin_manager()
         { "f-person/auto-dark-mode.nvim" },
         { "lewis6991/gitsigns.nvim" },
         { "nvim-lualine/lualine.nvim",       dependencies = { "nvim-tree/nvim-web-devicons" } },
+        { "echasnovski/mini.bufremove",      version = "*" },
         { "echasnovski/mini.comment",        version = "*" },
         { "echasnovski/mini.completion",     version = "*" },
         { "echasnovski/mini.pairs",          version = "*" },
@@ -225,6 +223,10 @@ local function setup_lualine()
 end
 
 local function setup_mini_plugins()
+    local bufremove = require("mini.bufremove")
+    bufremove.setup({})
+    vim.keymap.set("n", "<BS>", bufremove.delete, { silent = true, desc = "Delete current buffer" })
+
     require("mini.comment").setup({})
 
     require("mini.completion").setup({})
