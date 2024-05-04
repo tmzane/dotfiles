@@ -79,6 +79,9 @@ local function setup_keymaps()
     vim.keymap.set("n", "L", ":bnext<CR>", { silent = true, desc = "Goto next buffer" })
     vim.keymap.set("n", "H", ":bprevious<CR>", { silent = true, desc = "Goto previous buffer" })
 
+    vim.keymap.set("n", "]q", ":cnext<CR>", { silent = true, desc = "Goto next [q]uickfix list entry" })
+    vim.keymap.set("n", "[q", ":cprev<CR>", { silent = true, desc = "Goto previous [q]uickfix list entry" })
+
     vim.keymap.set("n", "]d", vim.diagnostic.goto_next, { silent = true, desc = "Goto next [d]iagnostic" })
     vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, { silent = true, desc = "Goto previous [d]iagnostic" })
 
