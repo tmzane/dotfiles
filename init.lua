@@ -76,8 +76,8 @@ local function setup_keymaps()
     vim.g.mapleader = " "
     vim.keymap.set({ "n", "v" }, "<Space>", "<Nop>")
 
-    vim.keymap.set("n", "]b", ":bnext<CR>", { silent = true, desc = "Goto next [b]uffer" })
-    vim.keymap.set("n", "[b", ":bprevious<CR>", { silent = true, desc = "Goto previous [b]uffer" })
+    vim.keymap.set("n", "L", ":bnext<CR>", { silent = true, desc = "Goto next buffer" })
+    vim.keymap.set("n", "H", ":bprevious<CR>", { silent = true, desc = "Goto previous buffer" })
 
     vim.keymap.set("n", "]d", vim.diagnostic.goto_next, { silent = true, desc = "Goto next [d]iagnostic" })
     vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, { silent = true, desc = "Goto previous [d]iagnostic" })
