@@ -85,6 +85,9 @@ local function setup_keymaps()
     vim.keymap.set("n", "]d", vim.diagnostic.goto_next, { silent = true, desc = "Goto next [d]iagnostic" })
     vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, { silent = true, desc = "Goto previous [d]iagnostic" })
 
+    -- https://vim.fandom.com/wiki/Fix_indentation
+    vim.keymap.set("n", "g=", "gg=G<C-o><C-o>", { silent = true, desc = "Fix indentation" })
+
     -- https://vim.fandom.com/wiki/Moving_lines_up_or_down
     vim.keymap.set("v", "K", ":move '<-2<CR>gv=gv", { silent = true, desc = "Move selection up" })
     vim.keymap.set("v", "J", ":move '>+1<CR>gv=gv", { silent = true, desc = "Move selection down" })
