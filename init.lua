@@ -244,7 +244,7 @@ local function setup_mini_plugins()
 
     require("mini.surround").setup({
         mappings = {
-            add = "gs",
+            add = "S",
             delete = "ds",
             replace = "cs",
             find = "",
@@ -280,16 +280,23 @@ local function setup_lsp()
         local client = vim.lsp.get_client_by_id(args.data.client_id)
         client.server_capabilities.semanticTokensProvider = nil
 
-        vim.keymap.set("n", "gd", vim.lsp.buf.definition, { buffer = args.buf, silent = true, desc = "[G]oto [d]efinition" })
-        vim.keymap.set("n", "gD", vim.lsp.buf.declaration, { buffer = args.buf, silent = true, desc = "[G]oto [d]eclaration" })
-        vim.keymap.set("n", "gt", vim.lsp.buf.type_definition, { buffer = args.buf, silent = true, desc = "[G]oto [t]ype definition" })
-        vim.keymap.set("n", "gr", ":FzfLua lsp_references<CR>", { buffer = args.buf, silent = true, desc = "[G]oto [r]eference" })
-        vim.keymap.set("n", "gi", ":FzfLua lsp_implementations<CR>", { buffer = args.buf, silent = true, desc = "[G]oto [i]mplementation" })
-        vim.keymap.set("n", "K", vim.lsp.buf.hover, { buffer = args.buf, silent = true, desc = "Show help" })
-        vim.keymap.set("n", "<Leader>r", vim.lsp.buf.rename, { buffer = args.buf, silent = true, desc = "[R]ename symbol" })
-        vim.keymap.set("n", "<Leader>f", vim.lsp.buf.format, { buffer = args.buf, silent = true, desc = "[F]ormat buffer" })
-        vim.keymap.set("n", "<Leader>s", ":FzfLua lsp_document_symbols<CR>", { buffer = args.buf, silent = true, desc = "[L]ist [s]ymbols" })
-        vim.keymap.set("n", "<Leader>a", ":FzfLua lsp_code_actions<CR>", { buffer = args.buf, silent = true, desc = "[L]ist code [a]ctions" })
+        local map = function(mode, key, desc, func)
+            vim.keymap.set(mode, key, func, { buffer = args.buf, silent = true, desc = desc })
+        end
+
+        local fzf = require("fzf-lua")
+        map("n", "gd", "[G]oto [d]efinition", function() fzf.lsp_definitions({ jump_to_single_result = true }) end)
+        map("n", "gD", "[G]oto [d]eclaration", function() fzf.lsp_declarations({ jump_to_single_result = true }) end)
+        map("n", "gt", "[G]oto [t]ype definition", function() fzf.lsp_typedefs({ jump_to_single_result = true }) end)
+        map("n", "gr", "[G]oto [r]eference", function() fzf.lsp_references({ jump_to_single_result = true, ignore_current_line = true, includeDeclaration = false }) end)
+        map("n", "gi", "[G]oto [i]mplementation", function() fzf.lsp_implementations({ jump_to_single_result = true }) end)
+        map("n", "gs", "[G]oto document [s]ymbol", fzf.lsp_document_symbols)
+        map("n", "gS", "[G]oto workspace [s]ymbol", fzf.lsp_workspace_symbols)
+        map("n", "K", "Show help", vim.lsp.buf.hover)
+        map("i", "<C-s>", "Show [s]ignature help", vim.lsp.buf.signature_help)
+        map("n", "crn", "[R]e[n]ame symbol", vim.lsp.buf.rename)
+        map("n", "crr", "[C]ode actions", fzf.lsp_code_actions)
+        map("n", "g=", "Format buffer", vim.lsp.buf.format)
     end
 
     vim.api.nvim_create_autocmd("LspAttach", {
