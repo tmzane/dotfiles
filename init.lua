@@ -209,10 +209,17 @@ local function setup_lualine()
         sections = {
             lualine_a = { "mode" },
             lualine_b = {},
-            lualine_c = { { "buffers", symbols = { modified = "*", alternate_file = "" } } },
+            lualine_c = { { "filename", path = 3 } }, -- absolute path with tilde as $HOME
             lualine_x = { "diagnostics", "searchcount", "selectioncount", macro_recording },
             lualine_y = { "branch" },
             lualine_z = {},
+        },
+        tabline = {
+            lualine_c = { {
+                "buffers",
+                show_filename_only = false,
+                symbols = { modified = "", alternate_file = "" },
+            } },
         },
     })
 end
