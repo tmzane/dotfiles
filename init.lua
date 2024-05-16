@@ -118,7 +118,6 @@ local function setup_plugin_manager()
         { "lewis6991/gitsigns.nvim" },
         { "nvim-lualine/lualine.nvim",       dependencies = { "nvim-tree/nvim-web-devicons" } },
         { "echasnovski/mini.bufremove",      version = "*" },
-        { "echasnovski/mini.comment",        version = "*" },
         { "echasnovski/mini.completion",     version = "*" },
         { "echasnovski/mini.pairs",          version = "*" },
         { "echasnovski/mini.surround",       version = "*" },
@@ -228,8 +227,6 @@ local function setup_mini_plugins()
     local bufremove = require("mini.bufremove")
     bufremove.setup({})
     vim.keymap.set("n", "<BS>", bufremove.delete, { silent = true, desc = "Delete current buffer" })
-
-    require("mini.comment").setup({})
 
     require("mini.completion").setup({})
 
