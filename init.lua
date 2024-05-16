@@ -251,16 +251,28 @@ local function setup_mini_plugins()
 end
 
 local function setup_fzf()
-    require("fzf-lua").setup({})
+    local fzf = require("fzf-lua")
 
-    vim.keymap.set("n", "<Leader><Leader>", ":FzfLua buffers<CR>", { silent = true, desc = "[L]ist buffers" })
-    vim.keymap.set("n", "<Leader>e", ":FzfLua files<CR>", { silent = true, desc = "[E]dit file" })
-    vim.keymap.set("n", "<Leader>d", ":FzfLua diagnostics_document<CR>", { silent = true, desc = "[L]ist [d]iagnostics" })
-    vim.keymap.set("n", "<Leader>h", ":FzfLua help_tags<CR>", { silent = true, desc = "Search [h]elp" })
-    vim.keymap.set("n", "<Leader>/", ":FzfLua live_grep<CR>", { silent = true, desc = "Search in project" })
-    vim.keymap.set("n", "<Leader>'", ":FzfLua marks<CR>", { silent = true, desc = "[L]ist marks" })
-    vim.keymap.set("n", '<Leader>"', ":FzfLua registers<CR>", { silent = true, desc = "[L]ist registers" })
-    vim.keymap.set("n", "<Leader>:", ":FzfLua command_history<CR>", { silent = true, desc = "[L]ist command history" })
+    fzf.setup({
+        "fzf-tmux",
+        keymap = {
+            fzf = {
+                ["ctrl-q"] = "select-all+accept", -- send all to quickfix list
+            },
+        },
+        file_ignore_patterns = { "^%.git/" },
+    })
+
+    vim.keymap.set("n", "<Leader>f", fzf.files, { silent = true, desc = "Search [f]iles" })
+    vim.keymap.set("n", "<Leader>b", fzf.buffers, { silent = true, desc = "Search [b]uffers" })
+    vim.keymap.set("n", "<Leader>d", fzf.diagnostics_document, { silent = true, desc = "Search [d]iagnostics" })
+    vim.keymap.set("n", "<Leader>q", fzf.quickfix, { silent = true, desc = "Search [q]uickfix list" })
+    vim.keymap.set("n", "<Leader>g", fzf.git_status, { silent = true, desc = "Search [g]it status" })
+    vim.keymap.set("n", "<Leader>h", fzf.help_tags, { silent = true, desc = "Search [h]elp tags" })
+    vim.keymap.set("n", "<Leader>/", fzf.live_grep, { silent = true, desc = "Search in $PWD" })
+    vim.keymap.set("n", '<Leader>"', fzf.registers, { silent = true, desc = "Search registers" })
+    vim.keymap.set("n", "<Leader>:", fzf.command_history, { silent = true, desc = "Search command history" })
+    vim.keymap.set("n", "<Leader><Leader>", fzf.resume, { silent = true, desc = "Resume last query" })
 end
 
 local function setup_lsp()
