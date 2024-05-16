@@ -239,7 +239,7 @@ local function setup_mini_plugins()
 
     require("mini.surround").setup({
         mappings = {
-            add = "S",
+            add = "gs",
             delete = "ds",
             replace = "cs",
             find = "",
@@ -297,12 +297,11 @@ local function setup_lsp()
         map("n", "gt", "[G]oto [t]ype definition", function() fzf.lsp_typedefs({ jump_to_single_result = true }) end)
         map("n", "gr", "[G]oto [r]eference", function() fzf.lsp_references({ jump_to_single_result = true, ignore_current_line = true, includeDeclaration = false }) end)
         map("n", "gi", "[G]oto [i]mplementation", function() fzf.lsp_implementations({ jump_to_single_result = true }) end)
-        map("n", "gs", "[G]oto document [s]ymbol", fzf.lsp_document_symbols)
-        map("n", "gS", "[G]oto workspace [s]ymbol", fzf.lsp_workspace_symbols)
+        map("n", "gS", "[G]oto document [s]ymbol", fzf.lsp_document_symbols)
         map("n", "K", "Show help", vim.lsp.buf.hover)
-        map("i", "<C-s>", "Show [s]ignature help", vim.lsp.buf.signature_help)
-        map("n", "crn", "[R]e[n]ame symbol", vim.lsp.buf.rename)
-        map("n", "crr", "[C]ode actions", fzf.lsp_code_actions)
+        map("i", "<C-k>", "Show [s]ignature help", vim.lsp.buf.signature_help)
+        map("n", "\\r", "[R]ename symbol", vim.lsp.buf.rename)
+        map("n", "\\a", "[C]ode actions", fzf.lsp_code_actions)
         map("n", "g=", "Format buffer", vim.lsp.buf.format)
     end
 
