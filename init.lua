@@ -173,14 +173,6 @@ end
 
 local function setup_gitsigns()
     require("gitsigns").setup({
-        signs = {
-            add          = { text = "+" },
-            change       = { text = "~" },
-            delete       = { text = "-" },
-            topdelete    = { text = "-" },
-            changedelete = { text = "~" },
-            untracked    = { text = "+" },
-        },
         on_attach = function()
             require("gitsigns").change_base("HEAD~1") -- diff against previous commit by default
             vim.keymap.set("n", "]h", ":Gitsigns next_hunk<CR><CR>", { silent = true, desc = "Goto next git [h]unk" })
