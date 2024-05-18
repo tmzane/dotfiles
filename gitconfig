@@ -4,13 +4,19 @@
 [init]
 	defaultBranch = main
 [pull]
-	ff = only
 	rebase = true
 [push]
 	autoSetupRemote = true
-[merge]
-	ff = only
 [fetch]
 	prune = true
+	prunetags = true
+[branch]
+	sort = -committerdate
+[diff]
+	tool = nvimdiff
+	algorithm = histogram
+[merge]
+	tool = nvimdiff
+	conflictStyle = zdiff3
 [url "git@github.com:"]
 	insteadOf = https://github.com/
