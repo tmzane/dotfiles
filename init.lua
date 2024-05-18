@@ -82,9 +82,6 @@ local function setup_keymaps()
     vim.keymap.set("n", "]q", ":cnext<CR>", { silent = true, desc = "Goto next [q]uickfix list entry" })
     vim.keymap.set("n", "[q", ":cprev<CR>", { silent = true, desc = "Goto previous [q]uickfix list entry" })
 
-    vim.keymap.set("n", "]d", vim.diagnostic.goto_next, { silent = true, desc = "Goto next [d]iagnostic" })
-    vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, { silent = true, desc = "Goto previous [d]iagnostic" })
-
     -- https://vim.fandom.com/wiki/Fix_indentation
     vim.keymap.set("n", "g=", "gg=G<C-o><C-o>", { silent = true, desc = "Fix indentation" })
 
