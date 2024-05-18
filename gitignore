@@ -4,14 +4,19 @@
 # secrets
 .env
 
-# editors
-.obsidian/
-*.sublime-project
-*.sublime-workspace
+# c
+*.o
+a.out
+.cache/clangd/
+compile_commands.json
 
 # go
 vendor/
 go.work
+coverage.out
+
+# zig
+zig-cache/
 
 # python
 .venv/
@@ -19,3 +24,6 @@ __pycache__/
 
 # syncthing
 .stfolder/
+
+# editors
+.obsidian/
