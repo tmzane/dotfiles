@@ -270,55 +270,55 @@ local function setup_fzf()
     vim.keymap.set("n", "<Leader>f", fzf.files, { silent = true, desc = "Search [f]iles" })
     vim.keymap.set("n", "<Leader>b", fzf.buffers, { silent = true, desc = "Search [b]uffers" })
     vim.keymap.set("n", "<Leader>d", fzf.diagnostics_document, { silent = true, desc = "Search [d]iagnostics" })
+    vim.keymap.set("n", "<Leader>c", fzf.commands, { silent = true, desc = "Search [c]ommands" })
     vim.keymap.set("n", "<Leader>q", fzf.quickfix, { silent = true, desc = "Search [q]uickfix list" })
     vim.keymap.set("n", "<Leader>g", fzf.git_status, { silent = true, desc = "Search [g]it status" })
     vim.keymap.set("n", "<Leader>h", fzf.help_tags, { silent = true, desc = "Search [h]elp tags" })
-    vim.keymap.set("n", "<Leader>/", fzf.live_grep, { silent = true, desc = "Search in $PWD" })
+    vim.keymap.set("n", "<Leader>/", fzf.live_grep, { silent = true, desc = "Search with grep" })
     vim.keymap.set("n", '<Leader>"', fzf.registers, { silent = true, desc = "Search registers" })
     vim.keymap.set("n", "<Leader>:", fzf.command_history, { silent = true, desc = "Search command history" })
     vim.keymap.set("n", "<Leader><Leader>", fzf.resume, { silent = true, desc = "Resume last query" })
 end
 
-local function setup_lsp()
-    local on_attach = function(args)
-        -- format on save
-        vim.api.nvim_create_autocmd("BufWritePre", {
-            buffer = args.buf,
-            callback = function() vim.lsp.buf.format() end,
-        })
+local function on_lsp_attach(args)
+    -- format on save
+    vim.api.nvim_create_autocmd("BufWritePre", {
+        buffer = args.buf,
+        callback = function() vim.lsp.buf.format() end,
+    })
 
-        -- disable semantic highlights in favor of Treesitter
-        local client = vim.lsp.get_client_by_id(args.data.client_id)
-        client.server_capabilities.semanticTokensProvider = nil
+    -- disable semantic highlights in favor of Treesitter
+    local client = vim.lsp.get_client_by_id(args.data.client_id)
+    client.server_capabilities.semanticTokensProvider = nil
 
-        local map = function(mode, key, desc, func)
-            vim.keymap.set(mode, key, func, { buffer = args.buf, silent = true, desc = desc })
-        end
-
-        local fzf = require("fzf-lua")
-        map("n", "gd", "[G]oto [d]efinition", function() fzf.lsp_definitions({ jump_to_single_result = true }) end)
-        map("n", "gD", "[G]oto [d]eclaration", function() fzf.lsp_declarations({ jump_to_single_result = true }) end)
-        map("n", "gt", "[G]oto [t]ype definition", function() fzf.lsp_typedefs({ jump_to_single_result = true }) end)
-        map("n", "gr", "[G]oto [r]eference", function() fzf.lsp_references({ jump_to_single_result = true, ignore_current_line = true, includeDeclaration = false }) end)
-        map("n", "gi", "[G]oto [i]mplementation", function() fzf.lsp_implementations({ jump_to_single_result = true }) end)
-        map("n", "gS", "[G]oto document [s]ymbol", fzf.lsp_document_symbols)
-        map("n", "K", "Show help", vim.lsp.buf.hover)
-        map("i", "<C-k>", "Show [s]ignature help", vim.lsp.buf.signature_help)
-        map("n", "\\r", "[R]ename symbol", vim.lsp.buf.rename)
-        map("n", "\\a", "[C]ode actions", fzf.lsp_code_actions)
-        map("n", "g=", "Format buffer", vim.lsp.buf.format)
+    local map = function(mode, key, desc, func)
+        vim.keymap.set(mode, key, func, { buffer = args.buf, silent = true, desc = desc })
     end
 
-    vim.api.nvim_create_autocmd("LspAttach", {
-        callback = on_attach,
-    })
+    local fzf = require("fzf-lua")
+    map("n", "gd", "[G]oto [d]efinition", function() fzf.lsp_definitions({ jump_to_single_result = true }) end)
+    map("n", "gD", "[G]oto [d]eclaration", function() fzf.lsp_declarations({ jump_to_single_result = true }) end)
+    map("n", "gt", "[G]oto [t]ype definition", function() fzf.lsp_typedefs({ jump_to_single_result = true }) end)
+    map("n", "gr", "[G]oto [r]eference", function() fzf.lsp_references({ jump_to_single_result = true, ignore_current_line = true, includeDeclaration = false }) end)
+    map("n", "gi", "[G]oto [i]mplementation", function() fzf.lsp_implementations({ jump_to_single_result = true }) end)
+    map("n", "g=", "Format buffer", vim.lsp.buf.format)
+    map("i", "<C-s>", "Show signature help", vim.lsp.buf.signature_help)
 
-    require("nvim-lightbulb").setup({
-        autocmd = { enabled = true },
-    })
+    map("n", "glr", "[L]SP: [R]ename symbol", vim.lsp.buf.rename)
+    map("n", "gla", "[L]SP: [C]ode actions", fzf.lsp_code_actions)
+
+    map("n", "<Leader>s", "Search document [s]ymbols", fzf.lsp_document_symbols)
+    map("n", "<Leader>S", "Search workspace [s]ymbols", fzf.lsp_workspace_symbols)
+
+    map("n", "\\h", "Toggle inlay [h]ints", function()
+        vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
+    end)
 end
 
-local function setup_lsp_servers()
+local function setup_lsp()
+    vim.api.nvim_create_autocmd("LspAttach", { callback = on_lsp_attach })
+    require("nvim-lightbulb").setup({ autocmd = { enabled = true } })
+
     -- C
     require("lspconfig").clangd.setup({
         cmd = { "/opt/homebrew/opt/llvm/bin/clangd" },
@@ -392,6 +392,5 @@ setup_lualine()
 setup_mini_plugins()
 setup_fzf()
 setup_lsp()
-setup_lsp_servers()
 setup_treesitter()
 setup_tmux_navigation()
