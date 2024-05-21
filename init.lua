@@ -100,6 +100,9 @@ local function setup_keymaps()
         if vim.fn.pumvisible() ~= 0 then return "<C-p>" end
         return "<S-Tab>"
     end, { expr = true, silent = true, desc = "Previous completion list entry" })
+
+    vim.opt.listchars = "tab:> ,space:·" -- TODO: always show extends:…,precedes:…
+    vim.keymap.set("n", "\\c", ":set list!<CR>", { silent = true, desc = "Toggle invisible [c]haracters" })
 end
 
 local function setup_plugin_manager()
