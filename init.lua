@@ -102,7 +102,17 @@ local function setup_keymaps()
     end, { expr = true, silent = true, desc = "Previous completion list entry" })
 
     vim.opt.listchars = "tab:> ,space:·" -- TODO: always show extends:…,precedes:…
-    vim.keymap.set("n", "\\c", ":set list!<CR>", { silent = true, desc = "Toggle invisible [c]haracters" })
+    vim.keymap.set("n", "\\c", function()
+        vim.opt.list = not vim.opt.list:get()
+    end, { silent = true, desc = "Toggle invisible [c]haracters" })
+
+    vim.keymap.set("n", "\\r", function()
+        if vim.opt.conceallevel:get() == 0 then
+            vim.opt.conceallevel = 2
+        else
+            vim.opt.conceallevel = 0
+        end
+    end, { silent = true, desc = "Toggle markdown [r]endering" })
 end
 
 local function setup_plugin_manager()
