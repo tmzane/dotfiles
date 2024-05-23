@@ -10,8 +10,6 @@ set --export HOMEBREW_NO_ANALYTICS 1
 set --export HOMEBREW_NO_AUTO_UPDATE 1
 # brew: disable install from API
 set --export HOMEBREW_NO_INSTALL_FROM_API 1
-# brew: automatically remove unused formula dependents
-set --export HOMEBREW_AUTOREMOVE 1
 
 # fzf: set default options
 set --export FZF_DEFAULT_OPTS "--reverse --border --preview-window=70%"
