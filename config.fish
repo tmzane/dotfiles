@@ -1,5 +1,5 @@
-# set default editor
 set --export EDITOR "nvim"
+set --export MANPAGER "nvim +Man!"
 
 # add $GOBIN to $PATH
 fish_add_path --global --path --move ~/go/bin
