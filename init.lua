@@ -125,7 +125,6 @@ local function setup_plugin_manager()
     vim.opt.rtp:prepend(lazypath)
 
     require("lazy").setup({
-        { "catppuccin/nvim",                 name = "catppuccin",                             priority = 1000 },
         { "christoomey/vim-tmux-navigator" },
         { "echasnovski/mini.bufremove",      version = false },
         { "echasnovski/mini.completion",     version = false },
@@ -141,44 +140,9 @@ local function setup_plugin_manager()
 end
 
 local function setup_colorscheme()
-    local custom_highlights = function(colors)
-        return {
-            -- all
-            ["@operator"] = { link = "@text" },
-            ["@property"] = { link = "@variable" },
-            ["@variable.member"] = { link = "@variable" },
-            ["@variable.parameter"] = { link = "@variable" },
-            ["@variable.builtin"] = { link = "@variable" },
-            ["@constructor"] = { link = "@function" },
-            ["@function.builtin"] = { link = "@function" },
-            ["@attribute"] = { link = "@keyword" },
-            ["@punctuation.bracket"] = { link = "@text" },
-            ["@punctuation.delimiter"] = { link = "@text" },
-            ["MatchParen"] = { fg = colors.Peach, bg = "" },
-            -- C
-            ["@keyword.directive.c"] = { link = "@keyword" },
-            ["@keyword.directive.define.c"] = { link = "@keyword" },
-            ["@keyword.conditional.ternary.c"] = { link = "@text" },
-            -- Go
-            ["@module.go"] = { link = "@text" },
-            -- Zig
-            ["@punctuation.special.zig"] = { link = "@text" },
-            -- Lua
-            ["@constructor.lua"] = { link = "@text" },
-        }
-    end
-
-    require("catppuccin").setup({
-        no_italic = true,
-        background = { light = "latte", dark = "frappe" },
-        custom_highlights = custom_highlights,
-    })
-
     require("auto-dark-mode").setup({
         update_interval = 1000,
     })
-
-    vim.cmd.colorscheme("catppuccin")
 end
 
 local function setup_gitsigns()
