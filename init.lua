@@ -12,9 +12,6 @@ local function setup_ui_options()
     -- keep the cursor centered vertically
     vim.opt.scrolloff = 999
 
-    -- use global status line
-    vim.opt.laststatus = 3
-
     -- use sane window splitting
     vim.opt.splitbelow = true
     vim.opt.splitright = true
@@ -32,6 +29,11 @@ local function setup_ui_options()
 
     -- hide the command line
     vim.opt.cmdheight = 0
+
+    -- setup the status line
+    vim.opt.laststatus = 3
+    vim.opt.showcmdloc = "statusline"
+    vim.opt.statusline = "%!v:lua.statusline()"
 end
 
 local function setup_editor_options()
@@ -124,18 +126,17 @@ local function setup_plugin_manager()
 
     require("lazy").setup({
         { "catppuccin/nvim",                 name = "catppuccin",                             priority = 1000 },
-        { "f-person/auto-dark-mode.nvim" },
-        { "lewis6991/gitsigns.nvim" },
-        { "nvim-lualine/lualine.nvim",       dependencies = { "nvim-tree/nvim-web-devicons" } },
-        { "echasnovski/mini.bufremove",      version = "*" },
-        { "echasnovski/mini.completion",     version = "*" },
-        { "echasnovski/mini.pairs",          version = "*" },
-        { "echasnovski/mini.surround",       version = "*" },
-        { "ibhagwan/fzf-lua",                dependencies = { "nvim-tree/nvim-web-devicons" } },
-        { "neovim/nvim-lspconfig" },
-        { "kosayoda/nvim-lightbulb" },
-        { "nvim-treesitter/nvim-treesitter", build = ":TSUpdate" },
         { "christoomey/vim-tmux-navigator" },
+        { "echasnovski/mini.bufremove",      version = false },
+        { "echasnovski/mini.completion",     version = false },
+        { "echasnovski/mini.pairs",          version = false },
+        { "echasnovski/mini.surround",       version = false },
+        { "f-person/auto-dark-mode.nvim" },
+        { "ibhagwan/fzf-lua",                dependencies = { "nvim-tree/nvim-web-devicons" } },
+        { "kosayoda/nvim-lightbulb" },
+        { "lewis6991/gitsigns.nvim" },
+        { "neovim/nvim-lspconfig" },
+        { "nvim-treesitter/nvim-treesitter", build = ":TSUpdate" },
     })
 end
 
@@ -188,48 +189,6 @@ local function setup_gitsigns()
             vim.keymap.set("n", "[h", ":Gitsigns prev_hunk<CR><CR>", { silent = true, desc = "Goto previous git [h]unk" })
             vim.keymap.set("n", "gh", ":Gitsigns preview_hunk_inline<CR>", { silent = true, desc = "Preview [g]it [h]unk" })
         end,
-    })
-end
-
-local function setup_lualine()
-    local lualine = require("lualine")
-
-    vim.api.nvim_create_autocmd("RecordingEnter", {
-        callback = function() lualine.refresh() end,
-    })
-    vim.api.nvim_create_autocmd("RecordingLeave", {
-        callback = function() vim.defer_fn(lualine.refresh, 50) end,
-    })
-
-    local function macro_recording()
-        local reg = vim.fn.reg_recording()
-        if reg == "" then
-            return ""
-        end
-        return "recording @" .. reg
-    end
-
-    lualine.setup({
-        options = {
-            section_separators = "",
-            component_separators = "",
-            globalstatus = true,
-        },
-        sections = {
-            lualine_a = { "mode" },
-            lualine_b = {},
-            lualine_c = { { "filename", path = 3 } }, -- absolute path with tilde as $HOME
-            lualine_x = { "diagnostics", "searchcount", "selectioncount", macro_recording },
-            lualine_y = { "branch" },
-            lualine_z = {},
-        },
-        tabline = {
-            lualine_c = { {
-                "buffers",
-                show_filename_only = false,
-                symbols = { modified = "", alternate_file = "" },
-            } },
-        },
     })
 end
 
@@ -409,9 +368,86 @@ setup_keymaps()
 setup_plugin_manager()
 setup_colorscheme()
 setup_gitsigns()
-setup_lualine()
 setup_mini_plugins()
 setup_fzf()
 setup_lsp()
 setup_treesitter()
 setup_tmux_navigation()
+
+function statusline()
+    local current_mode = function()
+        local modes = {
+            ["n"] = "NORMAL",
+            ["v"] = "VISUAL",
+            ["V"] = "V-LINE",
+            [""] = "V-BLOCK",
+            ["s"] = "SELECT",
+            ["S"] = "S-LINE",
+            [""] = "S-BLOCK",
+            ["i"] = "INSERT",
+            ["R"] = "REPLACE",
+            ["c"] = "COMMAND",
+            ["r"] = "PROMPT",
+            ["!"] = "SHELL",
+            ["t"] = "TERMINAL",
+        }
+        return modes[vim.fn.mode()]
+    end
+
+    local macro_recording = function()
+        local reg = vim.fn.reg_recording()
+        if reg == "" then
+            return ""
+        end
+        return "recording @" .. reg
+    end
+
+    local search_count = function()
+        local ok, count = pcall(vim.fn.searchcount)
+        if not ok or vim.v.hlsearch == 0 then
+            return ""
+        end
+        return " " .. count.current .. "/" .. count.total
+    end
+
+    local diagnostic_count = function(severity)
+        local n = vim.diagnostic.count(0)[severity] or 0
+        if n == 0 then
+            return ""
+        end
+        return vim.diagnostic.severity[severity]:sub(1, 1) .. n
+    end
+
+    local with_hl = function(name, s)
+        if s == "" then
+            return ""
+        end
+        return "%#" .. name .. "#" .. s .. "%#StatusLine#"
+    end
+
+    local join_non_empty = function(list, sep)
+        list = vim.tbl_filter(function(s) return s ~= "" end, list)
+        return table.concat(list, sep)
+    end
+
+    vim.api.nvim_set_hl(0, "StatusLine", { link = "Normal" })
+
+    local parts = {
+        with_hl("Statement", current_mode()),
+        "%F %m", -- filepath and modified flag
+        "%=",    -- separation point
+        "%S",    -- pending operator or number of selected characters
+        macro_recording(),
+        search_count(),
+        join_non_empty({
+            with_hl("DiagnosticSignError", diagnostic_count(vim.diagnostic.severity.ERROR)),
+            with_hl("DiagnosticSignWarn", diagnostic_count(vim.diagnostic.severity.WARN)),
+            with_hl("DiagnosticSignInfo", diagnostic_count(vim.diagnostic.severity.INFO)),
+            with_hl("DiagnosticSignHint", diagnostic_count(vim.diagnostic.severity.HINT)),
+        }, " "),
+        "%l/%L (%p%%)", -- line number / total lines (file progress in %)
+        vim.b.gitsigns_head,
+    }
+
+    return " " .. join_non_empty(parts, "  ") .. " "
+end
