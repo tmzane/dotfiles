@@ -318,7 +318,7 @@ local function setup_lsp()
 
     -- Python
     require("lspconfig").pyright.setup({})
-    require("lspconfig").ruff_lsp.setup({})
+    require("lspconfig").ruff.setup({})
 
     -- Lua
     require("lspconfig").lua_ls.setup({
