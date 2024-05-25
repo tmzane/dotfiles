@@ -34,6 +34,10 @@ local function setup_ui_options()
     vim.opt.laststatus = 3
     vim.opt.showcmdloc = "statusline"
     vim.opt.statusline = "%!v:lua.statusline()"
+
+    -- setup the tab line
+    vim.opt.showtabline = 2
+    vim.opt.tabline = "%!v:lua.tabline()"
 end
 
 local function setup_editor_options()
@@ -414,4 +418,35 @@ function statusline()
     }
 
     return " " .. join_non_empty(parts, "  ") .. " "
+end
+
+function tabline()
+    local tabs = {}
+
+    for _, buffer in ipairs(vim.api.nvim_list_bufs()) do
+        if vim.bo[buffer].buflisted then
+            local name = vim.api.nvim_buf_get_name(buffer)
+
+            if vim.bo[buffer].buftype == "quickfix" then
+                name = "[Quickfix List]"
+            end
+            if name == "" then
+                name = "[No Name]"
+            end
+
+            local devicons = require("nvim-web-devicons")
+            local icon = devicons.get_icon(name, nil, { default = true })
+
+            name = vim.fn.fnamemodify(name, ":~:.")
+            name = string.format(" %s %s ", icon, name)
+
+            if buffer == vim.api.nvim_get_current_buf() then
+                table.insert(tabs, "%#TabLineSel#" .. name .. "%#TabLine#")
+            else
+                table.insert(tabs, name)
+            end
+        end
+    end
+
+    return table.concat(tabs, "")
 end
