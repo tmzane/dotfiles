@@ -1,43 +1,34 @@
 local function setup_ui_options()
-    -- show the number column
-    vim.opt.number = true
+    -- statuscolumn: use custom format
     vim.opt.relativenumber = true
+    vim.opt.statuscolumn = "%=%{v:relnum?v:relnum:v:lnum} %s"
 
-    -- always show the sign column
-    vim.opt.signcolumn = "yes"
+    -- statusline: make global, merge with cmdline, use custom format
+    vim.opt.laststatus = 3
+    vim.opt.cmdheight = 0
+    vim.opt.showcmdloc = "statusline"
+    vim.opt.statusline = "%!v:lua.StatusLine()"
+
+    -- tabline: always show, use custom format
+    vim.opt.showtabline = 2
+    vim.opt.tabline = "%!v:lua.TabLine()"
+
+    -- cursorline: highlight, keep centered, make cursor blink
+    vim.opt.cursorline = true
+    vim.opt.scrolloff = 999
+    vim.opt.guicursor:append("a:blinkon500")
 
     -- do not wrap long lines
     vim.opt.wrap = false
-
-    -- keep the cursor centered vertically
-    vim.opt.scrolloff = 999
 
     -- use sane window splitting
     vim.opt.splitbelow = true
     vim.opt.splitright = true
 
-    -- highlight the cursor line
-    vim.opt.cursorline = true
-
     -- highlight yanked text
     vim.api.nvim_create_autocmd("TextYankPost", {
         callback = function() vim.highlight.on_yank() end,
     })
-
-    -- enable cursor blinking
-    vim.opt.guicursor:append("a:blinkon500")
-
-    -- hide the command line
-    vim.opt.cmdheight = 0
-
-    -- setup the status line
-    vim.opt.laststatus = 3
-    vim.opt.showcmdloc = "statusline"
-    vim.opt.statusline = "%!v:lua.statusline()"
-
-    -- setup the tab line
-    vim.opt.showtabline = 2
-    vim.opt.tabline = "%!v:lua.tabline()"
 end
 
 local function setup_editor_options()
@@ -342,7 +333,7 @@ setup_lsp()
 setup_treesitter()
 setup_tmux_navigation()
 
-function statusline()
+function StatusLine()
     local current_mode = function()
         local modes = {
             ["n"] = "NORMAL",
@@ -420,7 +411,7 @@ function statusline()
     return " " .. join_non_empty(parts, "  ") .. " "
 end
 
-function tabline()
+function TabLine()
     local tabs = {}
 
     for _, buffer in ipairs(vim.api.nvim_list_bufs()) do
