@@ -1,6 +1,7 @@
 local function setup_ui_options()
     -- statuscolumn: use custom format
     vim.opt.relativenumber = true
+    vim.opt.signcolumn = "yes"
     vim.opt.statuscolumn = "%=%{v:relnum?v:relnum:v:lnum} %s"
 
     -- statusline: make global, merge with cmdline, use custom format
@@ -121,16 +122,18 @@ local function setup_plugin_manager()
 
     require("lazy").setup({
         { "christoomey/vim-tmux-navigator" },
-        { "echasnovski/mini.bufremove",      version = false },
         { "echasnovski/mini.completion",     version = false },
         { "echasnovski/mini.pairs",          version = false },
         { "echasnovski/mini.surround",       version = false },
-        { "f-person/auto-dark-mode.nvim" },
         { "ibhagwan/fzf-lua",                dependencies = { "nvim-tree/nvim-web-devicons" } },
-        { "kosayoda/nvim-lightbulb" },
         { "lewis6991/gitsigns.nvim" },
         { "neovim/nvim-lspconfig" },
         { "nvim-treesitter/nvim-treesitter", build = ":TSUpdate" },
+
+        -- TODO: these are small, implement manually and remove.
+        { "echasnovski/mini.bufremove",      version = false },
+        { "f-person/auto-dark-mode.nvim" },
+        { "kosayoda/nvim-lightbulb" },
     })
 end
 
@@ -143,10 +146,11 @@ end
 local function setup_gitsigns()
     require("gitsigns").setup({
         on_attach = function()
-            require("gitsigns").change_base("HEAD~1") -- diff against previous commit by default
-            vim.keymap.set("n", "]h", ":Gitsigns next_hunk<CR><CR>", { silent = true, desc = "Goto next git [h]unk" })
-            vim.keymap.set("n", "[h", ":Gitsigns prev_hunk<CR><CR>", { silent = true, desc = "Goto previous git [h]unk" })
-            vim.keymap.set("n", "gh", ":Gitsigns preview_hunk_inline<CR>", { silent = true, desc = "Preview [g]it [h]unk" })
+            local gitsigns = require("gitsigns")
+            gitsigns.change_base("HEAD~1") -- diff against previous commit by default
+            vim.keymap.set("n", "]h", gitsigns.next_hunk, { silent = true, desc = "Goto next git [h]unk" })
+            vim.keymap.set("n", "[h", gitsigns.prev_hunk, { silent = true, desc = "Goto previous git [h]unk" })
+            vim.keymap.set("n", "gh", gitsigns.preview_hunk_inline, { silent = true, desc = "Preview [g]it [h]unk" })
         end,
     })
 end
@@ -200,6 +204,7 @@ local function setup_fzf()
     vim.keymap.set("n", "<Leader>d", fzf.diagnostics_document, { silent = true, desc = "Search [d]iagnostics" })
     vim.keymap.set("n", "<Leader>c", fzf.commands, { silent = true, desc = "Search [c]ommands" })
     vim.keymap.set("n", "<Leader>q", fzf.quickfix, { silent = true, desc = "Search [q]uickfix list" })
+    vim.keymap.set("n", "<Leader>l", fzf.loclist, { silent = true, desc = "Search [l]ocation list" })
     vim.keymap.set("n", "<Leader>g", fzf.git_status, { silent = true, desc = "Search [g]it status" })
     vim.keymap.set("n", "<Leader>h", fzf.help_tags, { silent = true, desc = "Search [h]elp tags" })
     vim.keymap.set("n", "<Leader>/", fzf.live_grep, { silent = true, desc = "Search with grep" })
@@ -244,15 +249,18 @@ local function on_lsp_attach(args)
 end
 
 local function setup_lsp()
-    vim.api.nvim_create_autocmd("LspAttach", { callback = on_lsp_attach })
-    require("nvim-lightbulb").setup({ autocmd = { enabled = true } })
+    vim.api.nvim_create_autocmd("LspAttach", {
+        callback = on_lsp_attach,
+    })
 
-    -- C
+    require("nvim-lightbulb").setup({
+        autocmd = { enabled = true },
+    })
+
     require("lspconfig").clangd.setup({
         cmd = { "/opt/homebrew/opt/llvm/bin/clangd" },
     })
 
-    -- Go
     require("lspconfig").gopls.setup({
         settings = {
             gopls = {
@@ -272,14 +280,11 @@ local function setup_lsp()
         },
     })
 
-    -- Zig
     require("lspconfig").zls.setup({})
 
-    -- Python
     require("lspconfig").pyright.setup({})
     require("lspconfig").ruff.setup({})
 
-    -- Lua
     require("lspconfig").lua_ls.setup({
         -- https://luals.github.io/wiki/settings
         settings = {
@@ -289,7 +294,6 @@ local function setup_lsp()
         },
     })
 
-    -- HTML
     require("lspconfig").html.setup({
         settings = {
             html = {
@@ -297,20 +301,14 @@ local function setup_lsp()
             },
         },
     })
-
-    -- CSS
     require("lspconfig").cssls.setup({})
-
-    -- JSON
     require("lspconfig").jsonls.setup({})
 end
 
 local function setup_treesitter()
     require("nvim-treesitter.configs").setup({
         auto_install = true,
-        highlight = {
-            enable = true,
-        },
+        highlight = { enable = true },
     })
 end
 
@@ -408,7 +406,7 @@ function StatusLine()
         vim.b.gitsigns_head,
     }
 
-    return " " .. join_non_empty(parts, "  ") .. " "
+    return string.format(" %s ", join_non_empty(parts, "  "))
 end
 
 function TabLine()
