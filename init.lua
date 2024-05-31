@@ -99,6 +99,10 @@ local function setup_keymaps()
         return "<S-Tab>"
     end, { expr = true, silent = true, desc = "Previous completion list entry" })
 
+    vim.keymap.set("n", "\\w", function()
+        vim.opt.wrap = not vim.opt.wrap:get()
+    end, { silent = true, desc = "Toggle line [w]rapping" })
+
     vim.opt.listchars = "tab:> ,space:·" -- TODO: always show extends:…,precedes:…
     vim.keymap.set("n", "\\c", function()
         vim.opt.list = not vim.opt.list:get()
