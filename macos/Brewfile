@@ -28,8 +28,6 @@ brew "golangci-lint"
 brew "gopls"
 # Improved top (interactive process viewer)
 brew "htop"
-# Lightweight and flexible command-line JSON processor
-brew "jq"
 # Command-line interface for SQLite
 brew "sqlite"
 # Interpreted, interactive, object-oriented programming language
@@ -42,6 +40,8 @@ brew "lua-language-server"
 brew "mypy"
 # Ambitious Vim-fork focused on extensibility and agility
 brew "neovim"
+# Create, run, and share large language models (LLMs)
+brew "ollama"
 # PAM module for reattaching to the user's GUI (Aqua) session
 brew "pam-reattach"
 # Object-relational database system
@@ -50,8 +50,10 @@ brew "postgresql@16", link: true
 brew "pyright"
 # Extremely fast Python linter, written in Rust
 brew "ruff"
-# Language Server Protocol implementation for Ruff
-brew "ruff-lsp"
+# Safe, concurrent, practical language
+brew "rust"
+# Experimental Rust compiler front-end for IDEs
+brew "rust-analyzer"
 # Static analysis and lint tool, for (ba)sh scripts
 brew "shellcheck"
 # Simplified and community-driven man pages
@@ -76,7 +78,6 @@ cask "alt-tab"
 cask "dash"
 # Utility to show apps badges from the dock in the menu bar
 cask "doll"
-# Developer targeted fonts with a high number of glyphs
 cask "font-jetbrains-mono-nerd-font"
 # Keyboard customiser
 cask "karabiner-elements"
@@ -92,12 +93,12 @@ cask "obsidian"
 cask "rectangle"
 # Tool to reverse the direction of scrolling
 cask "scroll-reverser"
-# Displays all open files and sockets in use by all running processes
-cask "sloth"
 # Music streaming service
 cask "spotify"
 # Video game digital distribution service
 cask "steam"
+# Command-line client for Steam
+cask "steamcmd"
 # Git client
 cask "sublime-merge"
 # Text editor for code, markup and prose
@@ -112,8 +113,6 @@ cask "telegram"
 cask "tor-browser"
 # Open-source BitTorrent client
 cask "transmission"
-# Virtual machines UI using QEMU
-cask "utm"
 # Multimedia player
 cask "vlc"
 # Wine wrapper built with SwiftUI
