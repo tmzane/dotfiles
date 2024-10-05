@@ -103,7 +103,7 @@ local function setup_keymaps()
         vim.opt.wrap = not vim.opt.wrap:get()
     end, { silent = true, desc = "Toggle line [w]rapping" })
 
-    vim.opt.listchars = "tab:> ,space:·" -- TODO: always show extends:…,precedes:…
+    vim.opt.listchars = "tab:> ,space:·"
     vim.keymap.set("n", "\\c", function()
         vim.opt.list = not vim.opt.list:get()
     end, { silent = true, desc = "Toggle invisible [c]haracters" })
@@ -165,18 +165,7 @@ local function setup_mini_plugins()
     vim.keymap.set("n", "<BS>", bufremove.delete, { silent = true, desc = "Delete current buffer" })
 
     require("mini.completion").setup({})
-
-    require("mini.pairs").setup({
-        mappings = {
-            ["("] = { neigh_pattern = "[^\\][^%w]" },
-            ["["] = { neigh_pattern = "[^\\][^%w]" },
-            ["{"] = { neigh_pattern = "[^\\][^%w]" },
-            ['"'] = { neigh_pattern = "[^%w\\][^%w]" },
-            ["'"] = { neigh_pattern = "[^%w\\][^%w]" },
-            ["`"] = { neigh_pattern = "[^%w\\][^%w]" },
-        },
-    })
-
+    require("mini.pairs").setup({})
     require("mini.surround").setup({
         mappings = {
             add = "gs",
@@ -219,10 +208,10 @@ end
 
 local function on_lsp_attach(args)
     -- format on save
-    vim.api.nvim_create_autocmd("BufWritePre", {
-        buffer = args.buf,
-        callback = function() vim.lsp.buf.format() end,
-    })
+    -- vim.api.nvim_create_autocmd("BufWritePre", {
+    --     buffer = args.buf,
+    --     callback = function() vim.lsp.buf.format() end,
+    -- })
 
     -- disable semantic highlights in favor of Treesitter
     local client = vim.lsp.get_client_by_id(args.data.client_id)
@@ -236,7 +225,7 @@ local function on_lsp_attach(args)
     map("n", "gd", "[G]oto [d]efinition", function() fzf.lsp_definitions({ jump_to_single_result = true }) end)
     map("n", "gD", "[G]oto [d]eclaration", function() fzf.lsp_declarations({ jump_to_single_result = true }) end)
     map("n", "gt", "[G]oto [t]ype definition", function() fzf.lsp_typedefs({ jump_to_single_result = true }) end)
-    map("n", "gr", "[G]oto [r]eference", function() fzf.lsp_references({ jump_to_single_result = true, ignore_current_line = true, includeDeclaration = false }) end)
+    map("n", "gr", "[G]oto [r]eference", function() fzf.lsp_references({ jump_to_single_result = true, includeDeclaration = false }) end)
     map("n", "gi", "[G]oto [i]mplementation", function() fzf.lsp_implementations({ jump_to_single_result = true }) end)
     map("n", "g=", "Format buffer", vim.lsp.buf.format)
     map("i", "<C-s>", "Show signature help", vim.lsp.buf.signature_help)
@@ -261,10 +250,6 @@ local function setup_lsp()
         autocmd = { enabled = true },
     })
 
-    require("lspconfig").clangd.setup({
-        cmd = { "/opt/homebrew/opt/llvm/bin/clangd" },
-    })
-
     require("lspconfig").gopls.setup({
         settings = {
             gopls = {
@@ -284,8 +269,12 @@ local function setup_lsp()
         },
     })
 
-    require("lspconfig").zls.setup({})
+    require("lspconfig").clangd.setup({
+        cmd = { "/opt/homebrew/opt/llvm/bin/clangd" },
+    })
 
+    require("lspconfig").zls.setup({})
+    require("lspconfig").rust_analyzer.setup({})
     require("lspconfig").pyright.setup({})
     require("lspconfig").ruff.setup({})
 
@@ -297,16 +286,6 @@ local function setup_lsp()
             },
         },
     })
-
-    require("lspconfig").html.setup({
-        settings = {
-            html = {
-                format = { wrapLineLength = 999 },
-            },
-        },
-    })
-    require("lspconfig").cssls.setup({})
-    require("lspconfig").jsonls.setup({})
 end
 
 local function setup_treesitter()
@@ -336,25 +315,6 @@ setup_treesitter()
 setup_tmux_navigation()
 
 function StatusLine()
-    local current_mode = function()
-        local modes = {
-            ["n"] = "NORMAL",
-            ["v"] = "VISUAL",
-            ["V"] = "V-LINE",
-            [""] = "V-BLOCK",
-            ["s"] = "SELECT",
-            ["S"] = "S-LINE",
-            [""] = "S-BLOCK",
-            ["i"] = "INSERT",
-            ["R"] = "REPLACE",
-            ["c"] = "COMMAND",
-            ["r"] = "PROMPT",
-            ["!"] = "SHELL",
-            ["t"] = "TERMINAL",
-        }
-        return modes[vim.fn.mode()]
-    end
-
     local macro_recording = function()
         local reg = vim.fn.reg_recording()
         if reg == "" then
@@ -394,7 +354,6 @@ function StatusLine()
     vim.api.nvim_set_hl(0, "StatusLine", { link = "Normal" })
 
     local parts = {
-        with_hl("Statement", current_mode()),
         "%F %m", -- filepath and modified flag
         "%=",    -- separation point
         "%S",    -- pending operator or number of selected characters
