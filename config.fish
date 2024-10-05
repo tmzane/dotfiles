@@ -1,7 +1,7 @@
 set --export EDITOR "nvim"
 set --export MANPAGER "nvim +Man!"
 
-# add $GOBIN to $PATH
+fish_add_path --global --path --move /opt/homebrew/bin
 fish_add_path --global --path --move ~/go/bin
 
 # brew: disable analytics

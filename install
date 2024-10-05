@@ -78,12 +78,13 @@ if [ "$(uname)" = "Darwin" ]; then
 
     # brew
     # /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-    brew bundle install --file=Brewfile
+    /opt/homebrew/bin/brew bundle install --file=Brewfile
 
     # fish
     if [ "$SHELL" != "/opt/homebrew/bin/fish" ]; then
-        chsh --shell /opt/homebrew/bin/fish
+        sudo chsh -s /opt/homebrew/bin/fish $USER
     fi
+    # TODO: install fisher
 
     # Karabiner-Elements
     dir="$HOME/.config/karabiner/assets/complex_modifications"
