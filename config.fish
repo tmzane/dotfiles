@@ -49,10 +49,6 @@ if status is-interactive
     alias top htop
     alias vim nvim
 
-    # add vpn aliases
-    alias vpnon  "sudo wg-quick up wg0"
-    alias vpnoff "sudo wg-quick down wg0"
-
     # md: make a directory and cd into it
     function md; set dir $argv[1]; mkdir -p $dir && cd $dir; end
     # ql: preview with Quick Look
