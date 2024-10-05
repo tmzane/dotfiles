@@ -28,6 +28,8 @@ brew "golangci-lint"
 brew "gopls"
 # Improved top (interactive process viewer)
 brew "htop"
+# Simple terminal UI for git commands
+brew "lazygit"
 # Command-line interface for SQLite
 brew "sqlite"
 # Interpreted, interactive, object-oriented programming language
