@@ -2,16 +2,16 @@
 
 set -euf
 
-light_theme="catppuccin-latte"
-dark_theme="catppuccin-frappe"
+light_theme="nvim-light"
+dark_theme="nvim-dark"
 
 alacritty_config="$HOME/.config/alacritty/theme.toml"
 bat_config="$HOME/.config/bat/config"
 
 if [ "$(defaults read -g AppleInterfaceStyle 2> /dev/null)" = "Dark" ]; then
     osascript -e 'tell application "System Events" to tell appearance preferences to set dark mode to false'
-    sed --in-place --follow-symlinks "s/$dark_theme/$light_theme/" "$alacritty_config" "$bat_config"
+    sed --in-place --follow-symlinks "s/$dark_theme/$light_theme/" "$alacritty_config"
 else
     osascript -e 'tell application "System Events" to tell appearance preferences to set dark mode to true'
-    sed --in-place --follow-symlinks "s/$light_theme/$dark_theme/" "$alacritty_config" "$bat_config"
+    sed --in-place --follow-symlinks "s/$light_theme/$dark_theme/" "$alacritty_config"
 fi

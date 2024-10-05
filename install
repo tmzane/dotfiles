@@ -61,20 +61,12 @@ done
 ln -sf "$PWD/obsidian/styles.css" "$dir/snippets"
 
 install_terminal_themes() {
-    light_theme="catppuccin-latte"
-    dark_theme="catppuccin-frappe"
-
+    light_theme="nvim-light"
+    dark_theme="nvim-dark"
     dir="$HOME/.config/alacritty"
-    curl -so "$dir/$light_theme.toml" https://raw.githubusercontent.com/catppuccin/alacritty/main/catppuccin-latte.toml
-    curl -so "$dir/$dark_theme.toml" https://raw.githubusercontent.com/catppuccin/alacritty/main/catppuccin-frappe.toml
+    curl -so "$dir/$light_theme.toml" https://raw.githubusercontent.com/nshern/neovim-default-colorscheme-extras/main/extras/alacritty/nvim-light.toml
+    curl -so "$dir/$dark_theme.toml" https://raw.githubusercontent.com/nshern/neovim-default-colorscheme-extras/main/extras/alacritty/nvim-dark.toml
     echo "import = [ \"$dir/$light_theme.toml\" ]" > "$dir/theme.toml"
-
-    dir="$HOME/.config/bat"
-    mkdir -p "$dir/themes"
-    curl -so "$dir/themes/$light_theme.tmTheme" https://raw.githubusercontent.com/catppuccin/bat/main/Catppuccin-latte.tmTheme
-    curl -so "$dir/themes/$dark_theme.tmTheme" https://raw.githubusercontent.com/catppuccin/bat/main/Catppuccin-frappe.tmTheme
-    echo "--theme=$light_theme" > "$dir/config"
-    bat cache --build > /dev/null
 }
 
 install_terminal_themes
