@@ -8,8 +8,6 @@ fish_add_path --global --path --move ~/go/bin
 set --export HOMEBREW_NO_ANALYTICS 1
 # brew: disable autoupdate
 set --export HOMEBREW_NO_AUTO_UPDATE 1
-# brew: disable install from API
-set --export HOMEBREW_NO_INSTALL_FROM_API 1
 
 # fzf: set default options
 set --export FZF_DEFAULT_OPTS "--reverse --border --preview-window=70%"

@@ -1,4 +1,3 @@
-tap "homebrew/autoupdate"
 tap "homebrew/bundle"
 tap "homebrew/services"
 # Clone of cat(1) with syntax highlighting and Git integration
@@ -73,8 +72,6 @@ cask "alacritty"
 cask "alfred"
 # Enable Windows-like alt-tab
 cask "alt-tab"
-# API documentation browser and code snippet manager
-cask "dash"
 # Utility to show apps badges from the dock in the menu bar
 cask "doll"
 cask "font-jetbrains-mono-nerd-font"
@@ -98,8 +95,6 @@ cask "spotify"
 cask "steam"
 # Command-line client for Steam
 cask "steamcmd"
-# Git client
-cask "sublime-merge"
 # Text editor for code, markup and prose
 cask "sublime-text"
 # Menu bar customization tool
