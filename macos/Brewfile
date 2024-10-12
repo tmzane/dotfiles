@@ -24,12 +24,8 @@ brew "golangci-lint"
 brew "gopls"
 # Improved top (interactive process viewer)
 brew "htop"
-# Simple terminal UI for git commands
-brew "lazygit"
 # Command-line interface for SQLite
 brew "sqlite"
-# Interpreted, interactive, object-oriented programming language
-brew "python@3.12"
 # Next-gen compiler infrastructure
 brew "llvm"
 # Language Server for the Lua language
@@ -46,6 +42,8 @@ brew "pam-reattach"
 brew "postgresql@16", link: true
 # Static type checker for Python
 brew "pyright"
+# Interpreted, interactive, object-oriented programming language
+brew "python@3.13"
 # Extremely fast Python linter, written in Rust
 brew "ruff"
 # Safe, concurrent, practical language
@@ -109,7 +107,5 @@ cask "tor-browser"
 cask "transmission"
 # Multimedia player
 cask "vlc"
-# Wine wrapper built with SwiftUI
-cask "whisky"
 # Network protocol analyzer
 cask "wireshark"
