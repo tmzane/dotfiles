@@ -73,7 +73,7 @@ install_terminal_themes
 
 # macOS
 if [ "$(uname)" = "Darwin" ]; then
-    cd macos
+    cd macOS
     # TODO: defaults
 
     # brew
