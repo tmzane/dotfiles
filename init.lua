@@ -54,31 +54,21 @@ local function setup_editor_options()
         command = ":wall",
     })
 
+    -- ask to save unsaved changes
+    vim.opt.confirm = true
+
+    -- configure autocompletion
+    vim.opt.completeopt = "menuone,popup,noinsert,fuzzy"
+
     -- treat header files as C code
     vim.g.c_syntax_for_h = true
-
-    -- use // comments in C files
-    vim.api.nvim_create_autocmd("FileType", {
-        pattern = { "c" },
-        callback = function() vim.bo.commentstring = "// %s" end,
-    })
-
-    -- disable optional providers
-    vim.g.loaded_python3_provider = 0
-    vim.g.loaded_ruby_provider = 0
-    vim.g.loaded_node_provider = 0
-    vim.g.loaded_perl_provider = 0
 end
 
 local function setup_keymaps()
     vim.g.mapleader = " "
-    vim.keymap.set({ "n", "v" }, "<Space>", "<Nop>")
 
     vim.keymap.set("n", "L", ":bnext<CR>", { silent = true, desc = "Goto next buffer" })
     vim.keymap.set("n", "H", ":bprevious<CR>", { silent = true, desc = "Goto previous buffer" })
-
-    vim.keymap.set("n", "]q", ":cnext<CR>", { silent = true, desc = "Goto next [q]uickfix list entry" })
-    vim.keymap.set("n", "[q", ":cprev<CR>", { silent = true, desc = "Goto previous [q]uickfix list entry" })
 
     -- https://vim.fandom.com/wiki/Fix_indentation
     vim.keymap.set("n", "g=", "gg=G<C-o><C-o>", { silent = true, desc = "Fix indentation" })
@@ -89,32 +79,19 @@ local function setup_keymaps()
 
     vim.keymap.set("n", "<Esc>", ":nohlsearch<CR><Esc>", { silent = true, desc = "Clear search highlights" })
 
-    vim.keymap.set("i", "<Tab>", function()
-        if vim.fn.pumvisible() ~= 0 then return "<C-n>" end
-        return "<Tab>"
-    end, { expr = true, silent = true, desc = "Next completion list entry" })
-
-    vim.keymap.set("i", "<S-Tab>", function()
-        if vim.fn.pumvisible() ~= 0 then return "<C-p>" end
-        return "<S-Tab>"
-    end, { expr = true, silent = true, desc = "Previous completion list entry" })
-
-    vim.keymap.set("n", "\\w", function()
-        vim.opt.wrap = not vim.opt.wrap:get()
-    end, { silent = true, desc = "Toggle line [w]rapping" })
-
-    vim.opt.listchars = "tab:> ,space:·"
-    vim.keymap.set("n", "\\c", function()
-        vim.opt.list = not vim.opt.list:get()
-    end, { silent = true, desc = "Toggle invisible [c]haracters" })
-
     vim.keymap.set("n", "\\r", function()
+        vim.opt.wrap = not vim.opt.wrap:get()
         if vim.opt.conceallevel:get() == 0 then
             vim.opt.conceallevel = 2
         else
             vim.opt.conceallevel = 0
         end
-    end, { silent = true, desc = "Toggle markdown [r]endering" })
+    end, { silent = true, desc = "Toggle [r]eader view" })
+
+    vim.opt.listchars = "tab:> ,space:·"
+    vim.keymap.set("n", "\\c", function()
+        vim.opt.list = not vim.opt.list:get()
+    end, { silent = true, desc = "Toggle invisible [c]haracters" })
 end
 
 local function setup_plugin_manager()
@@ -126,18 +103,17 @@ local function setup_plugin_manager()
 
     require("lazy").setup({
         { "christoomey/vim-tmux-navigator" },
-        { "echasnovski/mini.completion",     version = false },
-        { "echasnovski/mini.pairs",          version = false },
-        { "echasnovski/mini.surround",       version = false },
-        { "ibhagwan/fzf-lua",                dependencies = { "nvim-tree/nvim-web-devicons" } },
+        { "echasnovski/mini.icons",          version = "*" },
+        { "echasnovski/mini.pairs",          version = "*" },
+        { "echasnovski/mini.surround",       version = "*" },
+        { "ibhagwan/fzf-lua",                dependencies = { "echasnovski/mini.icons" } },
         { "lewis6991/gitsigns.nvim" },
         { "neovim/nvim-lspconfig" },
         { "nvim-treesitter/nvim-treesitter", build = ":TSUpdate" },
 
         -- TODO: these are small, implement manually and remove.
-        { "echasnovski/mini.bufremove",      version = false },
+        { "echasnovski/mini.bufremove",      version = "*" },
         { "f-person/auto-dark-mode.nvim" },
-        { "kosayoda/nvim-lightbulb" },
     })
 end
 
@@ -164,7 +140,7 @@ local function setup_mini_plugins()
     bufremove.setup({})
     vim.keymap.set("n", "<BS>", bufremove.delete, { silent = true, desc = "Delete current buffer" })
 
-    require("mini.completion").setup({})
+    require("mini.icons").setup({})
     require("mini.pairs").setup({})
     require("mini.surround").setup({
         mappings = {
@@ -181,9 +157,19 @@ end
 
 local function setup_fzf()
     local fzf = require("fzf-lua")
+    fzf.register_ui_select()
+
+    vim.keymap.set("n", "<Leader>f", fzf.files, { silent = true, desc = "Search [f]iles" })
+    vim.keymap.set("n", "<Leader>b", fzf.buffers, { silent = true, desc = "Search [b]uffers" })
+    vim.keymap.set("n", "<Leader>q", fzf.quickfix, { silent = true, desc = "Search [q]uickfix list" })
+    vim.keymap.set("n", "<Leader>g", fzf.git_status, { silent = true, desc = "Search [g]it status" })
+    vim.keymap.set("n", "<Leader>d", fzf.diagnostics_document, { silent = true, desc = "Search [d]iagnostics" })
+    vim.keymap.set("n", "<Leader>h", fzf.help_tags, { silent = true, desc = "Search [h]elp tags" })
+    vim.keymap.set("n", "<Leader>/", fzf.live_grep, { silent = true, desc = "Search with grep" })
+    vim.keymap.set("n", "<Leader><Leader>", fzf.resume, { silent = true, desc = "Resume last query" })
+    vim.keymap.set("n", "z=", fzf.spell_suggest, { silent = true, desc = "Spell suggestions" })
 
     fzf.setup({
-        "fzf-tmux",
         keymap = {
             fzf = {
                 ["ctrl-q"] = "select-all+accept", -- send all to quickfix list
@@ -191,31 +177,28 @@ local function setup_fzf()
         },
         file_ignore_patterns = { "^%.git/" },
     })
-
-    vim.keymap.set("n", "<Leader>f", fzf.files, { silent = true, desc = "Search [f]iles" })
-    vim.keymap.set("n", "<Leader>b", fzf.buffers, { silent = true, desc = "Search [b]uffers" })
-    vim.keymap.set("n", "<Leader>d", fzf.diagnostics_document, { silent = true, desc = "Search [d]iagnostics" })
-    vim.keymap.set("n", "<Leader>c", fzf.commands, { silent = true, desc = "Search [c]ommands" })
-    vim.keymap.set("n", "<Leader>q", fzf.quickfix, { silent = true, desc = "Search [q]uickfix list" })
-    vim.keymap.set("n", "<Leader>l", fzf.loclist, { silent = true, desc = "Search [l]ocation list" })
-    vim.keymap.set("n", "<Leader>g", fzf.git_status, { silent = true, desc = "Search [g]it status" })
-    vim.keymap.set("n", "<Leader>h", fzf.help_tags, { silent = true, desc = "Search [h]elp tags" })
-    vim.keymap.set("n", "<Leader>/", fzf.live_grep, { silent = true, desc = "Search with grep" })
-    vim.keymap.set("n", '<Leader>"', fzf.registers, { silent = true, desc = "Search registers" })
-    vim.keymap.set("n", "<Leader>:", fzf.command_history, { silent = true, desc = "Search command history" })
-    vim.keymap.set("n", "<Leader><Leader>", fzf.resume, { silent = true, desc = "Resume last query" })
 end
 
 local function on_lsp_attach(args)
-    -- format on save
-    -- vim.api.nvim_create_autocmd("BufWritePre", {
-    --     buffer = args.buf,
-    --     callback = function() vim.lsp.buf.format() end,
-    -- })
+    local client = vim.lsp.get_client_by_id(args.data.client_id)
 
     -- disable semantic highlights in favor of Treesitter
-    local client = vim.lsp.get_client_by_id(args.data.client_id)
     client.server_capabilities.semanticTokensProvider = nil
+
+    -- enable autocompletion
+    if client.supports_method("textDocument/completion") then
+        vim.lsp.completion.enable(true, client.id, args.buf, { autotrigger = true })
+    end
+
+    -- format the current buffer on save
+    if client.supports_method("textDocument/formatting") then
+        vim.api.nvim_create_autocmd("BufWritePre", {
+            buffer = args.buf,
+            callback = function()
+                vim.lsp.buf.format({ bufnr = args.buf, id = client.id })
+            end,
+        })
+    end
 
     local map = function(mode, key, desc, func)
         vim.keymap.set(mode, key, func, { buffer = args.buf, silent = true, desc = desc })
@@ -225,17 +208,10 @@ local function on_lsp_attach(args)
     map("n", "gd", "[G]oto [d]efinition", function() fzf.lsp_definitions({ jump_to_single_result = true }) end)
     map("n", "gD", "[G]oto [d]eclaration", function() fzf.lsp_declarations({ jump_to_single_result = true }) end)
     map("n", "gt", "[G]oto [t]ype definition", function() fzf.lsp_typedefs({ jump_to_single_result = true }) end)
-    map("n", "gr", "[G]oto [r]eference", function() fzf.lsp_references({ jump_to_single_result = true, includeDeclaration = false }) end)
-    map("n", "gi", "[G]oto [i]mplementation", function() fzf.lsp_implementations({ jump_to_single_result = true }) end)
-    map("n", "g=", "Format buffer", vim.lsp.buf.format)
-    map("i", "<C-s>", "Show signature help", vim.lsp.buf.signature_help)
-
-    map("n", "glr", "[L]SP: [R]ename symbol", vim.lsp.buf.rename)
-    map("n", "gla", "[L]SP: [C]ode actions", fzf.lsp_code_actions)
-
+    map("n", "grr", "[G]oto [r]eference", function() fzf.lsp_references({ includeDeclaration = false }) end)
+    map("n", "gri", "[G]oto [i]mplementation", fzf.lsp_implementations)
     map("n", "<Leader>s", "Search document [s]ymbols", fzf.lsp_document_symbols)
     map("n", "<Leader>S", "Search workspace [s]ymbols", fzf.lsp_workspace_symbols)
-
     map("n", "\\h", "Toggle inlay [h]ints", function()
         vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
     end)
@@ -244,10 +220,6 @@ end
 local function setup_lsp()
     vim.api.nvim_create_autocmd("LspAttach", {
         callback = on_lsp_attach,
-    })
-
-    require("nvim-lightbulb").setup({
-        autocmd = { enabled = true },
     })
 
     require("lspconfig").gopls.setup({
@@ -386,9 +358,7 @@ function TabLine()
                 name = "[No Name]"
             end
 
-            local devicons = require("nvim-web-devicons")
-            local icon = devicons.get_icon(name, nil, { default = true })
-
+            local icon = require("mini.icons").get("file", name)
             name = vim.fn.fnamemodify(name, ":~:.")
             name = string.format(" %s %s ", icon, name)
 
