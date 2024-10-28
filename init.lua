@@ -67,9 +67,6 @@ end
 local function setup_keymaps()
     vim.g.mapleader = " "
 
-    vim.keymap.set("n", "L", ":bnext<CR>", { silent = true, desc = "Goto next buffer" })
-    vim.keymap.set("n", "H", ":bprevious<CR>", { silent = true, desc = "Goto previous buffer" })
-
     -- https://vim.fandom.com/wiki/Fix_indentation
     vim.keymap.set("n", "g=", "gg=G<C-o><C-o>", { silent = true, desc = "Fix indentation" })
 
@@ -102,6 +99,7 @@ local function setup_plugin_manager()
     vim.opt.rtp:prepend(lazypath)
 
     require("lazy").setup({
+        { "cbochs/grapple.nvim" },
         { "christoomey/vim-tmux-navigator" },
         { "echasnovski/mini.icons",          version = "*" },
         { "echasnovski/mini.pairs",          version = "*" },
@@ -112,7 +110,6 @@ local function setup_plugin_manager()
         { "nvim-treesitter/nvim-treesitter", build = ":TSUpdate" },
 
         -- TODO: these are small, implement manually and remove.
-        { "echasnovski/mini.bufremove",      version = "*" },
         { "f-person/auto-dark-mode.nvim" },
     })
 end
@@ -131,15 +128,12 @@ local function setup_gitsigns()
             vim.keymap.set("n", "]h", gitsigns.next_hunk, { silent = true, desc = "Goto next git [h]unk" })
             vim.keymap.set("n", "[h", gitsigns.prev_hunk, { silent = true, desc = "Goto previous git [h]unk" })
             vim.keymap.set("n", "gh", gitsigns.preview_hunk_inline, { silent = true, desc = "Preview [g]it [h]unk" })
+            vim.keymap.set("n", "gH", gitsigns.reset_hunk, { silent = true, desc = "Reset [g]it [h]unk" })
         end,
     })
 end
 
-local function setup_mini_plugins()
-    local bufremove = require("mini.bufremove")
-    bufremove.setup({})
-    vim.keymap.set("n", "<BS>", bufremove.delete, { silent = true, desc = "Delete current buffer" })
-
+local function setup_mini()
     require("mini.icons").setup({})
     require("mini.pairs").setup({})
     require("mini.surround").setup({
@@ -153,6 +147,23 @@ local function setup_mini_plugins()
             update_n_lines = "",
         },
     })
+end
+
+local function setup_grapple()
+    local grapple = require("grapple")
+    grapple.setup({ icons = false })
+
+    vim.keymap.set("n", "m", function()
+        grapple.toggle()
+        vim.api.nvim__redraw({ tabline = true })
+    end)
+    vim.keymap.set("n", "M", grapple.toggle_tags)
+    vim.keymap.set("n", "H", function() grapple.cycle_tags("prev") end)
+    vim.keymap.set("n", "L", function() grapple.cycle_tags("next") end)
+    vim.keymap.set("n", "<Leader>1", function() grapple.select({ index = 1 }) end)
+    vim.keymap.set("n", "<Leader>2", function() grapple.select({ index = 2 }) end)
+    vim.keymap.set("n", "<Leader>3", function() grapple.select({ index = 3 }) end)
+    vim.keymap.set("n", "<Leader>4", function() grapple.select({ index = 4 }) end)
 end
 
 local function setup_fzf()
@@ -280,7 +291,8 @@ setup_keymaps()
 setup_plugin_manager()
 setup_colorscheme()
 setup_gitsigns()
-setup_mini_plugins()
+setup_mini()
+setup_grapple()
 setup_fzf()
 setup_lsp()
 setup_treesitter()
@@ -346,27 +358,16 @@ end
 
 function TabLine()
     local tabs = {}
+    local tags = require("grapple").tags()
 
-    for _, buffer in ipairs(vim.api.nvim_list_bufs()) do
-        if vim.bo[buffer].buflisted then
-            local name = vim.api.nvim_buf_get_name(buffer)
+    for i, tag in ipairs(tags) do
+        local name = vim.fn.fnamemodify(tag.path, ":t")
+        name = string.format(" %d %s ", i, name)
 
-            if vim.bo[buffer].buftype == "quickfix" then
-                name = "[Quickfix List]"
-            end
-            if name == "" then
-                name = "[No Name]"
-            end
-
-            local icon = require("mini.icons").get("file", name)
-            name = vim.fn.fnamemodify(name, ":~:.")
-            name = string.format(" %s %s ", icon, name)
-
-            if buffer == vim.api.nvim_get_current_buf() then
-                table.insert(tabs, "%#TabLineSel#" .. name .. "%#TabLine#")
-            else
-                table.insert(tabs, name)
-            end
+        if tag.path == vim.api.nvim_buf_get_name(0) then
+            table.insert(tabs, "%#Normal#" .. name .. "%#TabLine#")
+        else
+            table.insert(tabs, name)
         end
     end
 
