@@ -71,10 +71,18 @@ local function setup_keymaps()
     vim.keymap.set("n", "g=", "gg=G<C-o><C-o>", { silent = true, desc = "Fix indentation" })
 
     -- https://vim.fandom.com/wiki/Moving_lines_up_or_down
-    vim.keymap.set("v", "K", ":move '<-2<CR>gv=gv", { silent = true, desc = "Move selection up" })
-    vim.keymap.set("v", "J", ":move '>+1<CR>gv=gv", { silent = true, desc = "Move selection down" })
+    vim.keymap.set("v", "K", "<Cmd>move '<-2<CR>gv=gv", { silent = true, desc = "Move selection up" })
+    vim.keymap.set("v", "J", "<Cmd>move '>+1<CR>gv=gv", { silent = true, desc = "Move selection down" })
 
-    vim.keymap.set("n", "<Esc>", ":nohlsearch<CR><Esc>", { silent = true, desc = "Clear search highlights" })
+    vim.keymap.set("n", "<Esc>", "<Cmd>nohlsearch<CR>", { silent = true, desc = "Clear search highlights" })
+
+    vim.keymap.set("i", "<Tab>", function()
+        return vim.fn.pumvisible() ~= 0 and "<C-n>" or "<Tab>"
+    end, { expr = true, silent = true, desc = "Select the next completion" })
+
+    vim.keymap.set("i", "<S-Tab>", function()
+        return vim.fn.pumvisible() ~= 0 and "<C-p>" or "<S-Tab>"
+    end, { expr = true, silent = true, desc = "Select the previous completion" })
 
     vim.keymap.set("n", "\\r", function()
         vim.opt.wrap = not vim.opt.wrap:get()
@@ -160,10 +168,15 @@ local function setup_grapple()
     vim.keymap.set("n", "M", grapple.toggle_tags)
     vim.keymap.set("n", "H", function() grapple.cycle_tags("prev") end)
     vim.keymap.set("n", "L", function() grapple.cycle_tags("next") end)
-    vim.keymap.set("n", "<Leader>1", function() grapple.select({ index = 1 }) end)
-    vim.keymap.set("n", "<Leader>2", function() grapple.select({ index = 2 }) end)
-    vim.keymap.set("n", "<Leader>3", function() grapple.select({ index = 3 }) end)
-    vim.keymap.set("n", "<Leader>4", function() grapple.select({ index = 4 }) end)
+    vim.keymap.set("n", "g1", function() grapple.select({ index = 1 }) end)
+    vim.keymap.set("n", "g2", function() grapple.select({ index = 2 }) end)
+    vim.keymap.set("n", "g3", function() grapple.select({ index = 3 }) end)
+    vim.keymap.set("n", "g4", function() grapple.select({ index = 4 }) end)
+    vim.keymap.set("n", "g5", function() grapple.select({ index = 5 }) end)
+    vim.keymap.set("n", "g6", function() grapple.select({ index = 6 }) end)
+    vim.keymap.set("n", "g7", function() grapple.select({ index = 7 }) end)
+    vim.keymap.set("n", "g8", function() grapple.select({ index = 8 }) end)
+    vim.keymap.set("n", "g9", function() grapple.select({ index = 9 }) end)
 end
 
 local function setup_fzf()
@@ -279,10 +292,10 @@ local function setup_treesitter()
 end
 
 local function setup_tmux_navigation()
-    vim.keymap.set({ "n", "v" }, "<S-Left>", ":TmuxNavigateLeft<CR>", { silent = true })
-    vim.keymap.set({ "n", "v" }, "<S-Down>", ":TmuxNavigateDown<CR>", { silent = true })
-    vim.keymap.set({ "n", "v" }, "<S-Up>", ":TmuxNavigateUp<CR>", { silent = true })
-    vim.keymap.set({ "n", "v" }, "<S-Right>", ":TmuxNavigateRight<CR>", { silent = true })
+    vim.keymap.set({ "n", "v" }, "<S-Left>", "<Cmd>TmuxNavigateLeft<CR>", { silent = true })
+    vim.keymap.set({ "n", "v" }, "<S-Down>", "<Cmd>TmuxNavigateDown<CR>", { silent = true })
+    vim.keymap.set({ "n", "v" }, "<S-Up>", "<Cmd>TmuxNavigateUp<CR>", { silent = true })
+    vim.keymap.set({ "n", "v" }, "<S-Right>", "<Cmd>TmuxNavigateRight<CR>", { silent = true })
 end
 
 setup_ui_options()
