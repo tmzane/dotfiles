@@ -97,6 +97,12 @@ local function setup_keymaps()
     vim.keymap.set("n", "\\c", function()
         vim.opt.list = not vim.opt.list:get()
     end, { silent = true, desc = "Toggle invisible [c]haracters" })
+
+    vim.opt.foldmethod = "expr"
+    vim.opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+    vim.opt.foldtext = ""
+    vim.opt.foldlevelstart = 99
+    vim.keymap.set("n", "\\f", "za", { silent = true, desc = "Toggle [f]old" })
 end
 
 local function setup_plugin_manager()
