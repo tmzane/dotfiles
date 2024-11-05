@@ -165,7 +165,7 @@ end
 
 local function setup_grapple()
     local grapple = require("grapple")
-    grapple.setup({ icons = false })
+    grapple.setup({ scope = "git_branch", icons = false })
 
     vim.keymap.set("n", "m", function()
         grapple.toggle()
