@@ -2,10 +2,10 @@ tap "homebrew/bundle"
 tap "homebrew/services"
 # Clone of cat(1) with syntax highlighting and Git integration
 brew "bat"
+# Protocol buffers (Google's data interchange format)
+brew "protobuf"
 # Generate compilation database for clang tooling
 brew "bear"
-# Select default apps for documents and URL schemes on macOS
-brew "duti"
 # Simple, fast and user-friendly alternative to find
 brew "fd"
 # User-friendly command-line shell for UNIX-like operating systems
@@ -24,8 +24,12 @@ brew "golangci-lint"
 brew "gopls"
 # Improved top (interactive process viewer)
 brew "htop"
+# Kubernetes command-line interface
+brew "kubernetes-cli"
 # Command-line interface for SQLite
 brew "sqlite"
+# Interpreted, interactive, object-oriented programming language
+brew "python@3.13"
 # Next-gen compiler infrastructure
 brew "llvm"
 # Language Server for the Lua language
@@ -38,18 +42,18 @@ brew "neovim"
 brew "ollama"
 # PAM module for reattaching to the user's GUI (Aqua) session
 brew "pam-reattach"
-# Object-relational database system
-brew "postgresql@16", link: true
+# Tool for managing OCI containers and pods
+brew "podman"
+# Alternative to docker-compose using podman
+brew "podman-compose"
+# Go support for Google's protocol buffers
+brew "protoc-gen-go"
+# Protoc plugin that generates code for gRPC-Go clients
+brew "protoc-gen-go-grpc"
 # Static type checker for Python
 brew "pyright"
-# Interpreted, interactive, object-oriented programming language
-brew "python@3.13"
 # Extremely fast Python linter, written in Rust
 brew "ruff"
-# Safe, concurrent, practical language
-brew "rust"
-# Experimental Rust compiler front-end for IDEs
-brew "rust-analyzer"
 # Static analysis and lint tool, for (ba)sh scripts
 brew "shellcheck"
 # Simplified and community-driven man pages
@@ -68,31 +72,27 @@ brew "zls"
 cask "alacritty"
 # Application launcher and productivity software
 cask "alfred"
-# Enable Windows-like alt-tab
-cask "alt-tab"
 # Utility to show apps badges from the dock in the menu bar
 cask "doll"
 cask "font-jetbrains-mono-nerd-font"
 # Keyboard customiser
 cask "karabiner-elements"
+# ZSA keyboard firmware flasher
+cask "keymapp"
 # Web browser
 cask "librewolf"
 # Open-source firewall to block unknown outgoing connections
 cask "lulu"
 # Free and open-source RSS reader
 cask "netnewswire"
-# Knowledge base that works on top of a local folder of plain text Markdown files
-cask "obsidian"
+# Keyboard-driven, vim-like browser based on PyQt5
+cask "qutebrowser"
 # Move and resize windows using keyboard shortcuts or snap areas
 cask "rectangle"
-# Tool to reverse the direction of scrolling
-cask "scroll-reverser"
 # Music streaming service
 cask "spotify"
 # Video game digital distribution service
 cask "steam"
-# Command-line client for Steam
-cask "steamcmd"
 # Text editor for code, markup and prose
 cask "sublime-text"
 # Menu bar customization tool
