@@ -87,7 +87,7 @@ if [ "$(uname)" = "Darwin" ]; then
     # TODO: install fisher
 
     # Karabiner-Elements
-    dir="$HOME/.config/karabiner/assets/complex_modifications"
+    dir="$HOME/.config/karabiner"
     mkdir -p "$dir"
     ln -sf "$PWD/karabiner.json" "$dir"
 

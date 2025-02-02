@@ -1,248 +1,450 @@
 {
-    "rules": [
+    "profiles": [
         {
-            "description": "CapsLock -> Escape (press) / Control (hold)",
-            "manipulators": [
-                {
-                    "from": {
-                        "key_code": "caps_lock",
-                        "modifiers": {
-                            "optional": [
-                                "any"
-                            ]
-                        }
-                    },
-                    "to": [
-                        {
-                            "key_code": "left_control",
-                            "lazy": true
-                        }
-                    ],
-                    "to_if_alone": [
-                        {
-                            "key_code": "escape"
-                        }
-                    ],
-                    "type": "basic"
-                }
-            ]
-        },
-        {
-            "description": "Enter -> Enter (press) / Control (hold)",
-            "manipulators": [
-                {
-                    "from": {
-                        "key_code": "return_or_enter",
-                        "modifiers": {
-                            "optional": [
-                                "any"
-                            ]
-                        }
-                    },
-                    "to": [
-                        {
-                            "key_code": "right_control",
-                            "lazy": true
-                        }
-                    ],
-                    "to_if_alone": [
-                        {
-                            "key_code": "return_or_enter"
-                        }
-                    ],
-                    "type": "basic"
-                }
-            ]
-        },
-        {
-            "description": "Control + HJKL -> Arrow keys",
-            "manipulators": [
-                {
-                    "from": {
-                        "key_code": "h",
-                        "modifiers": {
-                            "mandatory": [
-                                "control"
-                            ],
-                            "optional": [
-                                "any"
-                            ]
-                        }
-                    },
-                    "to": [
-                        {
-                            "key_code": "left_arrow"
-                        }
-                    ],
-                    "type": "basic"
-                },
-                {
-                    "from": {
-                        "key_code": "j",
-                        "modifiers": {
-                            "mandatory": [
-                                "control"
-                            ],
-                            "optional": [
-                                "any"
-                            ]
-                        }
-                    },
-                    "to": [
-                        {
-                            "key_code": "down_arrow"
-                        }
-                    ],
-                    "type": "basic"
-                },
-                {
-                    "from": {
-                        "key_code": "k",
-                        "modifiers": {
-                            "mandatory": [
-                                "control"
-                            ],
-                            "optional": [
-                                "any"
-                            ]
-                        }
-                    },
-                    "to": [
-                        {
-                            "key_code": "up_arrow"
-                        }
-                    ],
-                    "type": "basic"
-                },
-                {
-                    "from": {
-                        "key_code": "l",
-                        "modifiers": {
-                            "mandatory": [
-                                "control"
-                            ],
-                            "optional": [
-                                "any"
-                            ]
-                        }
-                    },
-                    "to": [
-                        {
-                            "key_code": "right_arrow"
-                        }
-                    ],
-                    "type": "basic"
-                }
-            ]
-        },
-        {
-            "description": "Input source: Left Shift -> ABC; Right Shift -> Russian",
-            "manipulators": [
-                {
-                    "from": {
-                        "key_code": "left_shift"
-                    },
-                    "to": [
-                        {
-                            "key_code": "left_shift",
-                            "lazy": true
-                        }
-                    ],
-                    "to_if_alone": [
-                        {
-                            "select_input_source": {
-                                "language": "en"
+            "complex_modifications": {
+                "rules": [
+                    {
+                        "description": "CapsLock -> Escape (press) / Control (hold)",
+                        "manipulators": [
+                            {
+                                "from": {
+                                    "key_code": "caps_lock",
+                                    "modifiers": { "optional": ["any"] }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "left_control",
+                                        "lazy": true
+                                    }
+                                ],
+                                "to_if_alone": [{ "key_code": "escape" }],
+                                "type": "basic"
                             }
-                        }
-                    ],
-                    "type": "basic"
-                },
-                {
-                    "from": {
-                        "key_code": "right_shift"
+                        ]
                     },
-                    "to": [
-                        {
-                            "key_code": "right_shift",
-                            "lazy": true
-                        }
-                    ],
-                    "to_if_alone": [
-                        {
-                            "select_input_source": {
-                                "language": "ru"
+                    {
+                        "description": "Enter -> Enter (press) / Control (hold)",
+                        "manipulators": [
+                            {
+                                "from": {
+                                    "key_code": "return_or_enter",
+                                    "modifiers": { "optional": ["any"] }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "right_control",
+                                        "lazy": true
+                                    }
+                                ],
+                                "to_if_alone": [{ "key_code": "return_or_enter" }],
+                                "type": "basic"
                             }
-                        }
-                    ],
-                    "type": "basic"
+                        ]
+                    },
+                    {
+                        "description": "Tab -> Tab (press) / Hyper (hold)",
+                        "manipulators": [
+                            {
+                                "from": { "key_code": "tab" },
+                                "to": [
+                                    {
+                                        "key_code": "left_shift",
+                                        "modifiers": ["left_control", "left_option", "left_command"]
+                                    }
+                                ],
+                                "to_if_alone": [{ "key_code": "tab" }],
+                                "type": "basic"
+                            }
+                        ]
+                    },
+                    {
+                        "description": "Backslash -> Backslash (press) / Hyper (hold)",
+                        "manipulators": [
+                            {
+                                "from": { "key_code": "backslash" },
+                                "to": [
+                                    {
+                                        "key_code": "right_shift",
+                                        "modifiers": ["right_control", "right_option", "right_command"]
+                                    }
+                                ],
+                                "to_if_alone": [{ "key_code": "backslash" }],
+                                "type": "basic"
+                            }
+                        ]
+                    },
+                    {
+                        "description": "Left Command -> Tab (press) / Command (hold)",
+                        "manipulators": [
+                            {
+                                "from": {
+                                    "key_code": "left_command",
+                                    "modifiers": { "optional": ["any"] }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "left_command",
+                                        "lazy": true
+                                    }
+                                ],
+                                "to_if_alone": [{ "key_code": "tab" }],
+                                "type": "basic"
+                            }
+                        ]
+                    },
+                    {
+                        "description": "Right Command -> Backspace (press) / Command (hold)",
+                        "manipulators": [
+                            {
+                                "from": {
+                                    "key_code": "right_command",
+                                    "modifiers": { "optional": ["any"] }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "right_command",
+                                        "lazy": true
+                                    }
+                                ],
+                                "to_if_alone": [{ "key_code": "delete_or_backspace" }],
+                                "type": "basic"
+                            }
+                        ]
+                    },
+                    {
+                        "description": "Movement: Control + HJKL -> Arrow keys",
+                        "manipulators": [
+                            {
+                                "from": {
+                                    "key_code": "h",
+                                    "modifiers": {
+                                        "mandatory": ["control"],
+                                        "optional": ["any"]
+                                    }
+                                },
+                                "to": [{ "key_code": "left_arrow" }],
+                                "type": "basic"
+                            },
+                            {
+                                "from": {
+                                    "key_code": "j",
+                                    "modifiers": {
+                                        "mandatory": ["control"],
+                                        "optional": ["any"]
+                                    }
+                                },
+                                "to": [{ "key_code": "down_arrow" }],
+                                "type": "basic"
+                            },
+                            {
+                                "from": {
+                                    "key_code": "k",
+                                    "modifiers": {
+                                        "mandatory": ["control"],
+                                        "optional": ["any"]
+                                    }
+                                },
+                                "to": [{ "key_code": "up_arrow" }],
+                                "type": "basic"
+                            },
+                            {
+                                "from": {
+                                    "key_code": "l",
+                                    "modifiers": {
+                                        "mandatory": ["control"],
+                                        "optional": ["any"]
+                                    }
+                                },
+                                "to": [{ "key_code": "right_arrow" }],
+                                "type": "basic"
+                            }
+                        ]
+                    },
+                    {
+                        "description": "Quick access: Terminal, Web browser, etc",
+                        "manipulators": [
+                            {
+                                "conditions": [
+                                    {
+                                        "bundle_identifiers": [
+                                            "org.alacritty"
+                                        ],
+                                        "type": "frontmost_application_unless"
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "a",
+                                    "modifiers": { "mandatory": ["shift", "control", "option", "command"] }
+                                },
+                                "to": [{ "software_function": { "open_application": { "bundle_identifier": "org.alacritty" } } }],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "bundle_identifiers": [
+                                            "org.alacritty"
+                                        ],
+                                        "type": "frontmost_application_if"
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "a",
+                                    "modifiers": { "mandatory": ["shift", "control", "option", "command"] }
+                                },
+                                "to": [{ "software_function": { "open_application": { "frontmost_application_history_index": 1 } } }],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "bundle_identifiers": [
+                                            "org.mozilla.librewolf"
+                                        ],
+                                        "type": "frontmost_application_unless"
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "w",
+                                    "modifiers": { "mandatory": ["shift", "option", "control", "command"] }
+                                },
+                                "to": [{ "software_function": { "open_application": { "bundle_identifier": "org.mozilla.librewolf" } } }],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "bundle_identifiers": [
+                                            "org.mozilla.librewolf"
+                                        ],
+                                        "type": "frontmost_application_if"
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "w",
+                                    "modifiers": { "mandatory": ["shift", "option", "control", "command"] }
+                                },
+                                "to": [{ "software_function": { "open_application": { "frontmost_application_history_index": 1 } } }],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "bundle_identifiers": [
+                                            "ru.keepcoder.Telegram"
+                                        ],
+                                        "type": "frontmost_application_unless"
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "t",
+                                    "modifiers": { "mandatory": ["shift", "option", "control", "command"] }
+                                },
+                                "to": [{ "software_function": { "open_application": { "bundle_identifier": "ru.keepcoder.Telegram" } } }],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "bundle_identifiers": [
+                                            "ru.keepcoder.Telegram"
+                                        ],
+                                        "type": "frontmost_application_if"
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "t",
+                                    "modifiers": { "mandatory": ["shift", "option", "control", "command"] }
+                                },
+                                "to": [{ "software_function": { "open_application": { "frontmost_application_history_index": 1 } } }],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "bundle_identifiers": [
+                                            "com.spotify.client"
+                                        ],
+                                        "type": "frontmost_application_unless"
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "s",
+                                    "modifiers": { "mandatory": ["shift", "option", "control", "command"] }
+                                },
+                                "to": [{ "software_function": { "open_application": { "bundle_identifier": "com.spotify.client" } } }],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "bundle_identifiers": [
+                                            "com.spotify.client"
+                                        ],
+                                        "type": "frontmost_application_if"
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "s",
+                                    "modifiers": { "mandatory": ["shift", "option", "control", "command"] }
+                                },
+                                "to": [{ "software_function": { "open_application": { "frontmost_application_history_index": 1 } } }],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "bundle_identifiers": [
+                                            "com.apple.mail"
+                                        ],
+                                        "type": "frontmost_application_unless"
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "m",
+                                    "modifiers": { "mandatory": ["shift", "option", "control", "command"] }
+                                },
+                                "to": [{ "software_function": { "open_application": { "bundle_identifier": "com.apple.mail" } } }],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "bundle_identifiers": [
+                                            "com.apple.mail"
+                                        ],
+                                        "type": "frontmost_application_if"
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "m",
+                                    "modifiers": { "mandatory": ["shift", "option", "control", "command"] }
+                                },
+                                "to": [{ "software_function": { "open_application": { "frontmost_application_history_index": 1 } } }],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "bundle_identifiers": [
+                                            "com.apple.iCal"
+                                        ],
+                                        "type": "frontmost_application_unless"
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "c",
+                                    "modifiers": { "mandatory": ["shift", "option", "control", "command"] }
+                                },
+                                "to": [{ "software_function": { "open_application": { "bundle_identifier": "com.apple.iCal" } } }],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "bundle_identifiers": [
+                                            "com.apple.iCal"
+                                        ],
+                                        "type": "frontmost_application_if"
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "c",
+                                    "modifiers": { "mandatory": ["shift", "option", "control", "command"] }
+                                },
+                                "to": [{ "software_function": { "open_application": { "frontmost_application_history_index": 1 } } }],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "bundle_identifiers": [
+                                            "com.ranchero.NetNewsWire-Evergreen"
+                                        ],
+                                        "type": "frontmost_application_unless"
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "n",
+                                    "modifiers": { "mandatory": ["shift", "option", "control", "command"] }
+                                },
+                                "to": [{ "software_function": { "open_application": { "bundle_identifier": "com.ranchero.NetNewsWire-Evergreen" } } }],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "bundle_identifiers": [
+                                            "com.ranchero.NetNewsWire-Evergreen"
+                                        ],
+                                        "type": "frontmost_application_if"
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "n",
+                                    "modifiers": { "mandatory": ["shift", "option", "control", "command"] }
+                                },
+                                "to": [{ "software_function": { "open_application": { "frontmost_application_history_index": 1 } } }],
+                                "type": "basic"
+                            }
+                        ]
+                    },
+                    {
+                        "description": "Input source: Left Shift -> ABC; Right Shift -> Russian",
+                        "manipulators": [
+                            {
+                                "from": { "key_code": "left_shift" },
+                                "to": [
+                                    {
+                                        "key_code": "left_shift",
+                                        "lazy": true
+                                    }
+                                ],
+                                "to_if_alone": [{ "select_input_source": { "language": "en" } }],
+                                "type": "basic"
+                            },
+                            {
+                                "from": { "key_code": "right_shift" },
+                                "to": [
+                                    {
+                                        "key_code": "right_shift",
+                                        "lazy": true
+                                    }
+                                ],
+                                "to_if_alone": [{ "select_input_source": { "language": "ru" } }],
+                                "type": "basic"
+                            }
+                        ]
+                    },
+                    {
+                        "description": "Function keys: F6 -> Dark mode",
+                        "manipulators": [
+                            {
+                                "from": { "key_code": "f6" },
+                                "to": [{ "shell_command": "PATH=/opt/homebrew/opt/gnu-sed/libexec/gnubin:$PATH /usr/local/bin/toggle_dark_mode" }],
+                                "type": "basic"
+                            }
+                        ]
+                    }
+                ]
+            },
+            "devices": [
+                {
+                    "identifiers": {
+                        "is_pointing_device": true,
+                        "product_id": 52,
+                        "vendor_id": 7247
+                    },
+                    "ignore": false,
+                    "mouse_flip_vertical_wheel": true
                 }
-            ]
-        },
-        {
-            "description": "Quick access: Left Command -> Alacritty; Right Command -> Alfred",
-            "manipulators": [
-                {
-                    "from": {
-                        "key_code": "left_command"
-                    },
-                    "to": [
-                        {
-                            "key_code": "left_command",
-                            "lazy": true
-                        }
-                    ],
-                    "to_if_alone": [
-                        {
-                            "shell_command": "/usr/local/bin/toggle_app_visibility Alacritty"
-                        }
-                    ],
-                    "type": "basic"
-                },
-                {
-                    "from": {
-                        "key_code": "right_command"
-                    },
-                    "to": [
-                        {
-                            "key_code": "right_command",
-                            "lazy": true
-                        }
-                    ],
-                    "to_if_alone": [
-                        {
-                            "shell_command": "/usr/bin/open -a 'Alfred 5'"
-                        }
-                    ],
-                    "type": "basic"
-                }
-            ]
-        },
-        {
-            "description": "Function keys: F5 -> Spotify; F6 -> Dark mode",
-            "manipulators": [
-                {
-                    "from": {
-                        "key_code": "f5"
-                    },
-                    "to": [
-                        {
-                            "shell_command": "/usr/local/bin/toggle_app_visibility Spotify"
-                        }
-                    ],
-                    "type": "basic"
-                },
-                {
-                    "from": {
-                        "key_code": "f6"
-                    },
-                    "to": [
-                        {
-                            "shell_command": "PATH=/opt/homebrew/opt/gnu-sed/libexec/gnubin:$PATH /usr/local/bin/toggle_dark_mode"
-                        }
-                    ],
-                    "type": "basic"
-                }
-            ]
+            ],
+            "name": "Default profile",
+            "selected": true,
+            "virtual_hid_keyboard": {
+                "country_code": 0,
+                "keyboard_type_v2": "ansi"
+            }
         }
     ]
 }
