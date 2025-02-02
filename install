@@ -66,7 +66,7 @@ install_terminal_themes() {
     dir="$HOME/.config/alacritty"
     curl -so "$dir/$light_theme.toml" https://raw.githubusercontent.com/nshern/neovim-default-colorscheme-extras/main/extras/alacritty/nvim-light.toml
     curl -so "$dir/$dark_theme.toml" https://raw.githubusercontent.com/nshern/neovim-default-colorscheme-extras/main/extras/alacritty/nvim-dark.toml
-    echo "import = [ \"$dir/$light_theme.toml\" ]" > "$dir/theme.toml"
+    echo "[general]\nimport = [ \"$dir/$light_theme.toml\" ]" > "$dir/theme.toml"
 }
 
 install_terminal_themes
