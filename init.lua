@@ -30,6 +30,9 @@ local function setup_ui_options()
     vim.api.nvim_create_autocmd("TextYankPost", {
         callback = function() vim.highlight.on_yank() end,
     })
+
+    -- show diagnostics on virtual lines
+    vim.diagnostic.config({ virtual_lines = true })
 end
 
 local function setup_editor_options()
@@ -47,6 +50,7 @@ local function setup_editor_options()
 
     -- enable spell checking
     vim.opt.spell = true
+    vim.opt.spelllang = { "en_us", "ru_ru" }
 
     -- enable autosave
     vim.opt.autowrite = true
@@ -56,9 +60,6 @@ local function setup_editor_options()
 
     -- ask to save unsaved changes
     vim.opt.confirm = true
-
-    -- configure autocompletion
-    vim.opt.completeopt = "menuone,popup,noinsert,fuzzy"
 
     -- treat header files as C code
     vim.g.c_syntax_for_h = true
@@ -76,14 +77,6 @@ local function setup_keymaps()
 
     vim.keymap.set("n", "<Esc>", "<Cmd>nohlsearch<CR>", { silent = true, desc = "Clear search highlights" })
 
-    vim.keymap.set("i", "<Tab>", function()
-        return vim.fn.pumvisible() ~= 0 and "<C-n>" or "<Tab>"
-    end, { expr = true, silent = true, desc = "Select the next completion" })
-
-    vim.keymap.set("i", "<S-Tab>", function()
-        return vim.fn.pumvisible() ~= 0 and "<C-p>" or "<S-Tab>"
-    end, { expr = true, silent = true, desc = "Select the previous completion" })
-
     vim.keymap.set("n", "\\r", function()
         vim.opt.wrap = not vim.opt.wrap:get()
         if vim.opt.conceallevel:get() == 0 then
@@ -97,12 +90,6 @@ local function setup_keymaps()
     vim.keymap.set("n", "\\c", function()
         vim.opt.list = not vim.opt.list:get()
     end, { silent = true, desc = "Toggle invisible [c]haracters" })
-
-    vim.opt.foldmethod = "expr"
-    vim.opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
-    vim.opt.foldtext = ""
-    vim.opt.foldlevelstart = 99
-    vim.keymap.set("n", "\\f", "za", { silent = true, desc = "Toggle [f]old" })
 end
 
 local function setup_plugin_manager()
@@ -116,15 +103,12 @@ local function setup_plugin_manager()
         { "cbochs/grapple.nvim" },
         { "christoomey/vim-tmux-navigator" },
         { "echasnovski/mini.icons",          version = "*" },
-        { "echasnovski/mini.pairs",          version = "*" },
         { "echasnovski/mini.surround",       version = "*" },
+        { "f-person/auto-dark-mode.nvim" },
         { "ibhagwan/fzf-lua",                dependencies = { "echasnovski/mini.icons" } },
         { "lewis6991/gitsigns.nvim" },
         { "neovim/nvim-lspconfig" },
         { "nvim-treesitter/nvim-treesitter", build = ":TSUpdate" },
-
-        -- TODO: these are small, implement manually and remove.
-        { "f-person/auto-dark-mode.nvim" },
     })
 end
 
@@ -149,7 +133,6 @@ end
 
 local function setup_mini()
     require("mini.icons").setup({})
-    require("mini.pairs").setup({})
     require("mini.surround").setup({
         mappings = {
             add = "gs",
@@ -189,6 +172,7 @@ local function setup_fzf()
     local fzf = require("fzf-lua")
     fzf.register_ui_select()
 
+    vim.keymap.set("n", "<Leader>a", fzf.args, { silent = true, desc = "Search [a]rgs" })
     vim.keymap.set("n", "<Leader>f", fzf.files, { silent = true, desc = "Search [f]iles" })
     vim.keymap.set("n", "<Leader>b", fzf.buffers, { silent = true, desc = "Search [b]uffers" })
     vim.keymap.set("n", "<Leader>q", fzf.quickfix, { silent = true, desc = "Search [q]uickfix list" })
@@ -215,13 +199,15 @@ local function on_lsp_attach(args)
     -- disable semantic highlights in favor of Treesitter
     client.server_capabilities.semanticTokensProvider = nil
 
-    -- enable autocompletion
-    if client.supports_method("textDocument/completion") then
-        vim.lsp.completion.enable(true, client.id, args.buf, { autotrigger = true })
+    -- enable and configure completion
+    if client:supports_method("textDocument/completion") then
+        vim.opt.completeopt = "menuone,popup,noinsert,fuzzy"
+        vim.lsp.completion.enable(true, client.id, args.buf, nil)
+        vim.keymap.set("i", "<C-Space>", vim.lsp.completion.trigger)
     end
 
     -- format the current buffer on save
-    if client.supports_method("textDocument/formatting") then
+    if client:supports_method("textDocument/formatting") then
         vim.api.nvim_create_autocmd("BufWritePre", {
             buffer = args.buf,
             callback = function()
@@ -240,8 +226,7 @@ local function on_lsp_attach(args)
     map("n", "gt", "[G]oto [t]ype definition", function() fzf.lsp_typedefs({ jump_to_single_result = true }) end)
     map("n", "grr", "[G]oto [r]eference", function() fzf.lsp_references({ includeDeclaration = false }) end)
     map("n", "gri", "[G]oto [i]mplementation", fzf.lsp_implementations)
-    map("n", "<Leader>s", "Search document [s]ymbols", fzf.lsp_document_symbols)
-    map("n", "<Leader>S", "Search workspace [s]ymbols", fzf.lsp_workspace_symbols)
+    map("n", "gO", "[G]oto document symbols", fzf.lsp_document_symbols)
     map("n", "\\h", "Toggle inlay [h]ints", function()
         vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
     end)
@@ -276,9 +261,9 @@ local function setup_lsp()
     })
 
     require("lspconfig").zls.setup({})
-    require("lspconfig").rust_analyzer.setup({})
-    require("lspconfig").pyright.setup({})
+
     require("lspconfig").ruff.setup({})
+    require("lspconfig").pyright.setup({})
 
     require("lspconfig").lua_ls.setup({
         -- https://luals.github.io/wiki/settings
@@ -294,6 +279,7 @@ local function setup_treesitter()
     require("nvim-treesitter.configs").setup({
         auto_install = true,
         highlight = { enable = true },
+        indent = { enable = true },
     })
 end
 
