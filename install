@@ -42,24 +42,6 @@ dir="$HOME/.config/alacritty"
 mkdir -p "$dir"
 ln -sf "$PWD/alacritty.toml" "$dir"
 
-# LibreWolf
-dir="$HOME/.librewolf"
-mkdir -p "$dir"
-ln -sf "$PWD/librewolf.overrides.cfg" "$dir"
-
-# Sublime Text
-dir="$HOME/Library/Application Support/Sublime Text/Packages/User"
-mkdir -p "$dir"
-ln -sf "$PWD/Preferences.sublime-settings" "$dir"
-
-# Obsidian
-dir="$HOME/wiki/.obsidian"
-mkdir -p "$dir/snippets"
-for file in obsidian/*.json; do
-    ln -sf "$PWD/$file" "$dir"
-done
-ln -sf "$PWD/obsidian/styles.css" "$dir/snippets"
-
 install_terminal_themes() {
     light_theme="nvim-light"
     dark_theme="nvim-dark"
@@ -90,13 +72,4 @@ if [ "$(uname)" = "Darwin" ]; then
     dir="$HOME/.config/karabiner"
     mkdir -p "$dir"
     ln -sf "$PWD/karabiner.json" "$dir"
-
-    # launchd
-    # NOTE: symlinks do not work on Sonoma
-    for file in LaunchAgents/*.plist; do
-        sed "s|\$HOME|$HOME|" "$file" > "$HOME/Library/$file"
-    done
-    for file in LaunchDaemons/*.plist; do
-        sudo cp -f "$file" "/Library/LaunchDaemons"
-    done
 fi

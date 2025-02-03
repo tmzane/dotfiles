@@ -4,8 +4,6 @@ tap "homebrew/services"
 brew "bat"
 # Protocol buffers (Google's data interchange format)
 brew "protobuf"
-# Generate compilation database for clang tooling
-brew "bear"
 # Simple, fast and user-friendly alternative to find
 brew "fd"
 # User-friendly command-line shell for UNIX-like operating systems
@@ -26,22 +24,8 @@ brew "gopls"
 brew "htop"
 # Kubernetes command-line interface
 brew "kubernetes-cli"
-# Command-line interface for SQLite
-brew "sqlite"
-# Interpreted, interactive, object-oriented programming language
-brew "python@3.13"
-# Next-gen compiler infrastructure
-brew "llvm"
-# Language Server for the Lua language
-brew "lua-language-server"
-# Experimental optional static type checker for Python
-brew "mypy"
 # Ambitious Vim-fork focused on extensibility and agility
 brew "neovim"
-# Create, run, and share large language models (LLMs)
-brew "ollama"
-# PAM module for reattaching to the user's GUI (Aqua) session
-brew "pam-reattach"
 # Tool for managing OCI containers and pods
 brew "podman"
 # Alternative to docker-compose using podman
@@ -50,10 +34,6 @@ brew "podman-compose"
 brew "protoc-gen-go"
 # Protoc plugin that generates code for gRPC-Go clients
 brew "protoc-gen-go-grpc"
-# Static type checker for Python
-brew "pyright"
-# Extremely fast Python linter, written in Rust
-brew "ruff"
 # Static analysis and lint tool, for (ba)sh scripts
 brew "shellcheck"
 # Simplified and community-driven man pages
@@ -62,50 +42,14 @@ brew "tldr"
 brew "tmux"
 # Display directories as trees (with optional color/HTML output)
 brew "tree"
-# Tools for the WireGuard secure network tunnel
-brew "wireguard-tools"
-# Programming language designed for robustness, optimality, and clarity
-brew "zig"
-# Language Server for Zig
-brew "zls"
 # GPU-accelerated terminal emulator
 cask "alacritty"
-# Application launcher and productivity software
-cask "alfred"
 # Utility to show apps badges from the dock in the menu bar
 cask "doll"
 cask "font-jetbrains-mono-nerd-font"
 # Keyboard customiser
 cask "karabiner-elements"
-# ZSA keyboard firmware flasher
-cask "keymapp"
-# Web browser
-cask "librewolf"
-# Open-source firewall to block unknown outgoing connections
-cask "lulu"
-# Free and open-source RSS reader
-cask "netnewswire"
 # Keyboard-driven, vim-like browser based on PyQt5
 cask "qutebrowser"
 # Move and resize windows using keyboard shortcuts or snap areas
 cask "rectangle"
-# Music streaming service
-cask "spotify"
-# Video game digital distribution service
-cask "steam"
-# Text editor for code, markup and prose
-cask "sublime-text"
-# Menu bar customization tool
-cask "swiftbar"
-# Real time file synchronisation software
-cask "syncthing"
-# Messaging app with a focus on speed and security
-cask "telegram"
-# Web browser focusing on security
-cask "tor-browser"
-# Open-source BitTorrent client
-cask "transmission"
-# Multimedia player
-cask "vlc"
-# Network protocol analyzer
-cask "wireshark"
