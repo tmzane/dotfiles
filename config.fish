@@ -36,11 +36,9 @@ if status is-interactive
     abbr --add gpl "git pull --rebase"
     abbr --add py  "python3"
 
-    alias cat     bat
-    alias top     htop
-    alias vim     nvim
-    alias vpnup   "sudo wg-quick up wg0"
-    alias vpndown "sudo wg-quick down wg0"
+    alias cat bat
+    alias top htop
+    alias vim nvim
 
     # md: make a directory and cd into it
     function md; set dir $argv[1]; mkdir -p $dir && cd $dir; end

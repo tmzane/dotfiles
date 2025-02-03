@@ -316,53 +316,7 @@ local function setup_lsp()
         },
     }
 
-    vim.lsp.config["clangd"] = {
-        cmd = { "/opt/homebrew/opt/llvm/bin/clangd", "--background-index" },
-        filetypes = { "c" },
-        root_markers = { ".clangd", "compile_commands.json", ".git" },
-    }
-
-    vim.lsp.config["zls"] = {
-        cmd = { "zls" },
-        filetypes = { "zig" },
-        root_markers = { "build.zig", ".git" },
-    }
-
-    vim.lsp.config["pyright"] = {
-        cmd = { "pyright-langserver", "--stdio" },
-        filetypes = { "python" },
-        root_markers = { "pyproject.toml", "requirements.txt", ".git" },
-        settings = {
-            python = {
-                analysis = {
-                    autoSearchPaths = true,
-                    diagnosticMode = "openFilesOnly",
-                    useLibraryCodeForTypes = true,
-                },
-            },
-        },
-    }
-
-    vim.lsp.config["ruff"] = {
-        cmd = { "ruff", "server" },
-        filetypes = { "python" },
-        root_markers = { "pyproject.toml", ".git" },
-    }
-
-    vim.lsp.config["luals"] = {
-        cmd = { "lua-language-server" },
-        filetypes = { "lua" },
-        root_markers = { ".luarc.json", ".git" },
-        settings = {
-            Lua = {
-                -- https://luals.github.io/wiki/settings
-                runtime = { version = "LuaJIT" },
-                workspace = { library = { vim.env.VIMRUNTIME } },
-            },
-        },
-    }
-
-    vim.lsp.enable({ "gopls", "clangd", "zls", "ruff", "pyright", "luals" })
+    vim.lsp.enable({ "gopls" })
     vim.api.nvim_create_autocmd("LspAttach", { callback = on_lsp_attach })
 end
 
