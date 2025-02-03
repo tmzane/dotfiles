@@ -1,6 +1,6 @@
 [user]
-	name = Nik
-	email = 73077675+tmzane@users.noreply.github.com
+	# name =
+	# email =
 [init]
 	defaultBranch = main
 [pull]
