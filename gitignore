@@ -13,6 +13,7 @@ compile_commands.json
 # go
 vendor/
 go.work
+go.work.sum
 coverage.out
 
 # zig
@@ -24,6 +25,3 @@ __pycache__/
 
 # syncthing
 .stfolder/
-
-# editors
-.obsidian/
