@@ -1,6 +1,8 @@
 set --export EDITOR   "nvim"
 set --export MANPAGER "nvim +Man!"
 
+set --export CONTAINER_RUNNER podman
+
 set --export HOMEBREW_NO_ANALYTICS   1
 set --export HOMEBREW_NO_AUTO_UPDATE 1
 
@@ -31,8 +33,8 @@ if status is-interactive
     abbr --add gcm "git commit --message"
     abbr --add gp  "git push"
     abbr --add gpf "git push --force-with-lease"
+    abbr --add gf  "git fetch --all"
     abbr --add gpl "git pull --rebase"
-    abbr --add gst "git stash"
     abbr --add py  "python3"
 
     alias cat     bat
