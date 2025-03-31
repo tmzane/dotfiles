@@ -59,8 +59,7 @@ local function setup_editor_options()
     vim.o.autowriteall = true
     vim.api.nvim_create_autocmd({ "InsertLeave", "TextChanged", "FocusLost" }, {
         callback = function()
-            -- ignore special buffers
-            if vim.bo.buftype == "" then
+            if vim.bo.buftype == "" or not vim.bo.readonly then
                 vim.cmd("silent write")
             end
         end,
@@ -150,6 +149,7 @@ local function setup_mini()
     })
 end
 
+-- TODO: rewrite with arglist
 local function setup_grapple()
     local grapple = require("grapple")
 
@@ -207,7 +207,7 @@ local function on_lsp_attach(args)
 
     if client:supports_method(vim.lsp.protocol.Methods.textDocument_completion) then
         vim.o.completeopt = "menuone,popup,noinsert,fuzzy"
-        vim.lsp.completion.enable(true, client.id, args.buf, nil)
+        vim.lsp.completion.enable(true, client.id, args.buf)
         vim.keymap.set("i", "<C-Space>", vim.lsp.completion.get)
         vim.keymap.set("i", "<CR>", function()
             return vim.fn.pumvisible() ~= 0 and "<C-y>" or "<CR>"
