@@ -59,7 +59,7 @@ local function setup_editor_options()
     vim.o.autowriteall = true
     vim.api.nvim_create_autocmd({ "InsertLeave", "TextChanged", "FocusLost" }, {
         callback = function()
-            if vim.bo.buftype == "" or not vim.bo.readonly then
+            if vim.bo.buftype == "" and not vim.bo.readonly then
                 vim.cmd("silent write")
             end
         end,
@@ -223,11 +223,11 @@ local function on_lsp_attach(args)
     end
 
     local fzf = require("fzf-lua")
-    vim.keymap.set("n", "gd", function() fzf.lsp_definitions({ jump_to_single_result = true }) end)
-    vim.keymap.set("n", "gD", function() fzf.lsp_declarations({ jump_to_single_result = true }) end)
-    vim.keymap.set("n", "gt", function() fzf.lsp_typedefs({ jump_to_single_result = true }) end)
-    vim.keymap.set("n", "grr", function() fzf.lsp_references({ includeDeclaration = false }) end)
-    vim.keymap.set("n", "gri", fzf.lsp_implementations)
+    vim.keymap.set("n", "gd", fzf.lsp_definitions)
+    vim.keymap.set("n", "gD", fzf.lsp_declarations)
+    vim.keymap.set("n", "gt", fzf.lsp_typedefs)
+    vim.keymap.set("n", "grr", function() fzf.lsp_references({ jump1 = false, includeDeclaration = false }) end)
+    vim.keymap.set("n", "gri", function() fzf.lsp_implementations({ jump1 = false }) end)
     vim.keymap.set("n", "gO", fzf.lsp_document_symbols)
     vim.keymap.set("n", "<Leader>s", fzf.lsp_live_workspace_symbols)
 end
