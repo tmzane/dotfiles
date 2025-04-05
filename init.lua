@@ -57,7 +57,7 @@ local function setup_editor_options()
 
     -- enable autosave
     vim.o.autowriteall = true
-    vim.api.nvim_create_autocmd({ "InsertLeave", "TextChanged", "FocusLost" }, {
+    vim.api.nvim_create_autocmd({ "InsertLeave", "TextChanged" }, {
         callback = function()
             if vim.bo.buftype == "" and not vim.bo.readonly then
                 vim.cmd("silent write")
@@ -149,14 +149,12 @@ local function setup_mini()
     })
 end
 
+-- https://github.com/cbochs/grapple.nvim
 -- TODO: rewrite with arglist
 local function setup_grapple()
     local grapple = require("grapple")
 
-    grapple.setup({
-        scope = "git_branch",
-        icons = false,
-    })
+    grapple.setup({ icons = false })
 
     vim.keymap.set("n", "m", function()
         grapple.toggle()
@@ -172,6 +170,7 @@ local function setup_grapple()
     end
 end
 
+-- https://github.com/ibhagwan/fzf-lua/wiki
 local function setup_fzf()
     local fzf = require("fzf-lua")
 
@@ -215,7 +214,7 @@ local function on_lsp_attach(args)
     end
 
     if client:supports_method(vim.lsp.protocol.Methods.textDocument_formatting) then
-        vim.keymap.set("n", "grf", function()
+        vim.keymap.set("n", "<CR>", function()
             vim.lsp.buf.format()
             -- TODO: make sync and silent
             vim.lsp.buf.code_action({ context = { only = { "source.organizeImports" } }, apply = true })
