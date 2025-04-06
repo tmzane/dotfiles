@@ -1,6 +1,6 @@
 # dotfiles
 
-My dotfiles for macOS and Linux
+My dotfiles for macOS and Linux.
 
 ## Install
 
@@ -26,8 +26,6 @@ chmod +x install
 - [editorconfig](https://editorconfig.org)
     - [.editorconfig](.editorconfig)
 - [/usr/local/bin](bin)
-    - [import_safari_bookmarks](bin/import_safari_bookmarks)
-    - [toggle_app_visibility](bin/toggle_app_visibility)
     - [toggle_dark_mode](bin/toggle_dark_mode)
 
 GUI apps:
@@ -37,8 +35,6 @@ GUI apps:
     - [librewolf.overrides.cfg](librewolf.overrides.cfg)
 - [Sublime Text](https://www.sublimetext.com)
     - [Preferences.sublime-settings](Preferences.sublime-settings)
-- [Obsidian](https://obsidian.md)
-    - [Settings](obsidian)
 
 ### macOS
 

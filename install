@@ -52,14 +52,6 @@ dir="$HOME/Library/Application Support/Sublime Text/Packages/User"
 mkdir -p "$dir"
 ln -sf "$PWD/Preferences.sublime-settings" "$dir"
 
-# Obsidian
-dir="$HOME/wiki/.obsidian"
-mkdir -p "$dir/snippets"
-for file in obsidian/*.json; do
-    ln -sf "$PWD/$file" "$dir"
-done
-ln -sf "$PWD/obsidian/styles.css" "$dir/snippets"
-
 install_terminal_themes() {
     light_theme="nvim-light"
     dark_theme="nvim-dark"
