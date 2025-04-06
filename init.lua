@@ -10,8 +10,8 @@ local function setup_ui_options()
     vim.o.showcmdloc = "statusline"
     vim.o.statusline = "%!v:lua.StatusLine()"
 
-    -- tabline: always show, use custom format
-    vim.o.showtabline = 2
+    -- tabline: show if argc > 0, use custom format
+    vim.o.showtabline = vim.fn.argc() == 0 and 0 or 2
     vim.o.tabline = "%!v:lua.TabLine()"
 
     -- cursorline: highlight, keep centered, make cursor blink
@@ -26,16 +26,23 @@ local function setup_ui_options()
     vim.o.splitbelow = true
     vim.o.splitright = true
 
+    -- use rounded borders for floating windows
+    vim.o.winborder = "rounded"
+
+    -- show diagnostics on virtual lines
+    vim.diagnostic.config({ virtual_lines = { current_line = true } })
+
     -- highlight yanked text
     vim.api.nvim_create_autocmd("TextYankPost", {
         callback = function() vim.hl.on_yank() end,
     })
 
-    -- show diagnostics on virtual lines
-    vim.diagnostic.config({ virtual_lines = { current_line = true } })
-
-    -- use rounded borders for floating windows
-    vim.o.winborder = "rounded"
+    -- set vim.b.git_branch to use it in the statusline
+    vim.api.nvim_create_autocmd("BufEnter", {
+        callback = function()
+            vim.b.git_branch = vim.fn.system("git branch --show-current 2> /dev/null | tr -d '\n'")
+        end,
+    })
 end
 
 local function setup_editor_options()
@@ -55,6 +62,12 @@ local function setup_editor_options()
     vim.o.spell = true
     vim.o.spelllang = "en_us,ru_ru"
 
+    -- enable Russian keymaps in Normal mode
+    vim.o.langmap = "ФИСВУАПРШОЛДЬТЩЗЙКЫЕГМЦЧНЯ;ABCDEFGHIJKLMNOPQRSTUVWXYZ,фисвуапршолдьтщзйкыегмцчня;abcdefghijklmnopqrstuvwxyz"
+
+    -- treat header files as C code
+    vim.g.c_syntax_for_h = true
+
     -- enable autosave
     vim.o.autowriteall = true
     vim.api.nvim_create_autocmd({ "InsertLeave", "TextChanged" }, {
@@ -64,19 +77,10 @@ local function setup_editor_options()
             end
         end,
     })
-
-    -- treat header files as C code
-    vim.g.c_syntax_for_h = true
-
-    -- enable Russian keymaps in Normal mode
-    vim.o.langmap = "ФИСВУАПРШОЛДЬТЩЗЙКЫЕГМЦЧНЯ;ABCDEFGHIJKLMNOPQRSTUVWXYZ,фисвуапршолдьтщзйкыегмцчня;abcdefghijklmnopqrstuvwxyz"
 end
 
 local function setup_keymaps()
     vim.g.mapleader = " "
-
-    -- https://vim.fandom.com/wiki/Fix_indentation
-    vim.keymap.set("n", "g=", "gg=G<C-o><C-o>")
 
     vim.keymap.set("n", "<Esc>", "<Cmd>nohlsearch<CR>")
 
@@ -96,6 +100,81 @@ local function setup_keymaps()
     vim.keymap.set("n", "\\c", function() vim.o.list = not vim.o.list end)
 end
 
+local function setup_arglist()
+    --- Returns the buffer's position in the argument list, or -1 if not found.
+    ---
+    --- @param buf integer Buffer id, or 0 for the current buffer
+    --- @return integer
+    local get_buf_pos_in_arglist = function(buf)
+        local args = vim.fn.argv()
+        assert(type(args) == "table")
+        for i, arg in ipairs(args) do
+            if vim.fn.fnamemodify(arg, ":p") == vim.api.nvim_buf_get_name(buf) then
+                return i
+            end
+        end
+        return -1
+    end
+
+    -- automatically set argidx to the current buffer if it exists in the argument list.
+    vim.api.nvim_create_autocmd("BufEnter", {
+        callback = function(args)
+            local pos = get_buf_pos_in_arglist(args.buf)
+            if pos ~= -1 then
+                vim.cmd("argument" .. tostring(pos))
+            end
+        end,
+    })
+
+    -- add/delete the current buffer to/from the argument list.
+    vim.keymap.set("n", "m", function()
+        if get_buf_pos_in_arglist(0) == -1 then
+            vim.cmd("$argedit %")
+        else
+            vim.cmd("argdelete %")
+            if vim.fn.argidx() > 0 then
+                vim.cmd("prev | edit #") -- set argidx to the previous file keeping the current buffer open.
+            end
+        end
+
+        vim.o.showtabline = vim.fn.argc() == 0 and 0 or 2
+        vim.api.nvim__redraw({ tabline = true })
+    end)
+
+    -- edit the previous file in the argument list.
+    vim.keymap.set("n", "H", function()
+        if vim.fn.argc() == 0 then
+            return
+        elseif get_buf_pos_in_arglist(0) == -1 then
+            vim.cmd("first")
+        elseif vim.fn.argidx() == 0 then
+            vim.cmd("last")
+        else
+            vim.cmd("prev")
+        end
+    end)
+
+    -- edit the next file in the argument list.
+    vim.keymap.set("n", "L", function()
+        if vim.fn.argc() == 0 then
+            return
+        elseif get_buf_pos_in_arglist(0) == -1 then
+            vim.cmd("last")
+        elseif vim.fn.argidx() == vim.fn.argc() - 1 then
+            vim.cmd("first")
+        else
+            vim.cmd("next")
+        end
+    end)
+
+    -- edit the nth file in the argument list.
+    for i = 1, 9 do
+        vim.keymap.set("n", "g" .. tostring(i), function()
+            vim.cmd("argument" .. tostring(i))
+        end)
+    end
+end
+
 local function setup_plugin_manager()
     local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
     if not vim.uv.fs_stat(lazypath) then
@@ -104,7 +183,6 @@ local function setup_plugin_manager()
     vim.o.rtp = lazypath .. "," .. vim.o.rtp
 
     require("lazy").setup({
-        { "cbochs/grapple.nvim" },
         { "christoomey/vim-tmux-navigator" },
         { "echasnovski/mini.icons",          version = "*" },
         { "echasnovski/mini.surround",       version = "*" },
@@ -112,7 +190,6 @@ local function setup_plugin_manager()
         { "ibhagwan/fzf-lua",                dependencies = { "echasnovski/mini.icons" } },
         { "lewis6991/gitsigns.nvim" },
         { "nvim-treesitter/nvim-treesitter", build = ":TSUpdate" },
-        -- TODO: add https://github.com/stevearc/conform.nvim
     })
 end
 
@@ -147,27 +224,6 @@ local function setup_mini()
             update_n_lines = "",
         },
     })
-end
-
--- https://github.com/cbochs/grapple.nvim
--- TODO: rewrite with arglist
-local function setup_grapple()
-    local grapple = require("grapple")
-
-    grapple.setup({ icons = false })
-
-    vim.keymap.set("n", "m", function()
-        grapple.toggle()
-        vim.api.nvim__redraw({ tabline = true })
-    end)
-
-    vim.keymap.set("n", "M", grapple.toggle_tags)
-    vim.keymap.set("n", "H", function() grapple.cycle_tags("prev") end)
-    vim.keymap.set("n", "L", function() grapple.cycle_tags("next") end)
-
-    for i = 1, 9 do
-        vim.keymap.set("n", "g" .. tostring(i), function() grapple.select({ index = i }) end)
-    end
 end
 
 -- https://github.com/ibhagwan/fzf-lua/wiki
@@ -323,11 +379,11 @@ end
 setup_ui_options()
 setup_editor_options()
 setup_keymaps()
+setup_arglist()
 setup_plugin_manager()
 setup_colorscheme()
 setup_gitsigns()
 setup_mini()
-setup_grapple()
 setup_fzf()
 setup_lsp()
 setup_treesitter()
@@ -390,7 +446,7 @@ function StatusLine()
         }, " "),
         attached_lsp(),
         "%l/%L (%p%%)", -- line number / total lines (file progress in %)
-        vim.b.gitsigns_head,
+        vim.b.git_branch,
     }
 
     return string.format(" %s ", join_non_empty(parts, "  "))
@@ -398,16 +454,15 @@ end
 
 function TabLine()
     local tabs = {}
-    local tags = require("grapple").tags()
+    local args = vim.fn.argv()
+    assert(type(args) == "table")
 
-    for i, tag in ipairs(tags) do
-        local name = vim.fn.fnamemodify(tag.path, ":t")
-        name = string.format(" %d %s ", i, name)
-
-        if tag.path == vim.api.nvim_buf_get_name(0) then
-            table.insert(tabs, "%#Normal#" .. name .. "%#TabLine#")
+    for i, arg in ipairs(args) do
+        local tab = string.format(" %d %s ", i, arg)
+        if vim.fn.fnamemodify(arg, ":p") == vim.api.nvim_buf_get_name(0) then
+            table.insert(tabs, "%#Normal#" .. tab .. "%#TabLine#")
         else
-            table.insert(tabs, name)
+            table.insert(tabs, tab)
         end
     end
 
