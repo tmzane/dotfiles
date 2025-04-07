@@ -458,7 +458,7 @@ function TabLine()
     assert(type(args) == "table")
 
     for i, arg in ipairs(args) do
-        local tab = string.format(" %d %s ", i, arg)
+        local tab = string.format(" %d %s ", i, vim.fn.fnamemodify(arg, ":t"))
         if vim.fn.fnamemodify(arg, ":p") == vim.api.nvim_buf_get_name(0) then
             table.insert(tabs, "%#Normal#" .. tab .. "%#TabLine#")
         else
