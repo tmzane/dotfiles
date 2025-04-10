@@ -184,19 +184,20 @@ local function setup_plugin_manager()
 
     require("lazy").setup({
         { "christoomey/vim-tmux-navigator" },
-        { "echasnovski/mini.icons",          version = "*" },
         { "echasnovski/mini.surround",       version = "*" },
         { "f-person/auto-dark-mode.nvim" },
-        { "ibhagwan/fzf-lua",                dependencies = { "echasnovski/mini.icons" } },
+        { "ibhagwan/fzf-lua" },
         { "lewis6991/gitsigns.nvim" },
         { "nvim-treesitter/nvim-treesitter", build = ":TSUpdate" },
     })
 end
 
+-- https://github.com/f-person/auto-dark-mode.nvim
 local function setup_colorscheme()
     require("auto-dark-mode").setup({ update_interval = 1000 })
 end
 
+-- https://github.com/lewis6991/gitsigns.nvim
 local function setup_gitsigns()
     require("gitsigns").setup({
         on_attach = function()
@@ -211,8 +212,8 @@ local function setup_gitsigns()
     })
 end
 
+-- https://github.com/echasnovski/mini.nvim
 local function setup_mini()
-    require("mini.icons").setup({})
     require("mini.surround").setup({
         mappings = {
             add = "gs",
@@ -233,8 +234,14 @@ local function setup_fzf()
     fzf.setup({
         "hide",
         keymap = {
+            builtin = {
+                true,
+                ["<S-Up>"]   = "preview-up",
+                ["<S-Down>"] = "preview-down",
+            },
             fzf = {
-                ["ctrl-q"] = "select-all+accept", -- send all to quickfix list
+                true,
+                ["ctrl-q"] = "select-all+accept", -- send all to quickfix list.
             },
         },
     })
@@ -247,10 +254,10 @@ local function setup_fzf()
     vim.keymap.set("n", "<Leader>f", fzf.files)
     vim.keymap.set("n", "<Leader>g", fzf.git_status)
     vim.keymap.set("n", "<Leader>h", fzf.help_tags)
+    vim.keymap.set("n", "<Leader>o", fzf.oldfiles)
     vim.keymap.set("n", "<Leader>q", fzf.quickfix)
-    vim.keymap.set("n", "<Leader>r", fzf.resume)
-    vim.keymap.set("n", "<Leader>/", fzf.live_grep)
-    vim.keymap.set("n", "<Leader><Leader>", fzf.builtin)
+    vim.keymap.set("n", "<Leader>/", fzf.grep_project)
+    vim.keymap.set("n", "<Leader><Leader>", fzf.resume)
     vim.keymap.set("n", "z=", fzf.spell_suggest)
 end
 
@@ -361,6 +368,7 @@ local function setup_lsp()
     vim.api.nvim_create_autocmd("LspAttach", { callback = on_lsp_attach })
 end
 
+-- https://github.com/nvim-treesitter/nvim-treesitter
 local function setup_treesitter()
     require("nvim-treesitter.configs").setup({
         auto_install = true,
@@ -369,6 +377,7 @@ local function setup_treesitter()
     })
 end
 
+-- https://github.com/christoomey/vim-tmux-navigator
 local function setup_tmux_navigation()
     vim.keymap.set({ "n", "v" }, "<S-Left>", "<Cmd>TmuxNavigateLeft<CR>")
     vim.keymap.set({ "n", "v" }, "<S-Down>", "<Cmd>TmuxNavigateDown<CR>")
