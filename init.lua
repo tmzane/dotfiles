@@ -184,11 +184,12 @@ local function setup_plugin_manager()
 
     require("lazy").setup({
         { "christoomey/vim-tmux-navigator" },
-        { "echasnovski/mini.surround",       version = "*" },
+        { "echasnovski/mini.surround",                  version = "*" },
         { "f-person/auto-dark-mode.nvim" },
         { "ibhagwan/fzf-lua" },
         { "lewis6991/gitsigns.nvim" },
-        { "nvim-treesitter/nvim-treesitter", build = ":TSUpdate" },
+        { "nvim-treesitter/nvim-treesitter",            build = ":TSUpdate" },
+        { "nvim-treesitter/nvim-treesitter-textobjects" },
     })
 end
 
@@ -203,9 +204,6 @@ local function setup_gitsigns()
         on_attach = function()
             local gitsigns = require("gitsigns")
             gitsigns.change_base("HEAD~1") -- diff against previous commit by default
-
-            vim.keymap.set("n", "]h", gitsigns.next_hunk)
-            vim.keymap.set("n", "[h", gitsigns.prev_hunk)
             vim.keymap.set("n", "gh", gitsigns.preview_hunk_inline)
             vim.keymap.set("n", "gH", gitsigns.reset_hunk)
         end,
@@ -369,12 +367,69 @@ local function setup_lsp()
 end
 
 -- https://github.com/nvim-treesitter/nvim-treesitter
+-- https://github.com/nvim-treesitter/nvim-treesitter-textobjects
 local function setup_treesitter()
     require("nvim-treesitter.configs").setup({
         auto_install = true,
         highlight = { enable = true },
         indent = { enable = true },
+        textobjects = {
+            select = {
+                enable = true,
+                lookahead = true,
+                keymaps = {
+                    ["if"] = "@function.inner",
+                    ["af"] = "@function.outer",
+                    ["ic"] = "@class.inner",
+                    ["ac"] = "@class.outer",
+                },
+                include_surrounding_whitespace = true,
+            },
+            move = {
+                enable = true,
+                set_jumps = true,
+                goto_next_start = {
+                    ["]f"] = "@function.outer",
+                    ["]c"] = "@class.outer",
+                },
+                goto_previous_start = {
+                    ["[f"] = "@function.outer",
+                    ["[c"] = "@class.outer",
+                },
+            },
+            swap = {
+                enable = true,
+                swap_next = {
+                    ["gwp"] = "@parameter.inner",
+                    ["gwf"] = "@function.outer",
+                },
+                swap_previous = {
+                    ["gWp"] = "@parameter.inner",
+                    ["gWf"] = "@function.outer",
+                },
+            },
+        },
     })
+
+    local moves = require("nvim-treesitter.textobjects.repeatable_move")
+    vim.keymap.set("n", ";", moves.repeat_last_move_next)
+    vim.keymap.set("n", ",", moves.repeat_last_move_previous)
+    vim.keymap.set("n", "f", moves.builtin_f_expr, { expr = true })
+    vim.keymap.set("n", "F", moves.builtin_F_expr, { expr = true })
+    vim.keymap.set("n", "t", moves.builtin_t_expr, { expr = true })
+    vim.keymap.set("n", "T", moves.builtin_T_expr, { expr = true })
+
+    local gitsigns = require("gitsigns")
+    local next_hunk, prev_hunk = moves.make_repeatable_move_pair(gitsigns.next_hunk, gitsigns.prev_hunk)
+    vim.keymap.set("n", "]h", next_hunk)
+    vim.keymap.set("n", "[h", prev_hunk)
+
+    local next_diagnostic, prev_diagnostic = moves.make_repeatable_move_pair(
+        function() vim.diagnostic.jump({ count = 1 }) end,
+        function() vim.diagnostic.jump({ count = -1 }) end
+    )
+    vim.keymap.set("n", "]d", next_diagnostic)
+    vim.keymap.set("n", "[d", prev_diagnostic)
 end
 
 -- https://github.com/christoomey/vim-tmux-navigator
@@ -384,19 +439,6 @@ local function setup_tmux_navigation()
     vim.keymap.set({ "n", "v" }, "<S-Up>", "<Cmd>TmuxNavigateUp<CR>")
     vim.keymap.set({ "n", "v" }, "<S-Right>", "<Cmd>TmuxNavigateRight<CR>")
 end
-
-setup_ui_options()
-setup_editor_options()
-setup_keymaps()
-setup_arglist()
-setup_plugin_manager()
-setup_colorscheme()
-setup_gitsigns()
-setup_mini()
-setup_fzf()
-setup_lsp()
-setup_treesitter()
-setup_tmux_navigation()
 
 function StatusLine()
     local macro_recording = function()
@@ -477,3 +519,16 @@ function TabLine()
 
     return table.concat(tabs, "")
 end
+
+setup_ui_options()
+setup_editor_options()
+setup_keymaps()
+setup_arglist()
+setup_plugin_manager()
+setup_colorscheme()
+setup_gitsigns()
+setup_mini()
+setup_fzf()
+setup_lsp()
+setup_treesitter()
+setup_tmux_navigation()
