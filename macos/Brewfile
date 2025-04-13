@@ -22,6 +22,10 @@ brew "go"
 brew "golangci-lint"
 # Language server for the Go language
 brew "gopls"
+# Graph visualization software from AT&T and Bell Labs
+brew "graphviz"
+# Like cURL, but for gRPC
+brew "grpcurl"
 # Improved top (interactive process viewer)
 brew "htop"
 # Kubernetes command-line interface
