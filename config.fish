@@ -1,8 +1,7 @@
-set --export EDITOR   "nvim"
-set --export MANPAGER "nvim +Man!"
-
-set --export CONTAINER_RUNNER podman
-
+set --export EDITOR                  nvim
+set --export MANPAGER                nvim +Man!
+set --export BROWSER                 librewolf
+set --export CONTAINER_RUNNER        podman
 set --export HOMEBREW_NO_ANALYTICS   1
 set --export HOMEBREW_NO_AUTO_UPDATE 1
 
