@@ -42,10 +42,6 @@ brew "lua-language-server"
 brew "mypy"
 # Ambitious Vim-fork focused on extensibility and agility
 brew "neovim"
-# Create, run, and share large language models (LLMs)
-brew "ollama"
-# PAM module for reattaching to the user's GUI (Aqua) session
-brew "pam-reattach"
 # Tool for managing OCI containers and pods
 brew "podman"
 # Alternative to docker-compose using podman
@@ -74,42 +70,12 @@ brew "zig"
 brew "zls"
 # GPU-accelerated terminal emulator
 cask "alacritty"
-# Application launcher and productivity software
-cask "alfred"
 # Utility to show apps badges from the dock in the menu bar
 cask "doll"
 cask "font-jetbrains-mono-nerd-font"
 # Keyboard customiser
 cask "karabiner-elements"
-# ZSA keyboard firmware flasher
-cask "keymapp"
-# Web browser
-cask "librewolf"
-# Open-source firewall to block unknown outgoing connections
-cask "lulu"
-# Free and open-source RSS reader
-cask "netnewswire"
 # Keyboard-driven, vim-like browser based on PyQt5
 cask "qutebrowser"
 # Move and resize windows using keyboard shortcuts or snap areas
 cask "rectangle"
-# Music streaming service
-cask "spotify"
-# Video game digital distribution service
-cask "steam"
-# Text editor for code, markup and prose
-cask "sublime-text"
-# Menu bar customization tool
-cask "swiftbar"
-# Real time file synchronisation software
-cask "syncthing"
-# Messaging app with a focus on speed and security
-cask "telegram"
-# Web browser focusing on security
-cask "tor-browser"
-# Open-source BitTorrent client
-cask "transmission"
-# Multimedia player
-cask "vlc"
-# Network protocol analyzer
-cask "wireshark"
