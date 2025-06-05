@@ -44,11 +44,6 @@ if [ ! -d "$dir/shaders" ]; then
     git clone https://github.com/sahaj-b/ghostty-cursor-shaders "$dir/shaders"
 fi
 
-# LibreWolf
-dir="$HOME/.librewolf"
-mkdir -p "$dir"
-ln -sf "$PWD/librewolf.overrides.cfg" "$dir"
-
 # /usr/local/bin
 sudo ln -sf "$PWD/bin/toggle_dark_mode" /usr/local/bin
 

@@ -51,8 +51,6 @@ brew "lua-language-server"
 brew "mysql-client", link: true
 # Ambitious Vim-fork focused on extensibility and agility
 brew "neovim", args: ["HEAD"]
-# Create, run, and share large language models (LLMs)
-brew "ollama"
 # Swiss-army knife of markup format conversion
 brew "pandoc"
 # Tool for managing OCI containers and pods
@@ -93,10 +91,6 @@ brew "zig"
 brew "zls"
 # Sliding, tiling window manager for MacOS
 brew "karinushka/paneru/paneru"
-# Application launcher and productivity software
-cask "alfred"
-# VPN client
-cask "amneziavpn"
 # Create and run Linux containers using lightweight virtual machines
 cask "container"
 # Utility to show apps badges from the dock in the menu bar
@@ -106,29 +100,3 @@ cask "font-jetbrains-mono-nerd-font"
 cask "ghostty"
 # Keyboard customiser
 cask "karabiner-elements"
-# ZSA keyboard firmware flasher
-cask "keymapp"
-# Web browser
-cask "librewolf"
-# Open-source firewall to block unknown outgoing connections
-cask "lulu"
-# Free and open-source RSS reader
-cask "netnewswire"
-# Music streaming service
-cask "spotify"
-# Video game digital distribution service
-cask "steam"
-# Real time file synchronisation software
-cask "syncthing-app"
-# Messaging app with a focus on speed and security
-cask "telegram"
-# Web browser focusing on security
-cask "tor-browser"
-# Open-source BitTorrent client
-cask "transmission"
-# Virtual machines UI using QEMU
-cask "utm"
-# Multimedia player
-cask "vlc"
-# Network protocol analyzer
-cask "wireshark-app"
