@@ -1,109 +1,94 @@
-local function setup_ui_options()
-    -- statuscolumn: use custom format
-    vim.o.relativenumber = true
-    vim.o.signcolumn = "yes"
-    vim.o.statuscolumn = "%=%{v:relnum?v:relnum:v:lnum} %s"
-
-    -- statusline: make global, merge with cmdline, use custom format
-    vim.o.laststatus = 3
+local function setup_options()
+    vim.o.autowriteall = true
+    vim.o.clipboard = "unnamedplus"
     vim.o.cmdheight = 0
-    vim.o.showcmdloc = "statusline"
-    vim.o.statusline = "%!v:lua.StatusLine()"
-
-    -- tabline: show if argc > 0, use custom format
-    vim.o.showtabline = vim.fn.argc() == 0 and 0 or 2
-    vim.o.tabline = "%!v:lua.TabLine()"
-
-    -- cursorline: highlight, keep centered, make cursor blink
+    vim.o.completeopt = "menuone,popup,noinsert,fuzzy"
+    vim.o.confirm = true
     vim.o.cursorline = true
-    vim.o.scrolloff = 999
+    vim.o.expandtab = true
     vim.o.guicursor = vim.o.guicursor .. ",a:blinkon500-blinkoff500"
-
-    -- do not wrap long lines
-    vim.o.wrap = false
-
-    -- use sane window splitting
+    vim.o.ignorecase = true
+    vim.o.langmap = "ФИСВУАПРШОЛДЬТЩЗЙКЫЕГМЦЧНЯ;ABCDEFGHIJKLMNOPQRSTUVWXYZ,фисвуапршолдьтщзйкыегмцчня;abcdefghijklmnopqrstuvwxyz"
+    vim.o.laststatus = 3
+    vim.o.listchars = "tab:> ,space:·"
+    vim.o.relativenumber = true
+    vim.o.scrolloff = 999
+    vim.o.shiftwidth = 4
+    vim.o.showcmdloc = "statusline"
+    vim.o.showtabline = vim.fn.argc() == 0 and 0 or 2
+    vim.o.signcolumn = "yes"
+    vim.o.smartcase = true
+    vim.o.spell = true
+    vim.o.spelllang = "en_us,ru_ru"
     vim.o.splitbelow = true
     vim.o.splitright = true
+    vim.o.statuscolumn = "%=%{v:relnum?v:relnum:v:lnum} %s"
+    vim.o.statusline = "%!v:lua.StatusLine()"
+    vim.o.tabline = "%!v:lua.TabLine()"
+    vim.o.tabstop = 4
+    vim.o.winborder = "single"
+    vim.o.wrap = false
 
-    -- use rounded borders for floating windows
-    vim.o.winborder = "rounded"
+    vim.g.c_syntax_for_h = true
 
-    -- show diagnostics on virtual lines
-    vim.diagnostic.config({ virtual_lines = { current_line = true } })
+    vim.diagnostic.config({ virtual_text = { current_line = true } })
+end
 
-    -- highlight yanked text
+local function setup_keymaps()
+    vim.g.mapleader = " "
+    vim.keymap.set("n", "gd", "<C-]>")
+    vim.keymap.set("n", "<Esc>", "<Cmd>nohlsearch<CR>")
+    vim.keymap.set("i", "<CR>", function()
+        return vim.fn.pumvisible() ~= 0 and "<C-y>" or "<CR>"
+    end, { expr = true })
+end
+
+local function setup_autocmds()
     vim.api.nvim_create_autocmd("TextYankPost", {
-        callback = function() vim.hl.on_yank() end,
+        callback = function()
+            vim.hl.on_yank()
+        end,
     })
 
-    -- set vim.b.git_branch to use it in the statusline
     vim.api.nvim_create_autocmd("BufEnter", {
         callback = function()
             vim.b.git_branch = vim.fn.system("git branch --show-current 2> /dev/null | tr -d '\n'")
         end,
     })
-end
 
-local function setup_editor_options()
-    -- expand tabs to 4 spaces
-    vim.o.expandtab = true
-    vim.o.tabstop = 4
-    vim.o.shiftwidth = 4
-
-    -- ignore case in search patterns
-    vim.o.ignorecase = true
-    vim.o.smartcase = true
-
-    -- always use the system clipboard
-    vim.o.clipboard = "unnamedplus"
-
-    -- enable spell checking
-    vim.o.spell = true
-    vim.o.spelllang = "en_us,ru_ru"
-
-    -- enable Russian keymaps in Normal mode
-    vim.o.langmap = "ФИСВУАПРШОЛДЬТЩЗЙКЫЕГМЦЧНЯ;ABCDEFGHIJKLMNOPQRSTUVWXYZ,фисвуапршолдьтщзйкыегмцчня;abcdefghijklmnopqrstuvwxyz"
-
-    -- treat header files as C code
-    vim.g.c_syntax_for_h = true
-
-    -- enable autosave
-    vim.o.autowriteall = true
     vim.api.nvim_create_autocmd({ "InsertLeave", "TextChanged" }, {
-        callback = function()
-            if vim.bo.buftype == "" and not vim.bo.readonly then
-                vim.cmd("silent write")
+        nested = true,
+        callback = function(args)
+            if vim.bo[args.buf].buftype ~= "" or vim.bo[args.buf].readonly then
+                return
+            end
+            -- keep trailing whitespace on the current line.
+            local ws = vim.api.nvim_get_current_line():match("%s+$")
+            vim.cmd("silent write")
+            if ws then
+                vim.api.nvim_put({ ws }, "c", true, true)
+                vim.cmd("noautocmd silent write")
             end
         end,
     })
 end
 
-local function setup_keymaps()
-    vim.g.mapleader = " "
+local function setup_user_commands()
+    vim.api.nvim_create_user_command("ToggleWhitespace", function()
+        vim.o.list = not vim.o.list
+    end, {})
 
-    vim.keymap.set("n", "<Esc>", "<Cmd>nohlsearch<CR>")
-
-    -- toggle [r]eader view
-    vim.keymap.set("n", "\\r", function()
+    vim.api.nvim_create_user_command("ToggleReaderView", function()
         vim.o.wrap = not vim.o.wrap
-        if vim.o.conceallevel == 0 then
-            vim.o.conceallevel = 2
-        else
-            vim.o.conceallevel = 0
-        end
+        vim.o.conceallevel = vim.o.conceallevel == 0 and 2 or 0 -- markdown rendering.
         vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
-    end)
-
-    -- toggle hidden [c]haracters
-    vim.o.listchars = "tab:> ,space:·"
-    vim.keymap.set("n", "\\c", function() vim.o.list = not vim.o.list end)
+    end, {})
 end
 
 local function setup_arglist()
     --- Returns the buffer's position in the argument list, or -1 if not found.
     ---
-    --- @param buf integer Buffer id, or 0 for the current buffer
+    --- @param buf integer Buffer id, or 0 for the current buffer.
     --- @return integer
     local get_buf_pos_in_arglist = function(buf)
         local args = vim.fn.argv()
@@ -121,19 +106,20 @@ local function setup_arglist()
         callback = function(args)
             local pos = get_buf_pos_in_arglist(args.buf)
             if pos ~= -1 then
-                vim.cmd("argument" .. tostring(pos))
+                vim.cmd("keepjumps argument" .. tostring(pos))
+                require("gitsigns").attach(args.buf) -- TODO: figure out why Gitsigns detaches after :argument.
             end
         end,
     })
 
     -- add/delete the current buffer to/from the argument list.
-    vim.keymap.set("n", "m", function()
+    vim.keymap.set("n", "ga", function()
         if get_buf_pos_in_arglist(0) == -1 then
             vim.cmd("$argedit %")
         else
-            vim.cmd("argdelete %")
-            if vim.fn.argidx() > 0 then
-                vim.cmd("prev | edit #") -- set argidx to the previous file keeping the current buffer open.
+            vim.cmd("argdelete")
+            if vim.fn.argc() > 0 then
+                vim.cmd("argument")
             end
         end
 
@@ -145,9 +131,7 @@ local function setup_arglist()
     vim.keymap.set("n", "H", function()
         if vim.fn.argc() == 0 then
             return
-        elseif get_buf_pos_in_arglist(0) == -1 then
-            vim.cmd("first")
-        elseif vim.fn.argidx() == 0 then
+        elseif get_buf_pos_in_arglist(0) == -1 or vim.fn.argidx() == 0 then
             vim.cmd("last")
         else
             vim.cmd("prev")
@@ -158,9 +142,7 @@ local function setup_arglist()
     vim.keymap.set("n", "L", function()
         if vim.fn.argc() == 0 then
             return
-        elseif get_buf_pos_in_arglist(0) == -1 then
-            vim.cmd("last")
-        elseif vim.fn.argidx() == vim.fn.argc() - 1 then
+        elseif get_buf_pos_in_arglist(0) == -1 or vim.fn.argidx() == vim.fn.argc() - 1 then
             vim.cmd("first")
         else
             vim.cmd("next")
@@ -175,7 +157,8 @@ local function setup_arglist()
     end
 end
 
-local function setup_plugin_manager()
+local function setup_plugins()
+    -- https://github.com/folke/lazy.nvim
     local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
     if not vim.uv.fs_stat(lazypath) then
         vim.fn.system({ "git", "clone", "--branch=stable", "--filter=blob:none", "https://github.com/folke/lazy.nvim.git", lazypath })
@@ -189,29 +172,17 @@ local function setup_plugin_manager()
         { "ibhagwan/fzf-lua" },
         { "lewis6991/gitsigns.nvim" },
         { "nvim-treesitter/nvim-treesitter",            build = ":TSUpdate" },
+        { "nvim-treesitter/nvim-treesitter-context" },
         { "nvim-treesitter/nvim-treesitter-textobjects" },
     })
-end
 
--- https://github.com/f-person/auto-dark-mode.nvim
-local function setup_colorscheme()
-    require("auto-dark-mode").setup({ update_interval = 1000 })
-end
+    -- https://github.com/christoomey/vim-tmux-navigator
+    vim.keymap.set({ "n", "v" }, "<S-Left>", "<Cmd>TmuxNavigateLeft<CR>")
+    vim.keymap.set({ "n", "v" }, "<S-Down>", "<Cmd>TmuxNavigateDown<CR>")
+    vim.keymap.set({ "n", "v" }, "<S-Up>", "<Cmd>TmuxNavigateUp<CR>")
+    vim.keymap.set({ "n", "v" }, "<S-Right>", "<Cmd>TmuxNavigateRight<CR>")
 
--- https://github.com/lewis6991/gitsigns.nvim
-local function setup_gitsigns()
-    require("gitsigns").setup({
-        on_attach = function()
-            local gitsigns = require("gitsigns")
-            gitsigns.change_base("HEAD~1") -- diff against previous commit by default
-            vim.keymap.set("n", "gh", gitsigns.preview_hunk_inline)
-            vim.keymap.set("n", "gH", gitsigns.reset_hunk)
-        end,
-    })
-end
-
--- https://github.com/echasnovski/mini.nvim
-local function setup_mini()
+    -- https://github.com/echasnovski/mini.surround
     require("mini.surround").setup({
         mappings = {
             add = "gs",
@@ -223,14 +194,41 @@ local function setup_mini()
             update_n_lines = "",
         },
     })
+
+    -- https://github.com/f-person/auto-dark-mode.nvim
+    require("auto-dark-mode").setup({
+        update_interval = 1000,
+    })
+
+    -- https://github.com/lewis6991/gitsigns.nvim
+    require("gitsigns").setup({
+        debug_mode = true,
+        -- auto_attach = false,
+        on_attach = function(buf)
+            local gitsigns = require("gitsigns")
+            vim.keymap.set("n", "gh", gitsigns.preview_hunk_inline, { buffer = buf })
+            vim.keymap.set("n", "gH", gitsigns.reset_hunk, { buffer = buf })
+        end,
+    })
 end
 
--- https://github.com/ibhagwan/fzf-lua/wiki
 local function setup_fzf()
+    -- https://github.com/ibhagwan/fzf-lua
     local fzf = require("fzf-lua")
+    fzf.register_ui_select()
 
     fzf.setup({
         "hide",
+        winopts = {
+            height  = 0.9,
+            width   = 0.9,
+            row     = 0.5,
+            col     = 0.5,
+            border  = "single",
+            preview = {
+                border = "single",
+            },
+        },
         keymap = {
             builtin = {
                 true,
@@ -239,19 +237,20 @@ local function setup_fzf()
             },
             fzf = {
                 true,
-                ["ctrl-q"] = "select-all+accept", -- send all to quickfix list.
+                ["ctrl-q"] = "select-all+accept",
             },
         },
     })
 
-    fzf.register_ui_select()
-
     vim.keymap.set("n", "<Leader>a", fzf.args)
     vim.keymap.set("n", "<Leader>b", fzf.buffers)
     vim.keymap.set("n", "<Leader>d", fzf.diagnostics_document)
+    vim.keymap.set("n", "<Leader>D", fzf.diagnostics_workspace)
     vim.keymap.set("n", "<Leader>f", fzf.files)
-    vim.keymap.set("n", "<Leader>g", fzf.git_status)
+    vim.keymap.set("n", "<Leader>g", fzf.git_diff)
     vim.keymap.set("n", "<Leader>h", fzf.help_tags)
+    vim.keymap.set("n", "<Leader>l", fzf.loclist)
+    vim.keymap.set("n", "<Leader>m", fzf.marks)
     vim.keymap.set("n", "<Leader>o", fzf.oldfiles)
     vim.keymap.set("n", "<Leader>q", fzf.quickfix)
     vim.keymap.set("n", "<Leader>/", fzf.grep_project)
@@ -262,34 +261,28 @@ end
 local function on_lsp_attach(args)
     local client = assert(vim.lsp.get_client_by_id(args.data.client_id))
 
-    -- disable semantic highlights in favor of Treesitter
-    client.server_capabilities.semanticTokensProvider = nil
-
     if client:supports_method(vim.lsp.protocol.Methods.textDocument_completion) then
-        vim.o.completeopt = "menuone,popup,noinsert,fuzzy"
         vim.lsp.completion.enable(true, client.id, args.buf)
-        vim.keymap.set("i", "<C-Space>", vim.lsp.completion.get)
-        vim.keymap.set("i", "<CR>", function()
-            return vim.fn.pumvisible() ~= 0 and "<C-y>" or "<CR>"
-        end, { expr = true })
+        vim.keymap.set("i", "<C-Space>", vim.lsp.completion.get, { buffer = args.buf })
     end
 
     if client:supports_method(vim.lsp.protocol.Methods.textDocument_formatting) then
         vim.keymap.set("n", "<CR>", function()
-            vim.lsp.buf.format()
-            -- TODO: make sync and silent
+            vim.lsp.buf.format({ async = true })
             vim.lsp.buf.code_action({ context = { only = { "source.organizeImports" } }, apply = true })
-        end)
+        end, { buffer = args.buf })
     end
 
     local fzf = require("fzf-lua")
-    vim.keymap.set("n", "gd", fzf.lsp_definitions)
-    vim.keymap.set("n", "gD", fzf.lsp_declarations)
-    vim.keymap.set("n", "gt", fzf.lsp_typedefs)
+    -- gd is already mapped to CTRL-].
+    vim.keymap.set("n", "gD", vim.lsp.buf.declaration)
+    vim.keymap.set("n", "gt", vim.lsp.buf.type_definition)
     vim.keymap.set("n", "grr", function() fzf.lsp_references({ jump1 = false, includeDeclaration = false }) end)
     vim.keymap.set("n", "gri", function() fzf.lsp_implementations({ jump1 = false }) end)
-    vim.keymap.set("n", "gO", fzf.lsp_document_symbols)
-    vim.keymap.set("n", "<Leader>s", fzf.lsp_live_workspace_symbols)
+    vim.keymap.set("n", "<Leader>r", function() fzf.lsp_references({ jump1 = false, includeDeclaration = false }) end)
+    vim.keymap.set("n", "<Leader>i", function() fzf.lsp_implementations({ jump1 = false }) end)
+    vim.keymap.set("n", "<Leader>s", fzf.lsp_document_symbols)
+    vim.keymap.set("n", "<Leader>S", fzf.lsp_live_workspace_symbols)
 end
 
 -- https://neovim.io/doc/user/lsp.html
@@ -357,18 +350,32 @@ local function setup_lsp()
             Lua = {
                 -- https://luals.github.io/wiki/settings
                 runtime = { version = "LuaJIT" },
-                workspace = { library = { vim.env.VIMRUNTIME } },
+                workspace = {
+                    library = {
+                        vim.env.VIMRUNTIME,
+                        vim.fn.stdpath("data") .. "/lazy",
+                    },
+                },
             },
         },
     }
 
-    vim.lsp.enable({ "gopls", "clangd", "zls", "ruff", "pyright", "luals" })
+    vim.lsp.enable({
+        "gopls",
+        "clangd",
+        "zls",
+        "ruff",
+        "pyright",
+        "luals",
+    })
+
     vim.api.nvim_create_autocmd("LspAttach", { callback = on_lsp_attach })
 end
 
--- https://github.com/nvim-treesitter/nvim-treesitter
--- https://github.com/nvim-treesitter/nvim-treesitter-textobjects
 local function setup_treesitter()
+    -- https://github.com/nvim-treesitter/nvim-treesitter
+    -- https://github.com/nvim-treesitter/nvim-treesitter-context
+    -- https://github.com/nvim-treesitter/nvim-treesitter-textobjects
     require("nvim-treesitter.configs").setup({
         auto_install = true,
         highlight = { enable = true },
@@ -397,19 +404,10 @@ local function setup_treesitter()
                     ["[c"] = "@class.outer",
                 },
             },
-            swap = {
-                enable = true,
-                swap_next = {
-                    ["gwp"] = "@parameter.inner",
-                    ["gwf"] = "@function.outer",
-                },
-                swap_previous = {
-                    ["gWp"] = "@parameter.inner",
-                    ["gWf"] = "@function.outer",
-                },
-            },
         },
     })
+
+    require("treesitter-context").setup({})
 
     local moves = require("nvim-treesitter.textobjects.repeatable_move")
     vim.keymap.set("n", ";", moves.repeat_last_move_next)
@@ -430,14 +428,6 @@ local function setup_treesitter()
     )
     vim.keymap.set("n", "]d", next_diagnostic)
     vim.keymap.set("n", "[d", prev_diagnostic)
-end
-
--- https://github.com/christoomey/vim-tmux-navigator
-local function setup_tmux_navigation()
-    vim.keymap.set({ "n", "v" }, "<S-Left>", "<Cmd>TmuxNavigateLeft<CR>")
-    vim.keymap.set({ "n", "v" }, "<S-Down>", "<Cmd>TmuxNavigateDown<CR>")
-    vim.keymap.set({ "n", "v" }, "<S-Up>", "<Cmd>TmuxNavigateUp<CR>")
-    vim.keymap.set({ "n", "v" }, "<S-Right>", "<Cmd>TmuxNavigateRight<CR>")
 end
 
 function StatusLine()
@@ -520,15 +510,12 @@ function TabLine()
     return table.concat(tabs, "")
 end
 
-setup_ui_options()
-setup_editor_options()
+setup_options()
 setup_keymaps()
+setup_autocmds()
+setup_user_commands()
 setup_arglist()
-setup_plugin_manager()
-setup_colorscheme()
-setup_gitsigns()
-setup_mini()
+setup_plugins()
 setup_fzf()
 setup_lsp()
 setup_treesitter()
-setup_tmux_navigation()
