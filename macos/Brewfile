@@ -57,8 +57,6 @@ brew "lua-language-server"
 brew "mysql-client", link: true
 # Ambitious Vim-fork focused on extensibility and agility
 brew "neovim"
-# Create, run, and share large language models (LLMs)
-brew "ollama"
 # Tool for managing OCI containers and pods
 brew "podman"
 # Interpreted, interactive, object-oriented programming language
@@ -103,12 +101,6 @@ brew "felixkratz/formulae/borders"
 cask "aerospace"
 # GPU-accelerated terminal emulator
 cask "alacritty"
-# Application launcher and productivity software
-cask "alfred"
-# VPN client
-cask "amneziavpn"
-# OpenAI's official ChatGPT desktop app
-cask "chatgpt"
 # Create and run Linux containers using lightweight virtual machines
 cask "container"
 # Utility to show apps badges from the dock in the menu bar
@@ -116,31 +108,3 @@ cask "doll"
 cask "font-jetbrains-mono-nerd-font"
 # Keyboard customiser
 cask "karabiner-elements"
-# ZSA keyboard firmware flasher
-cask "keymapp"
-# Web browser
-cask "librewolf"
-# Open-source firewall to block unknown outgoing connections
-cask "lulu"
-# Free and open-source RSS reader
-cask "netnewswire"
-# Music streaming service
-cask "spotify"
-# Video game digital distribution service
-cask "steam"
-# Text editor for code, markup and prose
-cask "sublime-text"
-# Real time file synchronisation software
-cask "syncthing-app"
-# Messaging app with a focus on speed and security
-cask "telegram"
-# Web browser focusing on security
-cask "tor-browser"
-# Open-source BitTorrent client
-cask "transmission"
-# Virtual machines UI using QEMU
-cask "utm"
-# Multimedia player
-cask "vlc"
-# Network protocol analyzer
-cask "wireshark-app"

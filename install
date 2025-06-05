@@ -50,16 +50,6 @@ fi
 cp "$dir/themes/themes/alabaster.toml" "$dir/theme.toml"
 cp "$dir/themes/themes/alabaster_dark.toml" "$dir/theme_alt.toml"
 
-# LibreWolf
-dir="$HOME/.librewolf"
-mkdir -p "$dir"
-ln -sf "$PWD/librewolf.overrides.cfg" "$dir"
-
-# Sublime Text
-dir="$HOME/Library/Application Support/Sublime Text/Packages/User"
-mkdir -p "$dir"
-ln -sf "$PWD/Preferences.sublime-settings" "$dir"
-
 # /usr/local/bin
 for file in bin/*; do
     sudo ln -sf "$PWD/$file" /usr/local/bin
@@ -85,8 +75,5 @@ if [ "$(uname)" = "Darwin" ]; then
     # launchd
     for file in LaunchAgents/*.plist; do
         sed "s|\$HOME|$HOME|" "$file" > "$HOME/Library/$file"
-    done
-    for file in LaunchDaemons/*.plist; do
-        sudo cp -f "$file" "/Library/LaunchDaemons"
     done
 fi
