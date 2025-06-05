@@ -34,11 +34,9 @@ set fzf_fd_opts --hidden
 fzf_configure_bindings --directory=\ef --git_log=\el --git_status=\es --history=\eh --processes=\ep --variables=\ev
 
 # setup aliases
-alias cat     "bat"
-alias top     "htop"
-alias vim     "nvim"
-alias vpnup   "sudo wg-quick up wg0"
-alias vpndown "sudo wg-quick down wg0"
+alias cat "bat"
+alias top "htop"
+alias vim "nvim"
 
 # setup abbreviations
 abbr --add ga  "git add"
