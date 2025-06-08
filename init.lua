@@ -1,5 +1,4 @@
 local function setup_options()
-    vim.o.autowriteall = true
     vim.o.clipboard = "unnamedplus"
     vim.o.cmdheight = 0
     vim.o.completeopt = "menuone,popup,noinsert,fuzzy"
@@ -45,21 +44,30 @@ end
 
 local function setup_autocmds()
     vim.api.nvim_create_autocmd("TextYankPost", {
+        desc = "highlight text on yank",
         callback = function()
             vim.hl.on_yank()
         end,
     })
 
-    vim.api.nvim_create_autocmd("BufEnter", {
-        callback = function()
+    vim.api.nvim_create_autocmd("BufRead", {
+        desc = "set git-related variables",
+        callback = function(args)
+            vim.fn.system("git ls-files --error-unmatch " .. args.file .. " 2> /dev/null")
+            vim.b.git_tracked = vim.v.shell_error == 0
             vim.b.git_branch = vim.fn.system("git branch --show-current 2> /dev/null | tr -d '\n'")
         end,
     })
 
     vim.api.nvim_create_autocmd({ "InsertLeave", "TextChanged" }, {
         nested = true,
+        desc = "autowrite git-tracked files",
         callback = function(args)
-            if vim.bo[args.buf].buftype ~= "" or vim.bo[args.buf].readonly then
+            if args.file == "" or -- [No Name]
+                vim.bo[args.buf].buftype ~= "" or
+                vim.bo[args.buf].readonly or
+                not vim.b.git_tracked
+            then
                 return
             end
             -- keep trailing whitespace on the current line.
@@ -106,8 +114,14 @@ local function setup_arglist()
         callback = function(args)
             local pos = get_buf_pos_in_arglist(args.buf)
             if pos ~= -1 then
+                -- this command does :edit %, which unloads the current buffer,
+                -- rereads it, and triggers BufUnload -> BufRead -> BufEnter.
+                -- however, because this happens in an autocommand, no events will be triggered.
+                -- this can break plugins that rely on these events,
+                -- e.g. Gitsigns reattaches on BufRead after the buffer is reloaded.
+                -- we can't use nested=true because BufEnter will cause recursion, so instead we fire BufRead manually.
                 vim.cmd("keepjumps argument" .. tostring(pos))
-                require("gitsigns").attach(args.buf) -- TODO: figure out why Gitsigns detaches after :argument.
+                vim.cmd("doautocmd BufRead")
             end
         end,
     })
@@ -202,14 +216,18 @@ local function setup_plugins()
 
     -- https://github.com/lewis6991/gitsigns.nvim
     require("gitsigns").setup({
-        debug_mode = true,
-        -- auto_attach = false,
         on_attach = function(buf)
             local gitsigns = require("gitsigns")
             vim.keymap.set("n", "gh", gitsigns.preview_hunk_inline, { buffer = buf })
             vim.keymap.set("n", "gH", gitsigns.reset_hunk, { buffer = buf })
+
+            local moves = require("nvim-treesitter.textobjects.repeatable_move")
+            local next_hunk, prev_hunk = moves.make_repeatable_move_pair(gitsigns.next_hunk, gitsigns.prev_hunk)
+            vim.keymap.set("n", "]h", next_hunk, { buffer = buf })
+            vim.keymap.set("n", "[h", prev_hunk, { buffer = buf })
         end,
     })
+    require("gitsigns").change_base("HEAD", true)
 end
 
 local function setup_fzf()
@@ -258,6 +276,7 @@ local function setup_fzf()
     vim.keymap.set("n", "z=", fzf.spell_suggest)
 end
 
+--- @param args vim.api.keyset.create_autocmd.callback_args
 local function on_lsp_attach(args)
     local client = assert(vim.lsp.get_client_by_id(args.data.client_id))
 
@@ -369,7 +388,9 @@ local function setup_lsp()
         "luals",
     })
 
-    vim.api.nvim_create_autocmd("LspAttach", { callback = on_lsp_attach })
+    vim.api.nvim_create_autocmd("LspAttach", {
+        callback = on_lsp_attach,
+    })
 end
 
 local function setup_treesitter()
@@ -416,11 +437,6 @@ local function setup_treesitter()
     vim.keymap.set("n", "F", moves.builtin_F_expr, { expr = true })
     vim.keymap.set("n", "t", moves.builtin_t_expr, { expr = true })
     vim.keymap.set("n", "T", moves.builtin_T_expr, { expr = true })
-
-    local gitsigns = require("gitsigns")
-    local next_hunk, prev_hunk = moves.make_repeatable_move_pair(gitsigns.next_hunk, gitsigns.prev_hunk)
-    vim.keymap.set("n", "]h", next_hunk)
-    vim.keymap.set("n", "[h", prev_hunk)
 
     local next_diagnostic, prev_diagnostic = moves.make_repeatable_move_pair(
         function() vim.diagnostic.jump({ count = 1 }) end,
