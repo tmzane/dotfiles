@@ -1,9 +1,12 @@
+# https://alacritty.org/config-alacritty.html
+
 [general]
 import = [ "~/.config/alacritty/theme.toml" ]
 
 [window]
-padding = { x = 10, y = 10 }
+padding = { x = 5, y = 5 }
 dynamic_padding = true
+decorations = "None"
 startup_mode = "Maximized"
 option_as_alt = "Both" # macOS only
 
@@ -15,3 +18,6 @@ normal = { family = "JetBrainsMonoNL Nerd Font Mono", style = "Light" }
 style = { blinking = "On" }
 blink_interval = 500
 blink_timeout = 0
+
+[mouse]
+hide_when_typing = true
