@@ -12,8 +12,8 @@ set --export FZF_DEFAULT_OPTS        "--tmux=100% --border=none --info=hidden"
 set --export FZF_CTRL_T_OPTS         "--no-reverse --preview='bat --number --color=always {}' --preview-window=border-left"
 
 # setup $PATH
-fish_add_path --global --path --move ~/go/bin
 fish_add_path --global --path --move /opt/homebrew/bin
+fish_add_path --global --path --move ~/go/bin
 
 # setup vi mode
 fish_vi_key_bindings
