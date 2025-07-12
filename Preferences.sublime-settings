@@ -1,24 +1,17 @@
 {
-    "font_size": 15,
-    "font_face": "JetBrainsMonoNL Nerd Font Mono",
-    "font_options": ["no_italic", "gray_antialias"],
-
-    "theme": "auto",
-    "color_scheme": "auto",
-
-    "rulers": [120],
-    "mini_diff": "auto",
-    "caret_style": "blink",
-    "highlight_line": true,
-    "show_full_path": true,
-    "show_encoding": true,
-    "show_line_endings": true,
-
-    "save_on_focus_lost": true,
     "auto_find_in_selection": true,
+    "caret_style": "blink",
+    "color_scheme": "auto",
     "default_line_ending": "unix",
     "ensure_newline_at_eof_on_save": true,
-    "trim_trailing_white_space_on_save": "not_on_caret",
-
+    "font_face": "JetBrainsMonoNL NFM",
+    "font_options": ["no_italic", "gray_antialias"],
+    "font_size": 15,
+    "highlight_line": true,
     "ignored_packages": [],
+    "mini_diff": "auto",
+    "save_on_focus_lost": true,
+    "show_full_path": true,
+    "theme": "auto",
+    "trim_trailing_white_space_on_save": "not_on_caret",
 }
