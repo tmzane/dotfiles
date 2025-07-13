@@ -11,3 +11,4 @@ fi
 mv "$HOME/.config/alacritty/theme.toml" "$HOME/.config/alacritty/theme_tmp.toml"
 mv "$HOME/.config/alacritty/theme_alt.toml" "$HOME/.config/alacritty/theme.toml"
 mv "$HOME/.config/alacritty/theme_tmp.toml" "$HOME/.config/alacritty/theme_alt.toml"
+touch "$HOME/.config/alacritty/alacritty.toml"

@@ -35,15 +35,15 @@ ln -sf "$PWD/htoprc" "$dir"
 # editorconfig
 ln -sf "$PWD/.editorconfig" "$HOME"
 
-# /usr/local/bin
-for file in bin/*; do
-    sudo ln -sf "$PWD/$file" /usr/local/bin
-done
-
 # Alacritty
 dir="$HOME/.config/alacritty"
 mkdir -p "$dir"
 ln -sf "$PWD/alacritty.toml" "$dir"
+if [ ! -d "$dir/themes" ]; then
+    git clone https://github.com/alacritty/alacritty-theme "$dir/themes"
+fi
+cp "$dir/themes/themes/alabaster.toml" "$dir/theme.toml"
+cp "$dir/themes/themes/alabaster_dark.toml" "$dir/theme_alt.toml"
 
 # LibreWolf
 dir="$HOME/.librewolf"
@@ -55,31 +55,22 @@ dir="$HOME/Library/Application Support/Sublime Text/Packages/User"
 mkdir -p "$dir"
 ln -sf "$PWD/Preferences.sublime-settings" "$dir"
 
-install_terminal_themes() {
-    light_theme="nvim-light"
-    dark_theme="nvim-dark"
-    dir="$HOME/.config/alacritty"
-    curl -so "$dir/$light_theme.toml" https://raw.githubusercontent.com/nshern/neovim-default-colorscheme-extras/main/extras/alacritty/nvim-light.toml
-    curl -so "$dir/$dark_theme.toml" https://raw.githubusercontent.com/nshern/neovim-default-colorscheme-extras/main/extras/alacritty/nvim-dark.toml
-    echo "[general]\nimport = [ \"$dir/$light_theme.toml\" ]" > "$dir/theme.toml"
-}
-
-install_terminal_themes
+# /usr/local/bin
+for file in bin/*; do
+    sudo ln -sf "$PWD/$file" /usr/local/bin
+done
 
 # macOS
 if [ "$(uname)" = "Darwin" ]; then
     cd macOS
-    # TODO: defaults
 
     # brew
-    # /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
     /opt/homebrew/bin/brew bundle install --file=Brewfile
 
     # fish
     if [ "$SHELL" != "/opt/homebrew/bin/fish" ]; then
-        sudo chsh -s /opt/homebrew/bin/fish $USER
+        sudo chsh -s /opt/homebrew/bin/fish "$USER"
     fi
-    # TODO: install fisher
 
     # Karabiner-Elements
     dir="$HOME/.config/karabiner"
@@ -87,7 +78,6 @@ if [ "$(uname)" = "Darwin" ]; then
     ln -sf "$PWD/karabiner.json" "$dir"
 
     # launchd
-    # NOTE: symlinks do not work on Sonoma
     for file in LaunchAgents/*.plist; do
         sed "s|\$HOME|$HOME|" "$file" > "$HOME/Library/$file"
     done
