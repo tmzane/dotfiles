@@ -9,7 +9,8 @@ local function setup_options()
     vim.o.ignorecase = true
     vim.o.langmap = "ФИСВУАПРШОЛДЬТЩЗЙКЫЕГМЦЧНЯ;ABCDEFGHIJKLMNOPQRSTUVWXYZ,фисвуапршолдьтщзйкыегмцчня;abcdefghijklmnopqrstuvwxyz"
     vim.o.laststatus = 3
-    vim.o.listchars = "tab:> ,space:·"
+    vim.o.list = true
+    vim.o.listchars = "tab:> ,trail:·"
     vim.o.relativenumber = true
     vim.o.scrolloff = 999
     vim.o.shiftwidth = 4
@@ -23,8 +24,10 @@ local function setup_options()
     vim.o.splitright = true
     vim.o.statuscolumn = "%=%{v:relnum?v:relnum:v:lnum} %s"
     vim.o.statusline = "%!v:lua.StatusLine()"
+    vim.o.swapfile = false
     vim.o.tabline = "%!v:lua.TabLine()"
     vim.o.tabstop = 4
+    vim.o.undofile = true
     vim.o.winborder = "single"
     vim.o.wrap = false
 
@@ -51,22 +54,19 @@ local function setup_autocmds()
     })
 
     vim.api.nvim_create_autocmd("BufRead", {
-        desc = "set git-related variables",
-        callback = function(args)
-            vim.fn.system("git ls-files --error-unmatch " .. args.file .. " 2> /dev/null")
-            vim.b.git_tracked = vim.v.shell_error == 0
+        desc = "set current git branch",
+        callback = function()
             vim.b.git_branch = vim.fn.system("git branch --show-current 2> /dev/null | tr -d '\n'")
         end,
     })
 
     vim.api.nvim_create_autocmd({ "InsertLeave", "TextChanged" }, {
         nested = true,
-        desc = "autowrite git-tracked files",
+        desc = "autowrite files on change",
         callback = function(args)
             if args.file == "" or -- [No Name]
                 vim.bo[args.buf].buftype ~= "" or
-                vim.bo[args.buf].readonly or
-                not vim.b.git_tracked
+                vim.bo[args.buf].readonly
             then
                 return
             end
@@ -82,10 +82,6 @@ local function setup_autocmds()
 end
 
 local function setup_user_commands()
-    vim.api.nvim_create_user_command("ToggleWhitespace", function()
-        vim.o.list = not vim.o.list
-    end, {})
-
     vim.api.nvim_create_user_command("ToggleReaderView", function()
         vim.o.wrap = not vim.o.wrap
         vim.o.conceallevel = vim.o.conceallevel == 0 and 2 or 0 -- markdown rendering.
@@ -182,7 +178,6 @@ local function setup_plugins()
     require("lazy").setup({
         { "christoomey/vim-tmux-navigator" },
         { "echasnovski/mini.surround",                  version = "*" },
-        { "f-person/auto-dark-mode.nvim" },
         { "ibhagwan/fzf-lua" },
         { "lewis6991/gitsigns.nvim" },
         { "nvim-treesitter/nvim-treesitter",            build = ":TSUpdate" },
@@ -209,11 +204,6 @@ local function setup_plugins()
         },
     })
 
-    -- https://github.com/f-person/auto-dark-mode.nvim
-    require("auto-dark-mode").setup({
-        update_interval = 1000,
-    })
-
     -- https://github.com/lewis6991/gitsigns.nvim
     require("gitsigns").setup({
         on_attach = function(buf)
@@ -227,13 +217,12 @@ local function setup_plugins()
             vim.keymap.set("n", "[h", prev_hunk, { buffer = buf })
         end,
     })
-    require("gitsigns").change_base("HEAD", true)
+    require("gitsigns").change_base("HEAD", true) -- show both staged and unstaged changes.
 end
 
 local function setup_fzf()
     -- https://github.com/ibhagwan/fzf-lua
     local fzf = require("fzf-lua")
-    fzf.register_ui_select()
 
     fzf.setup({
         "hide",
@@ -265,6 +254,7 @@ local function setup_fzf()
     vim.keymap.set("n", "<Leader>d", fzf.diagnostics_document)
     vim.keymap.set("n", "<Leader>D", fzf.diagnostics_workspace)
     vim.keymap.set("n", "<Leader>f", fzf.files)
+    vim.keymap.set("n", "<Leader>F", function() fzf.files({ cwd = "~" }) end)
     vim.keymap.set("n", "<Leader>g", fzf.git_diff)
     vim.keymap.set("n", "<Leader>h", fzf.help_tags)
     vim.keymap.set("n", "<Leader>l", fzf.loclist)
@@ -296,8 +286,6 @@ local function on_lsp_attach(args)
     -- gd is already mapped to CTRL-].
     vim.keymap.set("n", "gD", vim.lsp.buf.declaration)
     vim.keymap.set("n", "gt", vim.lsp.buf.type_definition)
-    vim.keymap.set("n", "grr", function() fzf.lsp_references({ jump1 = false, includeDeclaration = false }) end)
-    vim.keymap.set("n", "gri", function() fzf.lsp_implementations({ jump1 = false }) end)
     vim.keymap.set("n", "<Leader>r", function() fzf.lsp_references({ jump1 = false, includeDeclaration = false }) end)
     vim.keymap.set("n", "<Leader>i", function() fzf.lsp_implementations({ jump1 = false }) end)
     vim.keymap.set("n", "<Leader>s", fzf.lsp_document_symbols)
@@ -446,6 +434,7 @@ local function setup_treesitter()
     vim.keymap.set("n", "[d", prev_diagnostic)
 end
 
+--- @type fun(): string
 function StatusLine()
     local macro_recording = function()
         local reg = vim.fn.reg_recording()
@@ -509,13 +498,14 @@ function StatusLine()
     return string.format(" %s ", join_non_empty(parts, "  "))
 end
 
+--- @type fun(): string
 function TabLine()
     local tabs = {}
     local args = vim.fn.argv()
     assert(type(args) == "table")
 
     for i, arg in ipairs(args) do
-        local tab = string.format(" %d %s ", i, vim.fn.fnamemodify(arg, ":t"))
+        local tab = string.format(" %d:%s ", i, vim.fn.fnamemodify(arg, ":t"))
         if vim.fn.fnamemodify(arg, ":p") == vim.api.nvim_buf_get_name(0) then
             table.insert(tabs, "%#Normal#" .. tab .. "%#TabLine#")
         else
