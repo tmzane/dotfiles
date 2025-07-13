@@ -6,13 +6,13 @@ import = [ "~/.config/alacritty/theme.toml" ]
 [window]
 padding = { x = 5, y = 5 }
 dynamic_padding = true
-decorations = "None"
+decorations = "Buttonless"
 startup_mode = "Maximized"
-option_as_alt = "Both" # macOS only
+option_as_alt = "Both"
 
 [font]
 size = 15
-normal = { family = "JetBrainsMonoNL Nerd Font Mono", style = "Light" }
+normal = { family = "JetBrainsMonoNL Nerd Font Mono" }
 
 [cursor]
 style = { blinking = "On" }
