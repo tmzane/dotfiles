@@ -11,8 +11,11 @@ truncate_to_repo = false
 format = "[$branch](bright-black)"
 
 [git_status]
-format = "[$modified( $ahead_behind$stashed)](bright-black)"
+format = "[$modified( $ahead_behind)( $stashed)](bright-black)"
 modified = "*"
+ahead = "⇈"
+behind = "⇊"
+diverged = "⇅"
 stashed = "≡"
 
 [cmd_duration]
