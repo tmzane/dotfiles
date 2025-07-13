@@ -25,8 +25,7 @@ bind --mode default \cz "fg 2>/dev/null; commandline -f repaint-mode"
 bind --mode insert  \cz "fg 2>/dev/null; commandline -f repaint-mode"
 
 # setup prompt
-# https://github.com/pure-fish/pure
-set pure_show_jobs true
+starship init fish | source
 
 # setup fzf
 # https://github.com/junegunn/fzf

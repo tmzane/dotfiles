@@ -1,0 +1,35 @@
+# https://starship.rs/config
+
+format = "$directory( $git_branch$git_status)( $cmd_duration)\n($status )($jobs)$character"
+
+[directory]
+format = "[$path](blue)"
+truncation_length = 0
+truncate_to_repo = false
+
+[git_branch]
+format = "[$branch](bright-black)"
+
+[git_status]
+format = "[$modified( $ahead_behind$stashed)](bright-black)"
+modified = "*"
+stashed = "≡"
+
+[cmd_duration]
+format = "[$duration](yellow)"
+
+[status]
+format = "[$status](red)"
+disabled = false
+
+[jobs]
+format = "[$symbol](bold)"
+symbol = "&"
+
+[character]
+success_symbol = "❯"
+error_symbol = "❯"
+vimcmd_symbol = "❮"
+vimcmd_replace_one_symbol = "❮"
+vimcmd_replace_symbol = "❮"
+vimcmd_visual_symbol = "❮"

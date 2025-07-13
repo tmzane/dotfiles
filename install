@@ -14,6 +14,9 @@ mkdir -p "$dir"
 ln -sf "$PWD/config.fish" "$dir"
 ln -sf "$PWD/fish_plugins" "$dir"
 
+# starship
+ln -sf "$PWD/starship.toml" "$HOME/.config"
+
 # nvim
 dir="$HOME/.config/nvim"
 mkdir -p "$dir"

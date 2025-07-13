@@ -60,6 +60,8 @@ brew "pyright"
 brew "ruff"
 # Static analysis and lint tool, for (ba)sh scripts
 brew "shellcheck"
+# Cross-shell prompt for astronauts
+brew "starship"
 # Simplified and community-driven man pages
 brew "tldr"
 # Terminal multiplexer
