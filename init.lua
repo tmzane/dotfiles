@@ -325,13 +325,13 @@ local function on_lsp_attach(args)
     end
 
     local fzf = require("fzf-lua")
-    -- gd is already mapped to CTRL-].
-    vim.keymap.set("n", "gD", vim.lsp.buf.declaration)
-    vim.keymap.set("n", "gt", vim.lsp.buf.type_definition)
-    vim.keymap.set("n", "<Leader>r", function() fzf.lsp_references({ jump1 = false, includeDeclaration = false }) end)
-    vim.keymap.set("n", "<Leader>i", function() fzf.lsp_implementations({ jump1 = false }) end)
-    vim.keymap.set("n", "<Leader>s", fzf.lsp_document_symbols)
-    vim.keymap.set("n", "<Leader>S", fzf.lsp_live_workspace_symbols)
+    vim.keymap.set("n", "gd", vim.lsp.buf.definition, { buffer = args.buf })
+    vim.keymap.set("n", "gD", vim.lsp.buf.declaration, { buffer = args.buf })
+    vim.keymap.set("n", "gt", vim.lsp.buf.type_definition, { buffer = args.buf })
+    vim.keymap.set("n", "<Leader>r", function() fzf.lsp_references({ jump1 = false, includeDeclaration = false }) end, { buffer = args.buf })
+    vim.keymap.set("n", "<Leader>i", function() fzf.lsp_implementations({ jump1 = false }) end, { buffer = args.buf })
+    vim.keymap.set("n", "<Leader>s", fzf.lsp_document_symbols, { buffer = args.buf })
+    vim.keymap.set("n", "<Leader>S", fzf.lsp_live_workspace_symbols, { buffer = args.buf })
 end
 
 -- https://neovim.io/doc/user/lsp.html
