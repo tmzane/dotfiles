@@ -1,4 +1,5 @@
 local function setup_options()
+    vim.o.autowriteall = true
     vim.o.clipboard = "unnamedplus"
     vim.o.cmdheight = 0
     vim.o.completeopt = "menuone,popup,noinsert,fuzzy"
@@ -10,7 +11,6 @@ local function setup_options()
     vim.o.langmap = "ФИСВУАПРШОЛДЬТЩЗЙКЫЕГМЦЧНЯ;ABCDEFGHIJKLMNOPQRSTUVWXYZ,фисвуапршолдьтщзйкыегмцчня;abcdefghijklmnopqrstuvwxyz"
     vim.o.laststatus = 3
     vim.o.list = true
-    vim.o.listchars = "tab:> ,trail:·"
     vim.o.relativenumber = true
     vim.o.scrolloff = 999
     vim.o.shiftwidth = 4
@@ -60,9 +60,51 @@ local function setup_autocmds()
         end,
     })
 
+    vim.api.nvim_create_autocmd("BufEnter", {
+        desc = "hide tabs in Go files",
+        callback = function(args)
+            if vim.bo[args.buf].filetype == "go" then
+                vim.o.listchars = "tab:  ,trail:·"
+            else
+                vim.o.listchars = "tab:→ ,trail:·"
+            end
+        end,
+    })
+
+    vim.api.nvim_create_autocmd("FileType", {
+        desc = "set external file formatters",
+        pattern = { "json", "yaml" },
+        callback = function(args)
+            if vim.bo[args.buf].filetype == "json" then
+                vim.bo[args.buf].formatprg = "jq"
+            elseif vim.bo[args.buf].filetype == "yaml" then
+                vim.bo[args.buf].formatprg = "yq"
+            end
+        end,
+    })
+
+    vim.api.nvim_create_autocmd("FileType", {
+        desc = "use *_test.go files as alternate files",
+        pattern = "go",
+        callback = function(args)
+            vim.keymap.set("n", "<C-6>", function()
+                local altfile = ""
+                local start = args.file:find("_test.go$")
+                if start then
+                    altfile = args.file:sub(1, start - 1) .. ".go"
+                else
+                    altfile = args.file:sub(1, - #".go" - 1) .. "_test.go"
+                end
+                if vim.uv.fs_stat(altfile) then
+                    vim.cmd("edit " .. altfile)
+                end
+            end, { buffer = args.buf })
+        end,
+    })
+
     vim.api.nvim_create_autocmd({ "InsertLeave", "TextChanged" }, {
-        nested = true,
         desc = "autowrite files on change",
+        nested = true,
         callback = function(args)
             if args.file == "" or -- [No Name]
                 vim.bo[args.buf].buftype ~= "" or
