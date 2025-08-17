@@ -89,6 +89,8 @@ brew "wireguard-tools"
 brew "zig"
 # Language Server for Zig
 brew "zls"
+# A powerful terminal-based AI assistant for developers, providing intelligent coding assistance directly in your terminal.
+brew "charmbracelet/tap/crush"
 # AI on the command line
 brew "charmbracelet/tap/mods"
 # A window border system for macOS
