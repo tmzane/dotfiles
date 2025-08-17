@@ -1,11 +1,18 @@
+tap "charmbracelet/tap"
+tap "felixkratz/formulae"
 tap "homebrew/bundle"
 tap "homebrew/services"
+tap "nikitabobko/tap"
 # Clone of cat(1) with syntax highlighting and Git integration
 brew "bat"
 # Protocol buffers (Google's data interchange format)
 brew "protobuf"
 # Generate compilation database for clang tooling
 brew "bear"
+# New way of working with Protocol Buffers
+brew "buf"
+# Debugger for the Go programming language
+brew "delve"
 # Simple, fast and user-friendly alternative to find
 brew "fd"
 # User-friendly command-line shell for UNIX-like operating systems
@@ -14,6 +21,8 @@ brew "fish"
 brew "fzf"
 # GitHub command-line tool
 brew "gh"
+# Distributed revision control system
+brew "git"
 # GNU implementation of the famous stream editor
 brew "gnu-sed"
 # Open source programming language to build simple/reliable/efficient software
@@ -30,6 +39,8 @@ brew "grpcurl"
 brew "htop"
 # Kubernetes command-line interface
 brew "kubernetes-cli"
+# Postgres C API library
+brew "libpq", link: true
 # Command-line interface for SQLite
 brew "sqlite"
 # Interpreted, interactive, object-oriented programming language
@@ -40,6 +51,8 @@ brew "llvm"
 brew "lua-language-server"
 # Experimental optional static type checker for Python
 brew "mypy"
+# Open source relational database management system
+brew "mysql-client", link: true
 # Ambitious Vim-fork focused on extensibility and agility
 brew "neovim"
 # Create, run, and share large language models (LLMs)
@@ -68,16 +81,26 @@ brew "tldr"
 brew "tmux"
 # Display directories as trees (with optional color/HTML output)
 brew "tree"
+# Extremely fast Python package installer and resolver, written in Rust
+brew "uv"
 # Tools for the WireGuard secure network tunnel
 brew "wireguard-tools"
 # Programming language designed for robustness, optimality, and clarity
 brew "zig"
 # Language Server for Zig
 brew "zls"
+# AI on the command line
+brew "charmbracelet/tap/mods"
+# A window border system for macOS
+brew "felixkratz/formulae/borders"
+# AeroSpace is an i3-like tiling window manager for macOS
+cask "aerospace"
 # GPU-accelerated terminal emulator
 cask "alacritty"
 # Application launcher and productivity software
 cask "alfred"
+# Create and run Linux containers using lightweight virtual machines
+cask "container"
 # Utility to show apps badges from the dock in the menu bar
 cask "doll"
 cask "font-jetbrains-mono-nerd-font"
@@ -93,25 +116,23 @@ cask "lulu"
 cask "netnewswire"
 # Keyboard-driven, vim-like browser based on PyQt5
 cask "qutebrowser"
-# Move and resize windows using keyboard shortcuts or snap areas
-cask "rectangle"
 # Music streaming service
 cask "spotify"
 # Video game digital distribution service
 cask "steam"
 # Text editor for code, markup and prose
 cask "sublime-text"
-# Menu bar customization tool
-cask "swiftbar"
 # Real time file synchronisation software
-cask "syncthing"
+cask "syncthing-app"
 # Messaging app with a focus on speed and security
 cask "telegram"
 # Web browser focusing on security
 cask "tor-browser"
 # Open-source BitTorrent client
 cask "transmission"
+# Virtual machines UI using QEMU
+cask "utm"
 # Multimedia player
 cask "vlc"
 # Network protocol analyzer
-cask "wireshark"
+cask "wireshark-app"
