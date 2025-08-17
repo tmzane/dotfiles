@@ -35,6 +35,11 @@ ln -sf "$PWD/htoprc" "$dir"
 # editorconfig
 ln -sf "$PWD/.editorconfig" "$HOME"
 
+# Aerospace
+dir="$HOME/.config/aerospace"
+mkdir -p "$dir"
+ln -sf "$PWD/aerospace.toml" "$dir"
+
 # Alacritty
 dir="$HOME/.config/alacritty"
 mkdir -p "$dir"
