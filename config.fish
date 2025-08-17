@@ -23,6 +23,7 @@ bind --mode default \cz "fg 2>/dev/null; commandline --function repaint-mode"
 bind --mode insert  \cz "fg 2>/dev/null; commandline --function repaint-mode"
 
 # setup prompt
+set fish_greeting ""
 starship init fish | source
 
 # setup fzf
