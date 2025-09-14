@@ -1,22 +1,38 @@
-[user]
-	name = Nik
-	email = 73077675+tmzane@users.noreply.github.com
-[init]
-	defaultBranch = main
-[pull]
-	rebase = true
-[push]
-	autoSetupRemote = true
-[fetch]
-	prune = true
-	prunetags = true
 [branch]
-	sort = -committerdate
+sort = -committerdate
+
+[commit]
+verbose = true
+
 [diff]
-	tool = nvimdiff
-	algorithm = histogram
+algorithm = histogram
+external = difft --background=light --syntax-highlight=off
+
+[fetch]
+prune = true
+prunetags = true
+
+[init]
+defaultbranch = main
+
 [merge]
-	tool = nvimdiff
-	conflictStyle = zdiff3
+conflictstyle = zdiff3
+
+[pull]
+rebase = true
+
+[push]
+autosetupremote = true
+
+[rebase]
+autostash = true
+
+[rerere]
+enabled = true
+
 [url "git@github.com:"]
-	insteadOf = https://github.com/
+insteadof = https://github.com/
+
+[user]
+name = Nik
+email = 73077675+tmzane@users.noreply.github.com
