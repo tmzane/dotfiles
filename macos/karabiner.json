@@ -127,6 +127,39 @@
                                 "type": "basic"
                             }
                         ]
+                    },
+                    {
+                        "description": "Custom Russian layout",
+                        "manipulators": [
+                            {
+                                "conditions": [
+                                    {
+                                        "input_sources": [{ "language": "ru" }],
+                                        "type": "input_source_if"
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "hyphen",
+                                    "modifiers": { "optional": ["any"] }
+                                },
+                                "to": [{ "key_code": "open_bracket" }],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "input_sources": [{ "language": "ru" }],
+                                        "type": "input_source_if"
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "equal_sign",
+                                    "modifiers": { "optional": ["any"] }
+                                },
+                                "to": [{ "key_code": "close_bracket" }],
+                                "type": "basic"
+                            }
+                        ]
                     }
                 ]
             },
