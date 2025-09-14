@@ -42,6 +42,9 @@ cmd-shift-7 = ["move-node-to-workspace 7", "workspace 7"]
 cmd-shift-8 = ["move-node-to-workspace 8", "workspace 8"]
 cmd-shift-9 = ["move-node-to-workspace 9", "workspace 9"]
 
+cmd-shift-minus = "resize smart -50"
+cmd-shift-equal = "resize smart +50"
+
 cmd-alt-h = "join-with left"
 cmd-alt-j = "join-with down"
 cmd-alt-k = "join-with up"
