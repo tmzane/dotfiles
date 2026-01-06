@@ -15,8 +15,7 @@ vendor/
 go.work
 go.work.sum
 coverage.out
-profile.cpu
-profile.mem
+*.pprof
 
 # zig
 zig-cache/
