@@ -5,8 +5,6 @@ tap "homebrew/services"
 tap "nikitabobko/tap"
 # Clone of cat(1) with syntax highlighting and Git integration
 brew "bat"
-# Protocol buffers (Google's data interchange format)
-brew "protobuf"
 # Generate compilation database for clang tooling
 brew "bear"
 # New way of working with Protocol Buffers
@@ -35,6 +33,8 @@ brew "golangci-lint"
 brew "gopls"
 # Graph visualization software from AT&T and Bell Labs
 brew "graphviz"
+# Protocol buffers (Google's data interchange format)
+brew "protobuf"
 # Like cURL, but for gRPC
 brew "grpcurl"
 # Improved top (interactive process viewer)
@@ -48,13 +48,11 @@ brew "libpq", link: true
 # Command-line interface for SQLite
 brew "sqlite"
 # Interpreted, interactive, object-oriented programming language
-brew "python@3.13"
+brew "python@3.14"
 # Next-gen compiler infrastructure
 brew "llvm"
 # Language Server for the Lua language
 brew "lua-language-server"
-# Experimental optional static type checker for Python
-brew "mypy"
 # Open source relational database management system
 brew "mysql-client", link: true
 # Ambitious Vim-fork focused on extensibility and agility
@@ -63,14 +61,14 @@ brew "neovim"
 brew "ollama"
 # Tool for managing OCI containers and pods
 brew "podman"
+# Interpreted, interactive, object-oriented programming language
+brew "python@3.13"
 # Alternative to docker-compose using podman
 brew "podman-compose"
 # Go support for Google's protocol buffers
 brew "protoc-gen-go"
 # Protoc plugin that generates code for gRPC-Go clients
 brew "protoc-gen-go-grpc"
-# Static type checker for Python
-brew "pyright"
 # Search tool like grep and The Silver Searcher
 brew "ripgrep"
 # Extremely fast Python linter, written in Rust
@@ -87,10 +85,10 @@ brew "tmux"
 brew "tokei"
 # Display directories as trees (with optional color/HTML output)
 brew "tree"
+# Extremely fast Python type checker, written in Rust
+brew "ty"
 # Extremely fast Python package installer and resolver, written in Rust
 brew "uv"
-# Tools for the WireGuard secure network tunnel
-brew "wireguard-tools"
 # Programming language designed for robustness, optimality, and clarity
 brew "zig"
 # Language Server for Zig
@@ -107,6 +105,10 @@ cask "aerospace"
 cask "alacritty"
 # Application launcher and productivity software
 cask "alfred"
+# VPN client
+cask "amneziavpn"
+# OpenAI's official ChatGPT desktop app
+cask "chatgpt"
 # Create and run Linux containers using lightweight virtual machines
 cask "container"
 # Utility to show apps badges from the dock in the menu bar
@@ -122,8 +124,6 @@ cask "librewolf"
 cask "lulu"
 # Free and open-source RSS reader
 cask "netnewswire"
-# Keyboard-driven, vim-like browser based on PyQt5
-cask "qutebrowser"
 # Music streaming service
 cask "spotify"
 # Video game digital distribution service
