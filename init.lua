@@ -198,7 +198,7 @@ local function setup_plugins()
         { "echasnovski/mini.surround",                  version = "*" },
         { "ibhagwan/fzf-lua" },
         { "lewis6991/gitsigns.nvim" },
-        { "nvim-treesitter/nvim-treesitter",            build = ":TSUpdate" },
+        { "nvim-treesitter/nvim-treesitter",            branch = "master", build = ":TSUpdate" },
         { "nvim-treesitter/nvim-treesitter-context" },
         { "nvim-treesitter/nvim-treesitter-textobjects" },
     })
@@ -340,21 +340,6 @@ local function setup_lsp()
         root_markers = { "build.zig", ".git" },
     }
 
-    vim.lsp.config["pyright"] = {
-        cmd = { "pyright-langserver", "--stdio" },
-        filetypes = { "python" },
-        root_markers = { "pyproject.toml", "requirements.txt", ".git" },
-        settings = {
-            python = {
-                analysis = {
-                    autoSearchPaths = true,
-                    diagnosticMode = "openFilesOnly",
-                    useLibraryCodeForTypes = true,
-                },
-            },
-        },
-    }
-
     vim.lsp.config["ruff"] = {
         cmd = { "ruff", "server" },
         filetypes = { "python" },
@@ -384,7 +369,6 @@ local function setup_lsp()
         "clangd",
         "zls",
         "ruff",
-        "pyright",
         "luals",
     })
 
