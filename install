@@ -50,6 +50,11 @@ fi
 cp "$dir/themes/themes/alabaster.toml" "$dir/theme.toml"
 cp "$dir/themes/themes/alabaster_dark.toml" "$dir/theme_alt.toml"
 
+# Ghostty
+dir="$HOME/.config/ghostty"
+mkdir -p "$dir"
+ln -sf "$PWD/config.ghostty" "$dir/config"
+
 # LibreWolf
 dir="$HOME/.librewolf"
 mkdir -p "$dir"

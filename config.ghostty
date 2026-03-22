@@ -1,0 +1,20 @@
+# https://ghostty.org/docs/config
+
+# https://ghostty.org/docs/config/reference#font-family
+font-family = JetBrainsMonoNL Nerd Font Mono
+# https://ghostty.org/docs/config/reference#font-size
+font-size = 15
+
+# https://ghostty.org/docs/config/reference#theme
+theme = dark:Atom One Dark,light:Atom One Light
+# https://ghostty.org/docs/config/reference#cursor-color
+cursor-color = cell-foreground
+
+# https://ghostty.org/docs/config/reference#window-padding-x
+window-padding-x = 5
+# https://ghostty.org/docs/config/reference#window-padding-x
+window-padding-y = 5
+# https://ghostty.org/docs/config/reference#window-padding-balance
+window-padding-balance = true
+# https://ghostty.org/docs/config/reference#macos-titlebar-style
+macos-titlebar-style = hidden
