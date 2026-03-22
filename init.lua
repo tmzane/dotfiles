@@ -28,7 +28,6 @@ local function setup_options()
     vim.o.swapfile = false
     vim.o.tabline = "%!v:lua.TabLine()"
     vim.o.tabstop = 4
-    vim.o.undofile = true
     vim.o.winborder = "single"
     vim.o.wrap = false
 
@@ -37,7 +36,7 @@ local function setup_options()
 
     vim.diagnostic.config({ virtual_lines = { current_line = true } })
 
-    require("vim._extui").enable({})
+    require("vim._core.ui2").enable({})
 end
 
 --- Creates mappings for the next and previous moves repeatable with the ; and , keys.
@@ -62,6 +61,10 @@ local function setup_keymaps()
     vim.keymap.set("n", "U", "<C-r>", { desc = "Redo" })
     vim.keymap.set("n", "gd", "<C-]>", { desc = "Goto definition" })
     vim.keymap.set("n", "<Esc>", "<Cmd>nohlsearch<CR>", { desc = "Clear search highlights" })
+
+    vim.keymap.set("i", "<CR>", function()
+        return vim.fn.pumvisible() ~= 0 and "<C-y>" or "<CR>"
+    end, { expr = true })
 
     vim.keymap.set("n", "<A-q>", function()
         for _, win in ipairs(vim.fn.getwininfo()) do
@@ -484,25 +487,10 @@ function StatusLine()
         return " " .. count.current .. "/" .. count.total
     end
 
-    local diagnostic_count = function(severity)
-        local n = vim.diagnostic.count(0)[severity] or 0
-        if n == 0 then
-            return ""
-        end
-        return vim.diagnostic.severity[severity]:sub(1, 1) .. n
-    end
-
     local attached_lsp = function()
         local clients = vim.lsp.get_clients({ bufnr = 0 })
         local names = vim.tbl_map(function(c) return c.name end, clients)
         return table.concat(names, "+")
-    end
-
-    local with_hl = function(name, s)
-        if s == "" then
-            return ""
-        end
-        return "%#" .. name .. "#" .. s .. "%#StatusLine#"
     end
 
     local join_non_empty = function(list, sep)
@@ -516,12 +504,7 @@ function StatusLine()
         "%S",    -- Pending operator or number of selected characters.
         macro_recording(),
         search_count(),
-        join_non_empty({
-            with_hl("DiagnosticSignError", diagnostic_count(vim.diagnostic.severity.ERROR)),
-            with_hl("DiagnosticSignWarn", diagnostic_count(vim.diagnostic.severity.WARN)),
-            with_hl("DiagnosticSignInfo", diagnostic_count(vim.diagnostic.severity.INFO)),
-            with_hl("DiagnosticSignHint", diagnostic_count(vim.diagnostic.severity.HINT)),
-        }, " "),
+        vim.diagnostic.status(),
         attached_lsp(),
         "%l/%L (%p%%)", -- Line number / total lines (file progress in %).
         vim.b.git_branch,
