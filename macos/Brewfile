@@ -1,4 +1,3 @@
-tap "charmbracelet/tap"
 tap "felixkratz/formulae"
 tap "homebrew/bundle"
 tap "homebrew/services"
@@ -33,8 +32,6 @@ brew "golangci-lint"
 brew "gopls"
 # Graph visualization software from AT&T and Bell Labs
 brew "graphviz"
-# Protocol buffers (Google's data interchange format)
-brew "protobuf"
 # Like cURL, but for gRPC
 brew "grpcurl"
 # Improved top (interactive process viewer)
@@ -45,8 +42,6 @@ brew "kubernetes-cli"
 brew "less"
 # Postgres C API library
 brew "libpq", link: true
-# Command-line interface for SQLite
-brew "sqlite"
 # Interpreted, interactive, object-oriented programming language
 brew "python@3.14"
 # Next-gen compiler infrastructure
@@ -56,7 +51,7 @@ brew "lua-language-server"
 # Open source relational database management system
 brew "mysql-client", link: true
 # Ambitious Vim-fork focused on extensibility and agility
-brew "neovim"
+brew "neovim", args: ["HEAD"]
 # Create, run, and share large language models (LLMs)
 brew "ollama"
 # Tool for managing OCI containers and pods
@@ -65,6 +60,8 @@ brew "podman"
 brew "python@3.13"
 # Alternative to docker-compose using podman
 brew "podman-compose"
+# Protocol buffers (Google's data interchange format)
+brew "protobuf"
 # Go support for Google's protocol buffers
 brew "protoc-gen-go"
 # Protoc plugin that generates code for gRPC-Go clients
@@ -85,6 +82,8 @@ brew "tmux"
 brew "tokei"
 # Display directories as trees (with optional color/HTML output)
 brew "tree"
+# Parser generator tool
+brew "tree-sitter-cli"
 # Extremely fast Python type checker, written in Rust
 brew "ty"
 # Extremely fast Python package installer and resolver, written in Rust
@@ -93,27 +92,23 @@ brew "uv"
 brew "zig"
 # Language Server for Zig
 brew "zls"
-# A powerful terminal-based AI assistant for developers, providing intelligent coding assistance directly in your terminal.
-brew "charmbracelet/tap/crush"
-# AI on the command line
-brew "charmbracelet/tap/mods"
 # A window border system for macOS
 brew "felixkratz/formulae/borders"
 # AeroSpace is an i3-like tiling window manager for macOS
-cask "aerospace"
+cask "nikitabobko/tap/aerospace"
 # GPU-accelerated terminal emulator
 cask "alacritty"
 # Application launcher and productivity software
 cask "alfred"
 # VPN client
 cask "amneziavpn"
-# OpenAI's official ChatGPT desktop app
-cask "chatgpt"
 # Create and run Linux containers using lightweight virtual machines
 cask "container"
 # Utility to show apps badges from the dock in the menu bar
 cask "doll"
 cask "font-jetbrains-mono-nerd-font"
+# Terminal emulator that uses platform-native UI and GPU acceleration
+cask "ghostty"
 # Keyboard customiser
 cask "karabiner-elements"
 # ZSA keyboard firmware flasher
