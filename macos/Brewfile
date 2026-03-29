@@ -1,6 +1,7 @@
 tap "felixkratz/formulae"
 tap "homebrew/bundle"
 tap "homebrew/services"
+tap "karinushka/paneru"
 tap "nikitabobko/tap"
 # Clone of cat(1) with syntax highlighting and Git integration
 brew "bat"
@@ -36,6 +37,8 @@ brew "graphviz"
 brew "grpcurl"
 # Improved top (interactive process viewer)
 brew "htop"
+# Tools and libraries to manipulate images in select formats
+brew "imagemagick"
 # Kubernetes command-line interface
 brew "kubernetes-cli"
 # Pager program similar to more
@@ -54,6 +57,8 @@ brew "mysql-client", link: true
 brew "neovim", args: ["HEAD"]
 # Create, run, and share large language models (LLMs)
 brew "ollama"
+# Swiss-army knife of markup format conversion
+brew "pandoc"
 # Tool for managing OCI containers and pods
 brew "podman"
 # Interpreted, interactive, object-oriented programming language
@@ -94,8 +99,8 @@ brew "zig"
 brew "zls"
 # A window border system for macOS
 brew "felixkratz/formulae/borders"
-# AeroSpace is an i3-like tiling window manager for macOS
-cask "nikitabobko/tap/aerospace"
+# Sliding, tiling window manager for MacOS
+brew "karinushka/paneru/paneru"
 # GPU-accelerated terminal emulator
 cask "alacritty"
 # Application launcher and productivity software
