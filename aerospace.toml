@@ -1,8 +1,5 @@
 # https://nikitabobko.github.io/AeroSpace/guide#default-config
 
-start-at-login = true
-after-startup-command = ["exec-and-forget borders active_color=0xFF111111 width=5 hidpi=on"]
-
 [gaps]
 inner.horizontal = 10
 inner.vertical   = 10
