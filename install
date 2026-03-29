@@ -54,6 +54,9 @@ cp "$dir/themes/themes/alabaster_dark.toml" "$dir/theme_alt.toml"
 dir="$HOME/.config/ghostty"
 mkdir -p "$dir"
 ln -sf "$PWD/config.ghostty" "$dir/config"
+if [ ! -d "$dir/shaders" ]; then
+    git clone https://github.com/sahaj-b/ghostty-cursor-shaders "$dir/shaders"
+fi
 
 # LibreWolf
 dir="$HOME/.librewolf"
@@ -72,7 +75,7 @@ done
 
 # macOS
 if [ "$(uname)" = "Darwin" ]; then
-    cd macOS
+    cd macos
 
     # brew
     /opt/homebrew/bin/brew bundle install --file=Brewfile
