@@ -1,8 +1,6 @@
-tap "felixkratz/formulae"
 tap "homebrew/bundle"
 tap "homebrew/services"
 tap "karinushka/paneru"
-tap "nikitabobko/tap"
 # Clone of cat(1) with syntax highlighting and Git integration
 brew "bat"
 # Generate compilation database for clang tooling
@@ -37,8 +35,6 @@ brew "graphviz"
 brew "grpcurl"
 # Improved top (interactive process viewer)
 brew "htop"
-# Tools and libraries to manipulate images in select formats
-brew "imagemagick"
 # Kubernetes command-line interface
 brew "kubernetes-cli"
 # Pager program similar to more
@@ -97,8 +93,6 @@ brew "uv"
 brew "zig"
 # Language Server for Zig
 brew "zls"
-# A window border system for macOS
-brew "felixkratz/formulae/borders"
 # Sliding, tiling window manager for MacOS
 brew "karinushka/paneru/paneru"
 # GPU-accelerated terminal emulator
