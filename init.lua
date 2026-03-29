@@ -28,6 +28,7 @@ local function setup_options()
     vim.o.swapfile = false
     vim.o.tabline = "%!v:lua.TabLine()"
     vim.o.tabstop = 4
+    vim.o.updatetime = 1000
     vim.o.winborder = "single"
     vim.o.wrap = false
 
@@ -369,6 +370,17 @@ local function setup_lsp()
                     vim.lsp.buf.format({ async = true })
                     vim.lsp.buf.code_action({ context = { only = { "source.organizeImports" } }, apply = true })
                 end, { buffer = args.buf })
+            end
+
+            if client and client:supports_method(vim.lsp.protocol.Methods.textDocument_documentHighlight) then
+                vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
+                    buffer = args.buf,
+                    callback = vim.lsp.buf.document_highlight,
+                })
+                vim.api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI" }, {
+                    buffer = args.buf,
+                    callback = vim.lsp.buf.clear_references,
+                })
             end
 
             local fzf = require("fzf-lua")
