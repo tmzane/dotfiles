@@ -6,6 +6,7 @@ set --export CONTAINER_RUNNER        'podman'
 set --export HOMEBREW_NO_ANALYTICS   '1'
 set --export HOMEBREW_NO_AUTO_UPDATE '1'
 set --export FZF_DEFAULT_OPTS        '--border=none --inline-info'
+set --export XDG_CONFIG_HOME         "$HOME/.config"
 
 # Setup $PATH.
 fish_add_path --global --path --move /opt/homebrew/bin
