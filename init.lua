@@ -1,4 +1,5 @@
 local function setup_options()
+    vim.o.autocomplete = true
     vim.o.autowriteall = true
     vim.o.clipboard = "unnamedplus"
     vim.o.cmdheight = 0
@@ -14,6 +15,7 @@ local function setup_options()
     vim.o.listchars = "tab:  ,trail:·"
     vim.o.relativenumber = true
     vim.o.scrolloff = 999
+    vim.o.scrolloffpad = 1
     vim.o.shiftwidth = 4
     vim.o.showcmdloc = "statusline"
     vim.o.showtabline = vim.fn.argc() == 0 and 0 or 2
@@ -59,23 +61,16 @@ local function map_repeatable_move(next, prev, opts)
 end
 
 local function setup_keymaps()
-    vim.keymap.set("n", "U", "<C-r>", { desc = "Redo" })
     vim.keymap.set("n", "gd", "<C-]>", { desc = "Goto definition" })
     vim.keymap.set("n", "<Esc>", "<Cmd>nohlsearch<CR>", { desc = "Clear search highlights" })
+
+    local ts = require("vim.treesitter._select")
+    vim.keymap.set("x", "v", function() ts.select_parent(vim.v.count1) end, { desc = "Increase selection" })
+    vim.keymap.set("x", "V", function() ts.select_child(vim.v.count1) end, { desc = "Decrease selection" })
 
     vim.keymap.set("i", "<CR>", function()
         return vim.fn.pumvisible() ~= 0 and "<C-y>" or "<CR>"
     end, { expr = true })
-
-    vim.keymap.set("n", "<A-q>", function()
-        for _, win in ipairs(vim.fn.getwininfo()) do
-            if win.quickfix == 1 then
-                vim.cmd.cclose()
-                return
-            end
-        end
-        vim.cmd.copen()
-    end, { desc = "Toggle quickfix list" })
 
     for _, key in ipairs({ "f", "F", "t", "T" }) do
         vim.keymap.set("n", key, function()
@@ -261,6 +256,10 @@ local function setup_plugins()
             end
         end,
     })
+
+    vim.cmd("packadd cfilter")
+    vim.cmd("packadd nvim.difftool")
+    vim.cmd("packadd nvim.undotree")
 end
 
 -- https://github.com/echasnovski/mini.surround
@@ -326,18 +325,22 @@ local function setup_fzf()
         },
     })
 
+    fzf.register_ui_select()
+
     vim.keymap.set("n", "<Leader>a", fzf.args)
     vim.keymap.set("n", "<Leader>b", fzf.buffers)
     vim.keymap.set("n", "<Leader>d", fzf.diagnostics_document)
     vim.keymap.set("n", "<Leader>D", fzf.diagnostics_workspace)
     vim.keymap.set("n", "<Leader>f", fzf.files)
     vim.keymap.set("n", "<Leader>F", function() fzf.files({ cwd = "~" }) end)
-    vim.keymap.set("n", "<Leader>g", fzf.git_diff)
+    vim.keymap.set("n", "<Leader>gs", fzf.git_status)
     vim.keymap.set("n", "<Leader>h", fzf.help_tags)
     vim.keymap.set("n", "<Leader>l", fzf.loclist)
+    vim.keymap.set("n", "<Leader>L", fzf.loclist_stack)
     vim.keymap.set("n", "<Leader>m", fzf.marks)
     vim.keymap.set("n", "<Leader>o", fzf.oldfiles)
     vim.keymap.set("n", "<Leader>q", fzf.quickfix)
+    vim.keymap.set("n", "<Leader>Q", fzf.quickfix_stack)
     vim.keymap.set("n", "<Leader>\"", fzf.registers)
     vim.keymap.set("n", "<Leader>/", fzf.grep_project)
     vim.keymap.set("n", "<Leader><Leader>", fzf.resume)
@@ -372,6 +375,10 @@ local function setup_lsp()
                 end, { buffer = args.buf })
             end
 
+            if client:supports_method(vim.lsp.protocol.Methods.textDocument_codeLens) then
+                vim.lsp.codelens.enable(true, { client_id = client.id })
+            end
+
             if client and client:supports_method(vim.lsp.protocol.Methods.textDocument_documentHighlight) then
                 vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
                     buffer = args.buf,
@@ -389,7 +396,6 @@ local function setup_lsp()
 
             vim.keymap.set("n", "gd", vim.lsp.buf.definition, { buffer = args.buf })
             vim.keymap.set("n", "gD", vim.lsp.buf.declaration, { buffer = args.buf })
-            vim.keymap.set("n", "gt", vim.lsp.buf.type_definition, { buffer = args.buf })
             vim.keymap.set("n", "<Leader>r", references, { buffer = args.buf })
             vim.keymap.set("n", "<Leader>i", implementations, { buffer = args.buf })
             vim.keymap.set("n", "<Leader>s", fzf.lsp_document_symbols, { buffer = args.buf })
@@ -518,6 +524,7 @@ function StatusLine()
         search_count(),
         vim.diagnostic.status(),
         attached_lsp(),
+        vim.lsp.status(),
         "%l/%L (%p%%)", -- Line number / total lines (file progress in %).
         vim.b.git_branch,
     }
