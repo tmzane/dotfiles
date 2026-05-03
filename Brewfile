@@ -77,8 +77,6 @@ brew "shellcheck"
 brew "starship"
 # Simplified and community-driven man pages
 brew "tldr"
-# Terminal multiplexer
-brew "tmux"
 # Program that allows you to count code, quickly
 brew "tokei"
 # Display directories as trees (with optional color/HTML output)
@@ -95,8 +93,6 @@ brew "zig"
 brew "zls"
 # Sliding, tiling window manager for MacOS
 brew "karinushka/paneru/paneru"
-# GPU-accelerated terminal emulator
-cask "alacritty"
 # Application launcher and productivity software
 cask "alfred"
 # VPN client
@@ -122,8 +118,6 @@ cask "netnewswire"
 cask "spotify"
 # Video game digital distribution service
 cask "steam"
-# Text editor for code, markup and prose
-cask "sublime-text"
 # Real time file synchronisation software
 cask "syncthing-app"
 # Messaging app with a focus on speed and security

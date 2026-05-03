@@ -7,8 +7,3 @@ if [ "$(defaults read -g AppleInterfaceStyle 2> /dev/null)" = "Dark" ]; then
 else
     osascript -e 'tell application "System Events" to tell appearance preferences to set dark mode to true'
 fi
-
-mv "$HOME/.config/alacritty/theme.toml" "$HOME/.config/alacritty/theme_tmp.toml"
-mv "$HOME/.config/alacritty/theme_alt.toml" "$HOME/.config/alacritty/theme.toml"
-mv "$HOME/.config/alacritty/theme_tmp.toml" "$HOME/.config/alacritty/theme_alt.toml"
-touch "$HOME/.config/alacritty/alacritty.toml"

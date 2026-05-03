@@ -1,6 +1,7 @@
 #!/bin/sh
 
 set -euf
+cd "$(dirname "$0")"
 
 # git
 dir="$HOME/.config/git"
@@ -22,11 +23,6 @@ dir="$HOME/.config/nvim"
 mkdir -p "$dir"
 ln -sf "$PWD/init.lua" "$dir"
 
-# tmux
-dir="$HOME/.config/tmux"
-mkdir -p "$dir"
-ln -sf "$PWD/tmux.conf" "$dir"
-
 # htop
 dir="$HOME/.config/htop"
 mkdir -p "$dir"
@@ -40,21 +36,6 @@ dir="$HOME/.config/paneru"
 mkdir -p "$dir"
 ln -sf "$PWD/paneru.toml" "$dir"
 
-# Aerospace
-dir="$HOME/.config/aerospace"
-mkdir -p "$dir"
-ln -sf "$PWD/aerospace.toml" "$dir"
-
-# Alacritty
-dir="$HOME/.config/alacritty"
-mkdir -p "$dir"
-ln -sf "$PWD/alacritty.toml" "$dir"
-if [ ! -d "$dir/themes" ]; then
-    git clone https://github.com/alacritty/alacritty-theme "$dir/themes"
-fi
-cp "$dir/themes/themes/alabaster.toml" "$dir/theme.toml"
-cp "$dir/themes/themes/alabaster_dark.toml" "$dir/theme_alt.toml"
-
 # Ghostty
 dir="$HOME/.config/ghostty"
 mkdir -p "$dir"
@@ -67,11 +48,6 @@ fi
 dir="$HOME/.librewolf"
 mkdir -p "$dir"
 ln -sf "$PWD/librewolf.overrides.cfg" "$dir"
-
-# Sublime Text
-dir="$HOME/Library/Application Support/Sublime Text/Packages/User"
-mkdir -p "$dir"
-ln -sf "$PWD/Preferences.sublime-settings" "$dir"
 
 # /usr/local/bin
 sudo ln -sf "$PWD/bin/toggle_dark_mode" /usr/local/bin
