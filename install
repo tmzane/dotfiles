@@ -1,6 +1,6 @@
 #!/bin/sh
 
-set -eu
+set -euf
 
 # git
 dir="$HOME/.config/git"
@@ -74,18 +74,11 @@ mkdir -p "$dir"
 ln -sf "$PWD/Preferences.sublime-settings" "$dir"
 
 # /usr/local/bin
-for file in bin/*; do
-    sudo ln -sf "$PWD/$file" /usr/local/bin
-done
+sudo ln -sf "$PWD/bin/toggle_dark_mode" /usr/local/bin
 
-# macOS
 if [ "$(uname)" = "Darwin" ]; then
-    cd macos
-
-    # brew
     /opt/homebrew/bin/brew bundle install --file=Brewfile
 
-    # fish
     if [ "$SHELL" != "/opt/homebrew/bin/fish" ]; then
         sudo chsh -s /opt/homebrew/bin/fish "$USER"
     fi
@@ -94,12 +87,4 @@ if [ "$(uname)" = "Darwin" ]; then
     dir="$HOME/.config/karabiner"
     mkdir -p "$dir"
     ln -sf "$PWD/karabiner.json" "$dir"
-
-    # launchd
-    for file in LaunchAgents/*.plist; do
-        sed "s|\$HOME|$HOME|" "$file" > "$HOME/Library/$file"
-    done
-    for file in LaunchDaemons/*.plist; do
-        sudo cp -f "$file" "/Library/LaunchDaemons"
-    done
 fi
