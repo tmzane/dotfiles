@@ -1,28 +1,29 @@
 # macOS
 .DS_Store
 
-# secrets
-.env
+# Syncthing
+.stfolder/
 
-# c
+# C
 *.o
 a.out
 .cache/clangd/
 compile_commands.json
 
-# go
+# Go
 vendor/
 go.work
 go.work.sum
 coverage.out
 *.pprof
 
-# zig
-zig-cache/
+# JavaScript
+node_modules/
 
-# python
+# Python
 .venv/
 __pycache__/
 
-# syncthing
-.stfolder/
+# Zig
+zig-cache/
+.zig-cache/
