@@ -18,6 +18,8 @@ window-padding-y = 5
 window-padding-balance = true
 # https://ghostty.org/docs/config/reference#macos-titlebar-style
 macos-titlebar-style = tabs
+# https://ghostty.org/docs/config/reference#macos-option-as-alt
+macos-option-as-alt = true
 
 # https://ghostty.org/docs/config/reference#custom-shader
 custom-shader = ./shaders/cursor_warp.glsl
