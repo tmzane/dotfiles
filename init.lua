@@ -1,5 +1,4 @@
 local function setup_options()
-    vim.o.autocomplete = true
     vim.o.autowriteall = true
     vim.o.clipboard = "unnamedplus"
     vim.o.cmdheight = 0
@@ -39,7 +38,7 @@ local function setup_options()
 
     vim.diagnostic.config({ virtual_lines = { current_line = true } })
 
-    require("vim._core.ui2").enable({})
+    require("vim._core.ui2").enable({ msg = { targets = "msg" } })
 end
 
 --- Creates mappings for the next and previous moves repeatable with the ; and , keys.
@@ -62,6 +61,7 @@ end
 
 local function setup_keymaps()
     vim.keymap.set("n", "gd", "<C-]>", { desc = "Goto definition" })
+    vim.keymap.set("n", "<CR>", "<Cmd>wall<CR>", { desc = "Write all buffers" })
     vim.keymap.set("n", "<Esc>", "<Cmd>nohlsearch<CR>", { desc = "Clear search highlights" })
 
     local ts = require("vim.treesitter._select")
@@ -114,7 +114,7 @@ local function setup_autocmds()
     })
 
     vim.api.nvim_create_autocmd("FileType", {
-        desc = "Use *_test.go files as alternate files",
+        desc = "Use *_test.go as the alternate file",
         pattern = "go",
         callback = function(args)
             vim.keymap.set("n", "<C-6>", function()
@@ -129,27 +129,6 @@ local function setup_autocmds()
                     vim.cmd("edit " .. altfile)
                 end
             end, { buffer = args.buf })
-        end,
-    })
-
-    vim.api.nvim_create_autocmd({ "InsertLeave", "TextChanged" }, {
-        desc = "Autowrite files on change",
-        nested = true,
-        callback = function(args)
-            if args.file == "" or -- [No Name]
-                vim.bo[args.buf].buftype ~= "" or
-                vim.bo[args.buf].readonly
-            then
-                return
-            end
-
-            -- Keep trailing whitespace on the current line.
-            local ws = vim.api.nvim_get_current_line():match("%s+$")
-            vim.cmd("silent write")
-            if ws then
-                vim.api.nvim_put({ ws }, "c", true, true)
-                vim.cmd("noautocmd silent write")
-            end
         end,
     })
 end
@@ -369,22 +348,34 @@ local function setup_lsp()
             end
 
             if client:supports_method(vim.lsp.protocol.Methods.textDocument_formatting) then
-                vim.keymap.set("n", "<CR>", function()
-                    vim.lsp.buf.format({ async = true })
-                    vim.lsp.buf.code_action({ context = { only = { "source.organizeImports" } }, apply = true })
-                end, { buffer = args.buf })
+                vim.api.nvim_create_autocmd("BufWrite", {
+                    buffer = args.buf,
+                    callback = function()
+                        vim.lsp.buf.format({ bufnr = args.buf })
+                        vim.wait(1000, function()
+                            vim.lsp.buf.code_action({
+                                apply = true,
+                                context = {
+                                    diagnostics = {},
+                                    only = { "source.organizeImports" },
+                                },
+                            })
+                            return true
+                        end)
+                    end,
+                })
             end
 
             if client:supports_method(vim.lsp.protocol.Methods.textDocument_codeLens) then
                 vim.lsp.codelens.enable(true, { client_id = client.id })
             end
 
-            if client and client:supports_method(vim.lsp.protocol.Methods.textDocument_documentHighlight) then
-                vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
+            if client:supports_method(vim.lsp.protocol.Methods.textDocument_documentHighlight) then
+                vim.api.nvim_create_autocmd("CursorHold", {
                     buffer = args.buf,
                     callback = vim.lsp.buf.document_highlight,
                 })
-                vim.api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI" }, {
+                vim.api.nvim_create_autocmd("CursorMoved", {
                     buffer = args.buf,
                     callback = vim.lsp.buf.clear_references,
                 })
