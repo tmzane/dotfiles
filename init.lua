@@ -62,7 +62,10 @@ end
 local function setup_keymaps()
     vim.keymap.set("n", "gd", "<C-]>", { desc = "Goto definition" })
     vim.keymap.set("n", "<CR>", "<Cmd>wall<CR>", { desc = "Write all buffers" })
-    vim.keymap.set("n", "<Esc>", "<Cmd>nohlsearch<CR>", { desc = "Clear search highlights" })
+    vim.keymap.set("n", "<Esc>", function()
+        vim.cmd("nohlsearch")
+        vim.lsp.buf.clear_references()
+    end, { desc = "Clear highlights" })
 
     local ts = require("vim.treesitter._select")
     vim.keymap.set("x", "v", function() ts.select_parent(vim.v.count1) end, { desc = "Increase selection" })
@@ -338,6 +341,51 @@ local function setup_lsp()
         "zls",
     })
 
+    -- https://go.dev/gopls/settings
+    vim.lsp.config("gopls", {
+        settings = {
+            gopls = {
+                gofumpt = true,
+                staticcheck = true,
+                -- https://go.dev/gopls/codelenses
+                codelenses = {
+                    test = true,
+                    upgrade_dependency = true,
+                },
+                -- https://github.com/golang/tools/blob/master/gopls/doc/inlayHints.md
+                hints = {
+                    compositeLiteralFields = true,
+                    constantValues = true,
+                    ignoredError = true,
+                },
+            },
+        },
+    })
+
+    -- https://luals.github.io/wiki/settings
+    -- https://github.com/neovim/nvim-lspconfig/blob/master/doc/configs.md#lua_ls
+    vim.lsp.config("lua_ls", {
+        on_init = function(client)
+            client.config.settings.Lua = vim.tbl_deep_extend("force", client.config.settings.Lua, {
+                runtime = {
+                    version = "LuaJIT",
+                },
+                workspace = {
+                    checkThirdParty = false,
+                    library = { vim.env.VIMRUNTIME },
+                },
+            })
+        end,
+        settings = {
+            Lua = {
+                -- https://luals.github.io/wiki/settings/#hint
+                hint = {
+                    paramName = "Disable",
+                },
+            },
+        },
+    })
+
     vim.api.nvim_create_autocmd("LspAttach", {
         callback = function(args)
             local client = assert(vim.lsp.get_client_by_id(args.data.client_id))
@@ -345,6 +393,18 @@ local function setup_lsp()
             if client:supports_method(vim.lsp.protocol.Methods.textDocument_completion) then
                 vim.lsp.completion.enable(true, client.id, args.buf, { autotrigger = true })
                 vim.keymap.set("i", "<C-Space>", vim.lsp.completion.get, { buffer = args.buf })
+            end
+
+            if client:supports_method(vim.lsp.protocol.Methods.textDocument_codeLens) then
+                vim.lsp.codelens.enable(true, { client_id = client.id })
+            end
+
+            if client:supports_method(vim.lsp.protocol.Methods.textDocument_inlayHint) then
+                vim.lsp.inlay_hint.enable(true, { client_id = client.id })
+            end
+
+            if client:supports_method(vim.lsp.protocol.Methods.textDocument_documentHighlight) then
+                vim.keymap.set("n", "grh", vim.lsp.buf.document_highlight, { buffer = args.buf })
             end
 
             if client:supports_method(vim.lsp.protocol.Methods.textDocument_formatting) then
@@ -366,21 +426,6 @@ local function setup_lsp()
                 })
             end
 
-            if client:supports_method(vim.lsp.protocol.Methods.textDocument_codeLens) then
-                vim.lsp.codelens.enable(true, { client_id = client.id })
-            end
-
-            if client:supports_method(vim.lsp.protocol.Methods.textDocument_documentHighlight) then
-                vim.api.nvim_create_autocmd("CursorHold", {
-                    buffer = args.buf,
-                    callback = vim.lsp.buf.document_highlight,
-                })
-                vim.api.nvim_create_autocmd("CursorMoved", {
-                    buffer = args.buf,
-                    callback = vim.lsp.buf.clear_references,
-                })
-            end
-
             local fzf = require("fzf-lua")
             local references = function() fzf.lsp_references({ jump1 = false, includeDeclaration = false }) end
             local implementations = function() fzf.lsp_implementations({ jump1 = false }) end
@@ -392,25 +437,6 @@ local function setup_lsp()
             vim.keymap.set("n", "<Leader>s", fzf.lsp_document_symbols, { buffer = args.buf })
             vim.keymap.set("n", "<Leader>S", fzf.lsp_live_workspace_symbols, { buffer = args.buf })
         end,
-    })
-
-    -- https://luals.github.io/wiki/settings
-    -- https://github.com/neovim/nvim-lspconfig/blob/master/doc/configs.md#lua_ls
-    vim.lsp.config("lua_ls", {
-        on_init = function(client)
-            local path = client.workspace_folders[1].name
-            if vim.loop.fs_stat(path .. "/.luarc.json") or vim.loop.fs_stat(path .. "/.luarc.jsonc") then
-                return
-            end
-            client.config.settings.Lua = vim.tbl_deep_extend("force", client.config.settings.Lua, {
-                runtime = { version = "LuaJIT" },
-                workspace = {
-                    checkThirdParty = false,
-                    library = { vim.env.VIMRUNTIME },
-                },
-            })
-        end,
-        settings = { Lua = {} },
     })
 end
 
@@ -515,7 +541,6 @@ function StatusLine()
         search_count(),
         vim.diagnostic.status(),
         attached_lsp(),
-        vim.lsp.status(),
         "%l/%L (%p%%)", -- Line number / total lines (file progress in %).
         vim.b.git_branch,
     }
