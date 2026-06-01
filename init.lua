@@ -140,6 +140,10 @@ local function setup_user_commands()
     vim.api.nvim_create_user_command("PackUpdate", function() vim.pack.update() end, {})
 end
 
+local function setup_highlights()
+    vim.api.nvim_set_hl(0, "@lsp.mod.shadowing", { underline = true, update = true })
+end
+
 local function setup_arglist()
     --- Returns the buffer's position in the argument list, or -1 if not found.
     ---
@@ -343,6 +347,9 @@ local function setup_lsp()
 
     -- https://go.dev/gopls/settings
     vim.lsp.config("gopls", {
+        init_options = {
+            semanticTokens = true,
+        },
         settings = {
             gopls = {
                 gofumpt = true,
@@ -570,6 +577,7 @@ setup_options()
 setup_keymaps()
 setup_autocmds()
 setup_user_commands()
+setup_highlights()
 setup_arglist()
 setup_plugins()
 setup_surround()
