@@ -14,7 +14,7 @@ local function setup_options()
     vim.o.listchars = "tab:  ,trail:·"
     vim.o.relativenumber = true
     vim.o.scrolloff = 999
-    vim.o.scrolloffpad = 1
+    -- vim.o.scrolloffpad = 1
     vim.o.shiftwidth = 4
     vim.o.showcmdloc = "statusline"
     vim.o.showtabline = vim.fn.argc() == 0 and 0 or 2
