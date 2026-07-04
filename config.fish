@@ -69,6 +69,15 @@ function vimfind
     nvim $(fd --type=file --full-path --hidden --no-require-git $argv)
 end
 
+function weather
+    set --local city $argv[1]
+    set --local days $argv[2]
+    if test -z $days
+        set days 0
+    end
+    curl "wttr.in/$city?F&T&$days"
+end
+
 function _fuzzy_jobs
     if not builtin jobs --query
         return
