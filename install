@@ -3,64 +3,48 @@
 set -euf
 cd "$(dirname "$0")"
 
-# git
-dir="$HOME/.config/git"
-mkdir -p "$dir"
-ln -sf "$PWD/gitconfig" "$dir/config"
-ln -sf "$PWD/gitignore" "$dir/ignore"
+link() {
+    src="$1"
+    dst="$2"
+    mkdir -p "$(dirname "$dst")"
+    ln -sf "$src" "$dst"
+}
 
-# fish
-dir="$HOME/.config/fish"
-mkdir -p "$dir"
-ln -sf "$PWD/config.fish" "$dir"
-ln -sf "$PWD/fish_plugins" "$dir"
+link "$PWD/.editorconfig"           "$HOME"
+link "$PWD/config.fish"             "$HOME/.config/fish"
+link "$PWD/config.ghostty"          "$HOME/.config/ghostty"
+link "$PWD/gitconfig"               "$HOME/.config/git"
+link "$PWD/gitignore"               "$HOME/.config/git"
+link "$PWD/htoprc"                  "$HOME/.config/htop"
+link "$PWD/init.lua"                "$HOME/.config/nvim"
+link "$PWD/librewolf.overrides.cfg" "$HOME/.librewolf"
+link "$PWD/starship.toml"           "$HOME/.config"
 
-# starship
-ln -sf "$PWD/starship.toml" "$HOME/.config"
-
-# nvim
-dir="$HOME/.config/nvim"
-mkdir -p "$dir"
-ln -sf "$PWD/init.lua" "$dir"
-
-# htop
-dir="$HOME/.config/htop"
-mkdir -p "$dir"
-ln -sf "$PWD/htoprc" "$dir"
-
-# editorconfig
-ln -sf "$PWD/.editorconfig" "$HOME"
-
-# Paneru
-dir="$HOME/.config/paneru"
-mkdir -p "$dir"
-ln -sf "$PWD/paneru.toml" "$dir"
-
-# Ghostty
-dir="$HOME/.config/ghostty"
-mkdir -p "$dir"
-ln -sf "$PWD/config.ghostty" "$dir/config"
-if [ ! -d "$dir/shaders" ]; then
-    git clone https://github.com/sahaj-b/ghostty-cursor-shaders "$dir/shaders"
+if [ ! -d "$HOME/.config/ghostty/shaders" ]; then
+    git clone https://github.com/sahaj-b/ghostty-cursor-shaders "$HOME/.config/ghostty/shaders"
 fi
 
-# LibreWolf
-dir="$HOME/.librewolf"
-mkdir -p "$dir"
-ln -sf "$PWD/librewolf.overrides.cfg" "$dir"
+if [ "$(uname)" = "Linux" ]; then
+    link "$PWD/niri.kdl" "$HOME/.config/niri/config.kdl"
 
-# /usr/local/bin
-sudo ln -sf "$PWD/bin/toggle_dark_mode" /usr/local/bin
+    sudo ln -sf "$PWD/keyd.conf" /etc/keyd/default.conf
+
+    # Enable the notch.
+    sudo grubby --args=appledrm.show_notch=1 --update-kernel=ALL
+
+    # Unbind the "Do Not Disturb" key.
+    if ! grep -Fxq 'HandleSuspendKey=ignore' /etc/systemd/logind.conf; then
+        printf 'HandleSuspendKey=ignore\n' | sudo tee --append /etc/systemd/logind.conf > /dev/null
+    fi
+fi
 
 if [ "$(uname)" = "Darwin" ]; then
-    /opt/homebrew/bin/brew bundle install --file=Brewfile
+    link "$PWD/karabiner.json" "$HOME/.config/karabiner"
+    link "$PWD/paneru.toml"    "$HOME/.config/paneru"
+
+    sudo ln -sf "$PWD/bin/toggle_dark_mode" /usr/local/bin
 
     if [ "$SHELL" != "/opt/homebrew/bin/fish" ]; then
         sudo chsh -s /opt/homebrew/bin/fish "$USER"
     fi
-
-    # Karabiner-Elements
-    dir="$HOME/.config/karabiner"
-    mkdir -p "$dir"
-    ln -sf "$PWD/karabiner.json" "$dir"
 fi
