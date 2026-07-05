@@ -1,0 +1,138 @@
+// https://niri-wm.github.io/niri/Configuration%3A-Introduction.html
+
+include optional=true "noctalia.kdl"
+
+input {
+    keyboard {
+        xkb {
+            layout "us,ru"
+            options "fkeys:basic_13-24"
+        }
+        repeat-delay 300 // Default: 600
+        repeat-rate  50  // Default: 25
+    }
+    touchpad {
+        tap
+        dwt
+        natural-scroll
+    }
+}
+
+output "eDP-1" {
+    mode "3024x1964@60.000"
+    // position x=0 y=0
+}
+
+output "HDMI-A-1" {
+    scale 2
+    // position x=1512 y=0
+    layout {
+        center-focused-column "always"
+    }
+}
+
+switch-events {
+    lid-close { spawn "noctalia" "msg" "session" "lock-and-suspend"; }
+    lid-open  { spawn "niri" "msg" "action" "power-on-monitors"; }
+}
+
+layout {
+    preset-column-widths {
+        proportion 0.5
+        proportion 0.75
+        proportion 1.0
+    }
+    default-column-width {
+        // proportion 0.5
+    }
+    background-color "transparent"
+}
+
+window-rule {
+    geometry-corner-radius 10
+    clip-to-geometry true
+}
+
+layer-rule {
+    match namespace="^noctalia-wallpaper$"
+    place-within-backdrop true
+}
+
+layer-rule {
+    match namespace="^noctalia-(bar-main|notification|dock|panel|attached-panel|osd)$"
+    background-effect { xray false; }
+}
+
+gestures {
+    hot-corners { off; }
+}
+
+prefer-no-csd
+screenshot-path null
+hotkey-overlay { skip-at-startup; }
+debug { honor-xdg-activation-with-invalid-serial; }
+
+binds {
+    Super+H       { focus-column-left; }
+    Super+L       { focus-column-right; }
+    Super+Shift+H { move-column-left; }
+    Super+Shift+L { move-column-right; }
+
+    Super+J       { focus-window-or-workspace-down; }
+    Super+K       { focus-window-or-workspace-up; }
+    Super+Shift+J { move-column-to-workspace-down; }
+    Super+Shift+K { move-column-to-workspace-up; }
+
+    Super+1 { focus-workspace 1; }
+    Super+2 { focus-workspace 2; }
+    Super+3 { focus-workspace 3; }
+    Super+4 { focus-workspace 4; }
+    Super+5 { focus-workspace 5; }
+    Super+6 { focus-workspace 6; }
+    Super+7 { focus-workspace 7; }
+    Super+8 { focus-workspace 8; }
+    Super+9 { focus-workspace 9; }
+
+    Super+Shift+1 { move-column-to-workspace 1; }
+    Super+Shift+2 { move-column-to-workspace 2; }
+    Super+Shift+3 { move-column-to-workspace 3; }
+    Super+Shift+4 { move-column-to-workspace 4; }
+    Super+Shift+5 { move-column-to-workspace 5; }
+    Super+Shift+6 { move-column-to-workspace 6; }
+    Super+Shift+7 { move-column-to-workspace 7; }
+    Super+Shift+8 { move-column-to-workspace 8; }
+    Super+Shift+9 { move-column-to-workspace 9; }
+
+    F13 { switch-layout "0"; }
+    F14 { switch-layout "1"; }
+
+    Super+E                   { switch-preset-column-width; }
+    Super+Q      repeat=false { close-window; }
+    Super+Return repeat=false { spawn "ghostty"; }
+    Super+S                   { screenshot; }
+    Super+Alt+S               { screenshot-window; }
+    Super+Space               { spawn "noctalia" "msg" "panel-toggle" "launcher"; }
+    Shift+Alt+Insert          { spawn "noctalia" "msg" "panel-toggle" "clipboard"; }
+
+    XF86MonBrightnessUp   allow-when-locked=true { spawn "noctalia" "msg" "brightness-up"; }
+    XF86MonBrightnessDown allow-when-locked=true { spawn "noctalia" "msg" "brightness-down"; }
+    XF86LaunchA                                  { toggle-overview; }
+    XF86Search                                   { spawn "noctalia" "msg" "panel-toggle" "launcher"; }
+    XF86AudioMicMute      allow-when-locked=true { spawn "noctalia" "msg" "mic-mute"; }
+    XF86Sleep                                    { spawn "noctalia" "msg" "theme-mode-toggle"; }
+    XF86AudioPrev         allow-when-locked=true { spawn "noctalia" "msg" "media" "previous"; }
+    XF86AudioPlay         allow-when-locked=true { spawn "noctalia" "msg" "media" "toggle"; }
+    XF86AudioNext         allow-when-locked=true { spawn "noctalia" "msg" "media" "next"; }
+    XF86AudioMute         allow-when-locked=true { spawn "noctalia" "msg" "volume-mute"; }
+    XF86AudioLowerVolume  allow-when-locked=true { spawn "noctalia" "msg" "volume-down"; }
+    XF86AudioRaiseVolume  allow-when-locked=true { spawn "noctalia" "msg" "volume-up"; }
+}
+
+recent-windows {
+    binds {
+        Super+Tab         { next-window     scope="workspace"; }
+        Super+Shift+Tab   { previous-window scope="workspace"; }
+        Super+Grave       { next-window     scope="workspace" filter="app-id"; }
+        Super+Shift+Grave { previous-window scope="workspace" filter="app-id"; }
+    }
+}
