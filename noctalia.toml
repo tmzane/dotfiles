@@ -1,0 +1,80 @@
+# https://docs.noctalia.dev/v5/configuration
+
+[shell.panel]
+launcher_categories = false
+launcher_compact = true
+open_near_click_control_center = true
+
+[osd]
+position = "top_right"
+
+[osd.kinds]
+keyboard_layout = false
+
+[bar.main]
+margin_edge = 0
+margin_ends = 0
+radius = 0
+thickness = 32
+widget_spacing = 20
+start = [
+    "workspaces",
+    "taskbar",
+    "active_window",
+]
+center = []
+end = [
+    "tray",
+    "notifications",
+    "network",
+    "bluetooth",
+    "keyboard_layout",
+    "battery",
+    "weather",
+    "clock",
+]
+
+[widget.clock]
+format = "{:%a, %b %-d %H:%M}"
+
+[widget.taskbar]
+only_active_workspace = true
+
+[widget.active_window]
+max_length = 400
+display = "text_only"
+
+[widget.network]
+show_label = false
+
+[widget.weather]
+show_condition = false
+
+[widget.notifications]
+hide_when_no_unread = true
+
+[control_center]
+shortcuts = []
+
+[theme.templates]
+builtin_ids = [
+    "niri",
+    "ghostty",
+]
+
+[battery]
+warning_threshold = 20
+
+[brightness]
+enable_ddcutil = true
+
+[idle.behavior.suspend]
+action = "lock_and_suspend"
+timeout = 300
+
+[nightlight]
+enabled = true
+force = true
+
+[hooks]
+theme_mode_changed = "gsettings set org.gnome.desktop.interface color-scheme prefer-$NOCTALIA_THEME_MODE"
