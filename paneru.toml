@@ -2,8 +2,11 @@
 
 [options]
 focus_follows_mouse = false
+mouse_follows_focus = false
 preset_column_widths = [0.5, 0.75, 1]
 auto_center = true
+reap_empty_workspaces = true
+virtual_workspace_animations = true
 
 [padding]
 top = 10
@@ -17,14 +20,42 @@ sensitivity = 0.5
 [swipe.gesture]
 fingers_count = 3
 
+[decorations]
+workspace_popup_status = false
+
+[decorations.active.border]
+enabled = true
+
 [bindings]
 window_focus_west = "cmd-h"
 window_focus_east = "cmd-l"
 window_swap_west = "cmd+shift-h"
 window_swap_east = "cmd+shift-l"
+
 window_virtual_north = "cmd-k"
 window_virtual_south = "cmd-j"
 window_virtualmove_north = "cmd+shift-k"
 window_virtualmove_south = "cmd+shift-j"
+
+window_virtualnum_1 = "cmd-1"
+window_virtualnum_2 = "cmd-2"
+window_virtualnum_3 = "cmd-3"
+window_virtualnum_4 = "cmd-4"
+window_virtualnum_5 = "cmd-5"
+window_virtualnum_6 = "cmd-6"
+window_virtualnum_7 = "cmd-7"
+window_virtualnum_8 = "cmd-8"
+window_virtualnum_9 = "cmd-9"
+
+window_virtualmovenum_1 = "cmd+shift-1"
+window_virtualmovenum_2 = "cmd+shift-2"
+window_virtualmovenum_3 = "cmd+shift-3"
+window_virtualmovenum_4 = "cmd+shift-4"
+window_virtualmovenum_5 = "cmd+shift-5"
+window_virtualmovenum_6 = "cmd+shift-6"
+window_virtualmovenum_7 = "cmd+shift-7"
+window_virtualmovenum_8 = "cmd+shift-8"
+window_virtualmovenum_9 = "cmd+shift-9"
+
 window_resize = "cmd-e"
 window_manage = "cmd-m"
