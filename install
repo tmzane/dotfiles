@@ -10,16 +10,16 @@ link() {
     ln -sf "$src" "$dst"
 }
 
-link "$PWD/.editorconfig"           "$HOME/.editorconfig"
-link "$PWD/alacritty.toml"          "$HOME/.config/alacritty/alacritty.toml"
-link "$PWD/config.fish"             "$HOME/.config/fish/config.fish"
-link "$PWD/config.ghostty"          "$HOME/.config/ghostty/config.ghostty"
-link "$PWD/gitconfig"               "$HOME/.config/git/config"
-link "$PWD/gitignore"               "$HOME/.config/git/ignore"
-link "$PWD/htoprc"                  "$HOME/.config/htop/htoprc"
-link "$PWD/librewolf.overrides.cfg" "$HOME/.librewolf/librewolf.overrides.cfg"
-link "$PWD/nvim.lua"                "$HOME/.config/nvim/init.lua"
-link "$PWD/starship.toml"           "$HOME/.config/starship.toml"
+link "$PWD/.editorconfig"  "$HOME/.editorconfig"
+link "$PWD/alacritty.toml" "$HOME/.config/alacritty/alacritty.toml"
+link "$PWD/config.fish"    "$HOME/.config/fish/config.fish"
+link "$PWD/config.ghostty" "$HOME/.config/ghostty/config.ghostty"
+link "$PWD/gitconfig"      "$HOME/.config/git/config"
+link "$PWD/gitignore"      "$HOME/.config/git/ignore"
+link "$PWD/htoprc"         "$HOME/.config/htop/htoprc"
+link "$PWD/librewolf.cfg"  "$HOME/.config/librewolf/librewolf/librewolf.overrides.cfg"
+link "$PWD/nvim.lua"       "$HOME/.config/nvim/init.lua"
+link "$PWD/starship.toml"  "$HOME/.config/starship.toml"
 
 if [ ! -d "$HOME/.config/ghostty/shaders" ]; then
     git clone https://github.com/sahaj-b/ghostty-cursor-shaders "$HOME/.config/ghostty/shaders"
