@@ -2,6 +2,8 @@
 
 include optional=true "noctalia.kdl"
 
+spawn-at-startup "noctalia"
+
 input {
     keyboard {
         xkb {
