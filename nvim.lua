@@ -398,6 +398,17 @@ local function setup_lsp()
         },
     })
 
+    -- https://github.com/zigtools/zls/blob/master/schema.json
+    vim.lsp.config("zls", {
+        settings = {
+            zls = {
+                enable_argument_placeholders = false,
+                inlay_hints_show_variable_type_hints = false,
+                warn_style = true,
+            },
+        },
+    })
+
     vim.api.nvim_create_autocmd("LspAttach", {
         callback = function(args)
             local client = assert(vim.lsp.get_client_by_id(args.data.client_id))
