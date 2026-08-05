@@ -1,5 +1,3 @@
-tap "homebrew/bundle"
-tap "homebrew/services"
 tap "karinushka/paneru"
 # Clone of cat(1) with syntax highlighting and Git integration
 brew "bat"
@@ -7,6 +5,8 @@ brew "bat"
 brew "bear"
 # New way of working with Protocol Buffers
 brew "buf"
+# Create and run Linux containers using lightweight virtual machines
+brew "container"
 # Debugger for the Go programming language
 brew "delve"
 # Diff that understands syntax
@@ -35,6 +35,8 @@ brew "graphviz"
 brew "grpcurl"
 # Improved top (interactive process viewer)
 brew "htop"
+# Git-compatible distributed version control system
+brew "jj"
 # Kubernetes command-line interface
 brew "kubernetes-cli"
 # Pager program similar to more
@@ -50,17 +52,9 @@ brew "lua-language-server"
 # Open source relational database management system
 brew "mysql-client", link: true
 # Ambitious Vim-fork focused on extensibility and agility
-brew "neovim", args: ["HEAD"]
-# Create, run, and share large language models (LLMs)
-brew "ollama"
+brew "neovim"
 # Swiss-army knife of markup format conversion
 brew "pandoc"
-# Tool for managing OCI containers and pods
-brew "podman"
-# Interpreted, interactive, object-oriented programming language
-brew "python@3.13"
-# Alternative to docker-compose using podman
-brew "podman-compose"
 # Protocol buffers (Google's data interchange format)
 brew "protobuf"
 # Go support for Google's protocol buffers
@@ -92,15 +86,9 @@ brew "zig"
 # Language Server for Zig
 brew "zls"
 # Sliding, tiling window manager for MacOS
-brew "karinushka/paneru/paneru"
+brew "karinushka/paneru/paneru", trusted: true
 # Application launcher and productivity software
 cask "alfred"
-# VPN client
-cask "amneziavpn"
-# Create and run Linux containers using lightweight virtual machines
-cask "container"
-# Utility to show apps badges from the dock in the menu bar
-cask "doll"
 cask "font-jetbrains-mono-nerd-font"
 # Terminal emulator that uses platform-native UI and GPU acceleration
 cask "ghostty"
