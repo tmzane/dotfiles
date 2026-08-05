@@ -35,6 +35,9 @@ local function setup_options()
 
     vim.g.c_syntax_for_h = true
     vim.g.mapleader = " "
+    vim.g.netrw_banner = 0
+    vim.g.netrw_liststyle = 3
+    vim.g.netrw_winsize = 25
 
     vim.diagnostic.config({ virtual_lines = { current_line = true } })
 
@@ -62,6 +65,8 @@ end
 local function setup_keymaps()
     vim.keymap.set("n", "gd", "<C-]>", { desc = "Goto definition" })
     vim.keymap.set("n", "<CR>", "<Cmd>wall<CR>", { desc = "Write all buffers" })
+    vim.keymap.set("n", "<Leader>e", "<Cmd>Lexplore<CR>", { desc = "Toggle file tree" })
+
     vim.keymap.set("n", "<Esc>", function()
         vim.cmd("nohlsearch")
         vim.lsp.buf.clear_references()
